@@ -13,6 +13,7 @@ class Xadrez:
         ]
         self.click_color = (153, 0, 0)
         self.__click = None
+        self.__qsize = (0, 0)
 
     def event(self, event: pygame.event) -> None:
         """
@@ -20,7 +21,13 @@ class Xadrez:
 
         :param event: evento
         """
-        pass
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.__click = (
+                event.pos[0] // self.__qsize[0],
+                event.pos[1] // self.__qsize[1]
+            )
+            self.__atualizacao = True
 
     def draw(self, screen: pygame.Surface) -> bool:
         """
@@ -30,6 +37,7 @@ class Xadrez:
 
         size = screen.get_size()
         qsize = (size[0] / 8, size[1] / 8)
+        self.__qsize = qsize
 
         if self.__atualizacao:
             for x, linha in enumerate(self.__tabuleiro):
@@ -39,6 +47,11 @@ class Xadrez:
                     surf.fill(color)
                     pos = (qsize[0] * x, qsize[1] * y)
                     screen.blit(surf, pos)
+
+            if self.__click:
+                surf = pygame.Surface(qsize)
+                surf.fill(self.click_color)
+                screen.blit(surf, (self.__click[0] * qsize[0], self.__click[1] * qsize[1]))
 
             self.__atualizacao = False
             return True
