@@ -51,7 +51,8 @@ class Xadrez:
             if self.__click:
                 surf = pygame.Surface(qsize)
                 surf.fill(self.click_color)
-                screen.blit(surf, (self.__click[0] * qsize[0], self.__click[1] * qsize[1]))
+                screen.blit(
+                    surf, (self.__click[0] * qsize[0], self.__click[1] * qsize[1]))
 
             self.__atualizacao = False
             return True
