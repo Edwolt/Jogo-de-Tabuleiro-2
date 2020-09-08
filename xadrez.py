@@ -20,12 +20,13 @@ class Xadrez:
         """
         pass
 
-    def draw(self, screen: pygame.surface, size: tuple) -> bool:
+    def draw(self, screen: pygame.surface) -> bool:
         """[summary]
         :param screen: Surface onde sera desenhado o jogo sera desenhado
         :return: Retorna se houve mudança ou nao na tela
         """
 
+        size = screen.get_size()
         quad_size = (size[0] / 8, size[1] / 8)
 
         if self.__atualizacao:

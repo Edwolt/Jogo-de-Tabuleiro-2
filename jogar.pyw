@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
             Jogo.event(event)
 
-        if Jogo.draw(screen, size):
+        if Jogo.draw(screen):
             # Nao estou usando o update por que provavelmente toda tela será atualizada
             pygame.display.flip()
 
