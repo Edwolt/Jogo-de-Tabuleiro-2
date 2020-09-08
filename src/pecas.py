@@ -25,23 +25,26 @@ class Pecas():
                 id_preto: pygame.image.load(caminho_asset(id_preto))
             })
 
+    def get_asset(nome: str, cor: bool) -> pygame.Surface:
+        return self.assets[id_peca(nome, cor)]
+
     def Rei(self, cor: bool):
-        return Rei(self.assets[id_peca('Rei', cor)], cor)
+        return Rei(self.get_asset('Rei', cor), cor)
 
     def Rainha(self, cor: bool):
-        return Rainha(self.assets[id_peca('Rainha', cor)], cor)
+        return Rainha(self.get_asset('Rainha', cor), cor)
 
     def Bispo(self, cor: bool):
-        return Bispo(self.assets[id_peca('Bispo', cor)], cor)
+        return Bispo(self.get_asset('Bispo', cor), cor)
 
     def Cavalo(self, cor: bool):
-        return Cavalo(self.assets[id_peca('Cavalo', cor)], cor)
+        return Cavalo(self.get_asset('Cavalo', cor), cor)
 
     def Torre(self, cor: bool):
-        return Torre(self.assets[id_peca('Torre', cor)], cor)
+        return Torre(self.get_asset('Torre', cor), cor)
 
     def Peao(self, cor: bool):
-        return Peao(self.assets[id_peca('Peao', cor)], cor)
+        return Peao(self.get_asset('Peao', cor), cor)
 
 
 class Rei():
