@@ -1,6 +1,11 @@
 import pygame
 
 
+def nome_peca_cor(nome_peca: str, cor: bool) -> str:
+    nome_cor = 'braco' if cor else 'preto'
+    return f'{nome_peca}_{nome_cor}'
+
+
 class Pecas():
     def __init__(self):
         self.assets = dict()
@@ -12,8 +17,8 @@ class Pecas():
             nome_preto = f'assets/{i}_preto'
 
             self.assets.update({
-                nome_branco: pygame.image.load(nome_branco),
-                nome_preto: pygame.image.load(nome_preto)
+                nome_peca_cor(i, True): pygame.image.load(f'assets/{nome_peca_cor(i, True)}'),
+                nome_peca_cor(i, False): pygame.image.load(f'assets/{nome_peca_cor(i, False)}'),
             })
 
     def criar_peca(self, nome: str, cor: bool):
