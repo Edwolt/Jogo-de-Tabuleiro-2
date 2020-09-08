@@ -48,4 +48,4 @@ def tabuleiro_novo(pecas: Pecas) -> list:
     for i in range(8):  # Peões pretos
         tabuleiro[6][i] = pecas.Peao(False)
 
-    return tabuleiros
+    return tabuleiro

@@ -1,5 +1,6 @@
 import pygame
-from util import tabuleiro_none
+from util import tabuleiro_none, tabuleiro_novo
+from pecas import Pecas
 
 
 class Xadrez:
@@ -19,7 +20,7 @@ class Xadrez:
 
     def carregar(self):
         self.pecas.carregar()
-        self.tabuleiro = tabuleiro_none
+        self.tabuleiro = tabuleiro_novo(self.pecas)
 
     def event(self, event: pygame.event) -> None:
         """
