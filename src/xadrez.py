@@ -1,4 +1,5 @@
 import pygame
+from util import tabuleiro_none
 
 
 class Xadrez:
@@ -6,14 +7,14 @@ class Xadrez:
 
     def __init__(self):
         self.__atualizacao: bool = True
-        self.__tabuleiro = [[None] * 8 for _ in range(8)]
-        self.cores = [
+        self.__tabuleiro: list = tabuleiro_none()
+        self.cores: tuple = (
             (214, 165, 132),
             (124, 49, 0)
-        ]
-        self.click_color = (153, 0, 0)
+        )
+        self.click_color: tuple = (153, 0, 0)
         self.__click = None
-        self.__qsize = (0, 0)
+        self.__qsize: tuple = (0, 0)
 
     def event(self, event: pygame.event) -> None:
         """

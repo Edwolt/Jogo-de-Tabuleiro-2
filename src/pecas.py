@@ -40,9 +40,6 @@ class Pecas():
         elif nome == 'Peao':
             return Peao(sprite, cor)
 
-    def load(self):
-        pass
-
 
 class Rei():
     def __init__(self, sprite: pygame.Surface, cor: bool):
