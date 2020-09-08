@@ -8,12 +8,11 @@ framerate = 60
 print('funciona por favor')
 
 if __name__ == '__main__':
-
     pygame.init()
     screen = pygame.display.set_mode(size)
     clock = pygame.time.Clock()
 
-    Jogo = Xadrez(screen)
+    Jogo = Xadrez()
 
     while True:
         for event in pygame.event.get():
@@ -23,7 +22,7 @@ if __name__ == '__main__':
 
             Jogo.event(event)
 
-        if Jogo.draw():
+        if Jogo.draw(screen):
             pygame.display.flip()  # Atualiza toda tela (para atualizar função tem o update)
 
         clock.tick(framerate)
