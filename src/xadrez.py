@@ -1,4 +1,7 @@
-import pygame
+from pygame.locals import *
+from pygame import Surface
+from pygame.event import Event
+
 from util import tabuleiro_none, tabuleiro_novo
 from pecas import Pecas
 
@@ -18,18 +21,18 @@ class Xadrez:
         self.qsize = (0, 0)
         self.pecas: Peca = Pecas()
 
-    def carregar(self):
+    def carregar(self) -> None:
         self.pecas.carregar()
         self.tabuleiro = tabuleiro_novo(self.pecas)
 
-    def event(self, event):
+    def event(self, event: Event) -> None:
         """
         Recebe um evento e executa uma operação com ele
 
         :param event: evento
         """
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
             self.click = (
                 event.pos[0] // self.qsize[0],
                 event.pos[1] // self.qsize[1]
@@ -51,7 +54,7 @@ class Xadrez:
         if self.atualizacao:
             for y, linha in enumerate(self.tabuleiro):
                 for x, peca in enumerate(linha):
-                    surf = pygame.Surface(qsize)
+                    surf = Surface(qsize)
 
                     color = self.cores[(x + y) % 2]
                     if self.click and x == self.click[0] and y == self.click[1]:
