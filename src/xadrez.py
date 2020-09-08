@@ -33,7 +33,7 @@ class Xadrez:
     def draw(self, screen: pygame.Surface) -> bool:
         """
         :param screen: Surface onde sera desenhado o jogo sera desenhado
-        :return: Retorna se houve mudança ou nao na tela
+        :return: Retorna se a tela precisa ser atualizada
         """
 
         size = screen.get_size()

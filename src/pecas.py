@@ -15,7 +15,7 @@ class Pecas():
         self.assets = dict()
         self.pecas = ['Rei', 'Rainha', 'Bispo', 'Cavalo', 'Torre', 'Peao']
 
-    def carregar(self):
+    def carregar(self) -> None:
         for i in pecas:
             id_branco = id_peca(i, True)
             id_preto = id_peca(i, False)
