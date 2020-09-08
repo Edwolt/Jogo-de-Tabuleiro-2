@@ -2,6 +2,7 @@ from pygame.locals import *
 from pygame import Surface
 from pygame.event import Event
 
+from config import Config
 from util import tabuleiro_none, tabuleiro_novo
 from pecas import Pecas
 
@@ -12,14 +13,14 @@ class Xadrez:
     def __init__(self):
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
-        self.cores = (
-            (214, 165, 132),
-            (124, 49, 0)
-        )
+
+        self.config = Config()
+        self.pecas: Peca = Pecas()
+
         self.click_color = (153, 0, 0)
         self.click = None
+
         self.qsize = (0, 0)
-        self.pecas: Peca = Pecas()
 
     def carregar(self) -> None:
         self.pecas.carregar()
@@ -56,11 +57,11 @@ class Xadrez:
                 for x, peca in enumerate(linha):
                     surf = Surface(qsize)
 
-                    color = self.cores[(x + y) % 2]
+                    tipo = 'vazio'
                     if self.click and x == self.click[0] and y == self.click[1]:
-                        color = self.click_color
+                        tipo = 'click'
 
-                    surf.fill(color)
+                    surf.fill(self.config.quadrado((x, y), tipo))
 
                     if peca:
                         peca.draw(surf)
