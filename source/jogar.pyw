@@ -5,8 +5,6 @@ Jogo = None
 size = (800, 800)
 framerate = 60
 
-print('funciona por favor')
-
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(size)
