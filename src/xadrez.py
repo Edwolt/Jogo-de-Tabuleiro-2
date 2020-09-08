@@ -52,20 +52,18 @@ class Xadrez:
             for y, linha in enumerate(self.tabuleiro):
                 for x, peca in enumerate(linha):
                     surf = pygame.Surface(qsize)
+
                     color = self.cores[(x + y) % 2]
+                    if self.click and x == self.click[0] and y == self.click[1]:
+                        color = self.click_color
+
                     surf.fill(color)
+
                     if peca:
                         peca.draw(surf)
+
                     pos = (qsize[0] * x, qsize[1] * y)
                     canva.blit(surf, pos)
-
-            if self.click:
-                surf = pygame.Surface(qsize)
-                surf.fill(self.click_color)
-                canva.blit(
-                    surf,
-                    (self.click[0] * qsize[0], self.click[1] * qsize[1])
-                )
 
             self.atualizacao = False
             return True
