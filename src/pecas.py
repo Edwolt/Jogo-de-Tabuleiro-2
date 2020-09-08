@@ -23,6 +23,15 @@ def draw_image(canva: Surface, sprite: Surface) -> None:
     canva.blit(sprite, (0, 0))
 
 
+'''
+Ideia para fazer o movimento:
+* Encontra onde está o rei da mesma cor
+* Descobre quais pecas não podem sair do lugar por que criam xeque
+* Calcula onde a peça em questão pode ir
+* Desconta do resultado onde as peças nao pode ir
+'''
+
+
 class Rei():
     def __init__(self, sprite: Surface, cor: bool):
         """
