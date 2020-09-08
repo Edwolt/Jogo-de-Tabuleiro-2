@@ -28,22 +28,22 @@ class Pecas():
     def get_asset(nome: str, cor: bool) -> pygame.Surface:
         return self.assets[id_peca(nome, cor)]
 
-    def Rei(self, cor: bool):
+    def Rei(self, cor: bool) -> Rei:
         return Rei(self.get_asset('Rei', cor), cor)
 
-    def Rainha(self, cor: bool):
+    def Rainha(self, cor: bool) -> Rainha:
         return Rainha(self.get_asset('Rainha', cor), cor)
 
-    def Bispo(self, cor: bool):
+    def Bispo(self, cor: bool) -> Bispo:
         return Bispo(self.get_asset('Bispo', cor), cor)
 
-    def Cavalo(self, cor: bool):
+    def Cavalo(self, cor: bool) -> Cavalo:
         return Cavalo(self.get_asset('Cavalo', cor), cor)
 
-    def Torre(self, cor: bool):
+    def Torre(self, cor: bool) -> Torre:
         return Torre(self.get_asset('Torre', cor), cor)
 
-    def Peao(self, cor: bool):
+    def Peao(self, cor: bool) -> Peao:
         return Peao(self.get_asset('Peao', cor), cor)
 
 
