@@ -8,8 +8,8 @@ class Xadrez:
         self.__atualizacao: bool = True
         self.__tabuleiro = [[None] * 8 for _ in range(8)]
         self.cores = [
-            (0, 0, 0),
-            (255, 255, 255)
+            (214, 165, 132),
+            (124, 49, 0)
         ]
 
     def event(self, event: pygame.event) -> None:
