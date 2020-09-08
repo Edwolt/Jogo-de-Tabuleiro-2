@@ -36,30 +36,36 @@ class Xadrez:
             )
             self.atualizacao = True
 
-    def draw(self, screen: pygame.Surface) -> bool:
+    # TODO canva não é um bom nome para essa variavel
+    # Pecas tambem usou o mesmo nome
+    def draw(self, canva: pygame.Surface) -> bool:
         """
-        :param screen: Surface onde sera desenhado o jogo sera desenhado
+        :param canva: Surface onde o jogo sera desenhado
         :return: Retorna se a tela precisa ser atualizada
         """
 
-        size = screen.get_size()
+        size = canva.get_size()
         qsize = (size[0] / 8, size[1] / 8)
         self.qsize = qsize
 
         if self.atualizacao:
-            for x, linha in enumerate(self.tabuleiro):
-                for y, peca in enumerate(linha):
+            for y, linha in enumerate(self.tabuleiro):
+                for x, peca in enumerate(linha):
                     surf = pygame.Surface(qsize)
                     color = self.cores[(x + y) % 2]
                     surf.fill(color)
+                    if peca:
+                        peca.draw(surf)
                     pos = (qsize[0] * x, qsize[1] * y)
-                    screen.blit(surf, pos)
+                    canva.blit(surf, pos)
 
             if self.click:
                 surf = pygame.Surface(qsize)
                 surf.fill(self.click_color)
-                screen.blit(
-                    surf, (self.click[0] * qsize[0], self.click[1] * qsize[1]))
+                canva.blit(
+                    surf,
+                    (self.click[0] * qsize[0], self.click[1] * qsize[1])
+                )
 
             self.atualizacao = False
             return True

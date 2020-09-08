@@ -10,12 +10,20 @@ def caminho_asset(identificador: str) -> str:
     return f'assets/{identificador}.png'
 
 
+def draw_image(canva: pygame.Surface, sprite: pygame.Surface) -> None:
+    sprite = pygame.transform.scale(sprite, canva.get_size())
+    canva.blit(sprite, (0, 0))
+
+
 class Rei():
     def __init__(self, sprite: pygame.Surface, cor: bool):
         self.nome = 'Rei'
         self.identificador = id_peca(self.nome, cor)
         self.sprite = sprite
         self.cor = cor
+
+    def draw(self, canva: pygame.Surface):
+        draw_image(canva, self.sprite)
 
 
 class Rainha():
@@ -24,12 +32,18 @@ class Rainha():
         self.sprite = sprite
         self.cor = cor
 
+    def draw(self, canva: pygame.Surface):
+        draw_image(canva, self.sprite)
+
 
 class Bispo():
     def __init__(self, sprite: pygame.Surface, cor: bool):
         self.nome = 'Bispo'
         self.sprite = sprite
         self.cor = cor
+
+    def draw(self, canva: pygame.Surface):
+        draw_image(canva, self.sprite)
 
 
 class Cavalo():
@@ -38,12 +52,18 @@ class Cavalo():
         self.sprite = sprite
         self.cor = cor
 
+    def draw(self, canva: pygame.Surface):
+        draw_image(canva, self.sprite)
+
 
 class Torre():
     def __init__(self, sprite: pygame.Surface, cor: bool):
         self.nome = 'Torre'
         self.sprite = sprite
         self.cor = cor
+
+    def draw(self, canva: pygame.Surface):
+        draw_image(canva, self.sprite)
 
 
 class Peao():
@@ -52,6 +72,9 @@ class Peao():
         self.identificador = id_peca(self.nome, cor)
         self.sprite = sprite
         self.cor = cor
+
+    def draw(self, canva: pygame.Surface):
+        draw_image(canva, self.sprite)
 
 
 class Pecas():
