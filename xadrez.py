@@ -1,6 +1,8 @@
 class Xadrez:
-    def event(self):
+    
+
+    def event(self, event):
         pass
 
-    def draw(self):
+    def draw(self, screen):
         return False

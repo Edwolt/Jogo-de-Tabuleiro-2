@@ -3,8 +3,11 @@ from xadrez import Xadrez
 
 Jogo = None
 size = (800, 800)
+framerate = 60
 
-if __name__ == 'main':
+print('funciona por favor')
+
+if __name__ == '__main__':
     Jogo = Xadrez()
 
     pygame.init()
@@ -12,9 +15,15 @@ if __name__ == 'main':
     clock = pygame.time.Clock()
 
     while True:
-        for evento in pygame.event.get():
-            Jogo.event(evento)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit(0)
+
+            Jogo.event(event)
 
         if Jogo.draw(screen):
             # Nao estou usando o update por que provavelmente toda tela será atualizada
             pygame.display.flip()
+
+        clock.tick(framerate)
