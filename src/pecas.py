@@ -25,20 +25,23 @@ class Pecas():
                 id_preto: pygame.image.load(caminho_asset(id_preto))
             })
 
-    def criar_peca(self, nome: str, cor: bool):
-        sprite = self.assets[id_peca(nome, cor)]
-        if nome == 'Rei':
-            return Rei(sprite, cor)
-        elif nome == 'Rainha':
-            return Rainha(sprite, cor)
-        elif nome == 'Bispo':
-            return Bispo(sprite, cor)
-        elif nome == 'Cavalo':
-            return Cavalo(sprite, cor)
-        elif nome == 'Torre':
-            return Torre(sprite, cor)
-        elif nome == 'Peao':
-            return Peao(sprite, cor)
+    def Rei(self, cor: bool):
+        return Rei(self.assets[id_peca('Rei', cor)], cor)
+
+    def Rainha(self, cor: bool):
+        return Rainha(self.assets[id_peca('Rainha', cor)], cor)
+
+    def Bispo(self, cor: bool):
+        return Bispo(self.assets[id_peca('Bispo', cor)], cor)
+
+    def Cavalo(self, cor: bool):
+        return Cavalo(self.assets[id_peca('Cavalo', cor)], cor)
+
+    def Torre(self, cor: bool):
+        return Torre(self.assets[id_peca('Torre', cor)], cor)
+
+    def Peao(self, cor: bool):
+        return Peao(self.assets[id_peca('Peao', cor)], cor)
 
 
 class Rei():
