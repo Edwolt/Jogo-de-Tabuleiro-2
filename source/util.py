@@ -1,6 +1,6 @@
-def tabuleiro_vazio() -> list:
+def tabuleiro_none() -> list:
     return [[None] * 8 for _ in range(8)]
 
 
-def tabuleiro_vazio_bool() -> list:
+def tabuleiro_false() -> list:
     return [[False] * 8 for _ in range(8)]
