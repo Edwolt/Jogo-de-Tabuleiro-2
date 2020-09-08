@@ -1,9 +1,13 @@
 import pygame
 
 
-def nome_peca_cor(nome_peca: str, cor: bool) -> str:
-    nome_cor = 'braco' if cor else 'preto'
-    return f'{nome_peca}_{nome_cor}'
+def id_peca(nome: str, cor: bool) -> str:
+    cor_str = 'braco' if cor else 'preto'
+    return f'{nome}_{cor_str}'
+
+
+def caminho_asset(identificador: str) -> str:
+    return f'assets/{identificador}'
 
 
 class Pecas():
@@ -13,27 +17,28 @@ class Pecas():
 
     def carregar(self):
         for i in pecas:
-            nome_branco = f'assets/{i}_branco'
-            nome_preto = f'assets/{i}_preto'
+            id_branco = id_peca(i, True)
+            id_preto = id_peca(i, False)
 
             self.assets.update({
-                nome_peca_cor(i, True): pygame.image.load(f'assets/{nome_peca_cor(i, True)}'),
-                nome_peca_cor(i, False): pygame.image.load(f'assets/{nome_peca_cor(i, False)}'),
+                id_branco: pygame.image.load(caminho_asset(id_branco)),
+                id_preto: pygame.image.load(caminho_asset(id_preto))
             })
 
     def criar_peca(self, nome: str, cor: bool):
+        sprite = self.assets[id_peca(nome, cor)]
         if nome == 'Rei':
-            return Rei(self.asset['Rei'], cor)
+            return Rei(sprite, cor)
         elif nome == 'Rainha':
-            return Rainha(self.asset['Rainha'], cor)
+            return Rainha(sprite, cor)
         elif nome == 'Bispo':
-            return Bispo(self.asset['Bispo'], cor)
+            return Bispo(sprite, cor)
         elif nome == 'Cavalo':
-            return Cavalo(self.asset['Cavalo'], cor)
+            return Cavalo(sprite, cor)
         elif nome == 'Torre':
-            return Torre(self.asset['Torre'], cor)
+            return Torre(sprite, cor)
         elif nome == 'Peao':
-            return Peao(self.asset['Peao'], cor)
+            return Peao(sprite, cor)
 
     def load(self):
         pass
@@ -42,6 +47,7 @@ class Pecas():
 class Rei():
     def __init__(self, sprite: pygame.Surface, cor: bool):
         self.nome = 'Rei'
+        self.identificador = id_peca(self.nome, cor)
         self.sprite = sprite
         self.cor = cor
 
@@ -77,5 +83,6 @@ class Torre():
 class Peao():
     def __init__(self, sprite: pygame.Surface, cor: bool):
         self.nome = 'Peao'
+        self.identificador = id_peca(self.nome, cor)
         self.sprite = sprite
         self.cor = cor
