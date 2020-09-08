@@ -1,7 +1,7 @@
 from pecas import Pecas
 
 
-def tabuleiro_none() -> list:
+def tabuleiro_none():
     """
     :return: list 8x8 com todos os campos sendo None
     """
@@ -9,7 +9,7 @@ def tabuleiro_none() -> list:
     return [[None] * 8 for _ in range(8)]
 
 
-def tabuleiro_false() -> list:
+def tabuleiro_false():
     """
     :return: list 8x8 com todos os campos sendo False
     """
@@ -17,7 +17,7 @@ def tabuleiro_false() -> list:
     return [[False] * 8 for _ in range(8)]
 
 
-def tabuleiro_novo(pecas: Pecas) -> list:
+def tabuleiro_novo(pecas: Pecas):
     """
     :return: list 8x8 com todos os campos sendo com um tabuleiro pronto para jogo
     """

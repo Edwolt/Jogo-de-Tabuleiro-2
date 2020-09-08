@@ -7,22 +7,22 @@ class Xadrez:
     """Toda a lógica do jogo"""
 
     def __init__(self):
-        self.atualizacao: bool = True
-        self.tabuleiro: list = tabuleiro_none()
-        self.cores: tuple = (
+        self.atualizacao = True
+        self.tabuleiro = tabuleiro_none()
+        self.cores = (
             (214, 165, 132),
             (124, 49, 0)
         )
-        self.click_color: tuple = (153, 0, 0)
+        self.click_color = (153, 0, 0)
         self.click = None
-        self.qsize: tuple = (0, 0)
-        self.pecas = Pecas()
+        self.qsize = (0, 0)
+        self.pecas: Peca = Pecas()
 
     def carregar(self):
         self.pecas.carregar()
         self.tabuleiro = tabuleiro_novo(self.pecas)
 
-    def event(self, event: pygame.event) -> None:
+    def event(self, event):
         """
         Recebe um evento e executa uma operação com ele
 
@@ -38,7 +38,7 @@ class Xadrez:
 
     # TODO canva não é um bom nome para essa variavel
     # Pecas tambem usou o mesmo nome
-    def draw(self, canva: pygame.Surface) -> bool:
+    def draw(self, canva) -> bool:
         """
         :param canva: Surface onde o jogo sera desenhado
         :return: Retorna se a tela precisa ser atualizada
