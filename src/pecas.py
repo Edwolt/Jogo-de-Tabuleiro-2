@@ -45,6 +45,20 @@ def valida_coordenadas(a: int, b: int = 0) -> bool:
     return 0 <= a < 8 and 0 <= b < 8
 
 
+def movimenta_direcao(res: list, tabuleiro: list, pos: tuple, direcao: tuple, cor: bool) -> None:
+    di, dj = direcao
+    i, j = pos
+
+    i, j = i+di, j+dj
+    while valida_coordenadas(i, j):
+        if tabuleiro[i][j] is None:
+            res[i][j] = True
+        else:
+            res[i][j] = cor != tabuleiro[i][j].cor
+            break  # Se a casa não está vazia, não tem porquê olhar adiante
+        i, j = i+di, j+dj
+
+
 class P():
     """Classe abstrata para as peças"""
 
@@ -131,16 +145,8 @@ class Rainha(P):
             (1, -1),  # Baixo Esquerda
         ]
 
-        for di, dj in direcoes:
-            i, j = pos
-            i, j = i+di, j+dj
-            while valida_coordenadas(i, j):
-                if tabuleiro[i][j] is None:
-                    res[i][j] = True
-                else:
-                    res[i][j] = self.cor != tabuleiro[i][j].cor
-                    break  # Se a casa não está vazia, não tem porquê olhar adiante
-                i, j = i+di, j+dj
+        for direcao in direcoes:
+            movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
 
         return res
 
@@ -165,16 +171,8 @@ class Bispo(P):
             (1, -1),  # Baixo Esquerda
         ]
 
-        for di, dj in direcoes:
-            i, j = pos
-            i, j = i+di, j+dj
-            while valida_coordenadas(i, j):
-                if tabuleiro[i][j] is None:
-                    res[i][j] = True
-                else:
-                    res[i][j] = self.cor != tabuleiro[i][j].cor
-                    break  # Se a casa não está vazia, não tem porquê olhar adiante
-                i, j = i+di, j+dj
+        for direcao in direcoes:
+            movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
 
         return res
 
@@ -215,16 +213,8 @@ class Torre(P):
             (0, 1),  # Direita
         ]
 
-        for di, dj in direcoes:
-            i, j = pos
-            i, j = i+di, j+dj
-            while valida_coordenadas(i, j):
-                if tabuleiro[i][j] is None:
-                    res[i][j] = True
-                else:
-                    res[i][j] = self.cor != tabuleiro[i][j].cor
-                    break  # Se a casa não está vazia, não tem porquê olhar adiante
-                i, j = i+di, j+dj
+        for direcao in direcoes:
+            movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
 
         return res
 
