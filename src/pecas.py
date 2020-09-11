@@ -34,11 +34,6 @@ def valida_coordenadas(a, b=0):
     return 0 <= a < 8 and 0 <= b < 8
 
 
-def valida_posicao(tabuleiro, pos, cor):
-    linha, coluna = pos
-    return tabuleiro[linha][coluna] is None or tabuleiro[linha][coluna].cor != cor
-
-
 class P():
     """Classe abstrata para as peças"""
 
@@ -60,6 +55,10 @@ class Rei(P):
         self.cor = cor
         self.movimentou = movimentou
 
+    def valida_posicao(self, tabuleiro, pos):
+        i, j = pos
+        return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
+
     def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
         # TODO Cuidado com cheque
         # TODO Roque
@@ -75,25 +74,25 @@ class Rei(P):
 
         # Casas acima do rei
         if(valida_coordenadas(i-1, j-1)):
-            res[i-1][j-1] = valida_posicao(tabuleiro, (i-1, j-1), self.cor)
+            res[i-1][j-1] = self.valida_posicao(tabuleiro, (i-1, j-1))
         if(valida_coordenadas(i-1, j)):
-            res[i-1][j] = valida_posicao(tabuleiro, (i-1, j), self.cor)
+            res[i-1][j] = self.valida_posicao(tabuleiro, (i-1, j))
         if(valida_coordenadas(i-1, j + 1)):
-            res[i-1][j+1] = valida_posicao(tabuleiro, (i-1, j+1), self.cor)
+            res[i-1][j+1] = self.valida_posicao(tabuleiro, (i-1, j+1))
 
         # Casas do meio
         if(valida_coordenadas(i, j-1)):
-            res[i][j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
+            res[i][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
         if(valida_coordenadas(i-1, j+1)):
-            res[i][j+1] = valida_posicao(tabuleiro, (i, j+1), self.cor)
+            res[i][j+1] = self.valida_posicao(tabuleiro, (i, j+1))
 
         # Casas abaixo do rei
         if(valida_coordenadas(i+1, j-1)):
-            res[i+1][j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
+            res[i+1][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
         if(valida_coordenadas(i+1, j)):
-            res[i+1][j] = valida_posicao(tabuleiro, (i+1, j), self.cor)
+            res[i+1][j] = self.valida_posicao(tabuleiro, (i+1, j))
         if(valida_coordenadas(i+1, j-1)):
-            res[i+1][j-1] = valida_posicao(tabuleiro, (i+1, j-1), self.cor)
+            res[i+1][j-1] = self.valida_posicao(tabuleiro, (i+1, j-1))
 
         return res
 
