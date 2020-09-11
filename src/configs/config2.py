@@ -1,3 +1,6 @@
+from pygame import Surface
+
+
 class Config:
     def __init__(self):
         self.vazio = (
@@ -13,7 +16,7 @@ class Config:
         surf = Surface((size[0], size[1]))
         quad = Surface((size[0] - 2, size[1] - 2))
 
-        surf.fill((50, 50, 50))
+        surf.fill((100, 100, 100))
 
         x, y = pos
 

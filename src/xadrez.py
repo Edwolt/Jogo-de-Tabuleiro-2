@@ -14,7 +14,7 @@ class Xadrez:
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
 
-        self.config = Config()
+        self.config = Config('marrom')
         self.pecas: Peca = Pecas()
 
         self.click = None
