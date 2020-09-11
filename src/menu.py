@@ -1,3 +1,4 @@
+import pygame
 from pygame.font import Font
 from pygame import Surface
 from pygame.event import Event
@@ -39,6 +40,13 @@ class Menu:
                     self.sel += 1
                 else:
                     self.sel = 0
+            elif event.key == pygame.K_RETURN:
+                opcao = self.opcoes(self.sel)
+                if opcao == 'Sair':
+                    pygame.quit()
+                    quit(0)
+                else:
+                    print(f'opção nao executada: {opcao}')
 
     def draw(self, canva: Surface):
         canva.fill((0, 0, 0))
