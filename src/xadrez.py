@@ -40,8 +40,7 @@ class Xadrez:
             )
             self.atualizacao = True
 
-    # TODO canva não é um bom nome para essa variavel
-    # Pecas tambem usou o mesmo nome
+    # TODO canva não é um bom nome para essa variavel (pecas tambem usou o mesmo nome)
     def draw(self, canva) -> bool:
         """
         :param canva: Surface onde o jogo sera desenhado
@@ -57,9 +56,11 @@ class Xadrez:
                 for x, peca in enumerate(linha):
                     surf = Surface(qsize)
 
-                    tipo = 'vazio'
+                    tipo = str()
                     if self.click and x == self.click[0] and y == self.click[1]:
                         tipo = 'click'
+                    else:
+                        tipo = 'vazio'
 
                     surf.fill(self.config.quadrado((x, y), tipo))
 

@@ -16,13 +16,6 @@ def caminho_asset(identificador: str) -> str:
     return f'assets/{identificador}.png'
 
 
-def draw_image(canva: Surface, sprite: Surface) -> None:
-    """Desenha sprite em canva"""
-
-    sprite = pygame.transform.scale(sprite, canva.get_size())
-    canva.blit(sprite, (0, 0))
-
-
 '''
 Ideia para fazer o movimento:
 * Encontra onde está o rei da mesma cor
@@ -34,9 +27,11 @@ Ideia para fazer o movimento:
 
 class P():
     """Classe abstrata para as peças"""
+
     def draw(self, canva) -> None:
         """Desenha o sprite na surface"""
-        draw_image(canva, self.sprite)
+        sprite_escala = pygame.transform.scale(self.sprite, canva.get_size())
+        canva.blit(sprite_escala, (0, 0))
 
 
 class Rei(P):
