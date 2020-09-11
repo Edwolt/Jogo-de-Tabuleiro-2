@@ -8,6 +8,7 @@ from pygame.locals import *
 class Menu:
     def __init__(self, xadrez):
         self.xadrez = xadrez
+        self.escape = False
 
         self.atualizacao = True
         self.fonte = Font(
@@ -41,12 +42,9 @@ class Menu:
                 else:
                     self.sel = 0
             elif event.key == pygame.K_RETURN:
-                opcao = self.opcoes(self.sel)
-                if opcao == 'Sair':
-                    pygame.quit()
-                    quit(0)
-                else:
-                    print(f'opção nao executada: {opcao}')
+                self.escape = True
+            elif event.key == pygame.K_ESCAPE:
+                self.escape = True
 
     def draw(self, canva: Surface):
         canva.fill((0, 0, 0))
@@ -63,5 +61,9 @@ class Menu:
 
         return True
 
-    def escape(self):
-        return self.xadrez
+    def new(self):
+        if self.escape:
+            self.escape = False
+            return self.xadrez
+        else:
+            return None

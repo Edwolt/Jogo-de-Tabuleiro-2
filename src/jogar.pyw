@@ -21,12 +21,14 @@ if __name__ == '__main__':
             if event.type == QUIT:
                 pygame.quit()
                 quit(0)
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                janela = janela.escape()
             else:
                 janela.event(event)
 
         if janela.draw(screen):
             pygame.display.flip()  # Atualiza toda tela (para atualizar função tem o update)
+
+        nova_janela = janela.new()
+        if nova_janela:
+            janela = nova_janela
 
         clock.tick(framerate)

@@ -14,13 +14,13 @@ class Xadrez:
     def __init__(self):
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
+        self.escape = False
 
         self.config = Config('marrom')
         self.pecas: Peca = Pecas()
 
         self.click = None
         self.movimento = tabuleiro_false()
-
         self.qsize = (0, 0)
 
     def carregar(self) -> None:
@@ -45,8 +45,10 @@ class Xadrez:
             else:
                 self.movimento = self.tabuleiro[i][j].get_movimentos(
                     self.tabuleiro, (i, j))
-
             self.atualizacao = True
+
+        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            self.escape = True
 
     # TODO canva não é um bom nome para essa variavel
     # (pecas tambem usou o mesmo nome)
@@ -83,8 +85,12 @@ class Xadrez:
         else:
             return False
 
-    def escape(self):
-        self.atualizacao = True
-        menu = Menu(self)
-        menu.carregar()
-        return menu
+    def new(self):
+        if self.escape:
+            self.atualizacao = True
+            self.escape = False
+            menu = Menu(self)
+            menu.carregar()
+            return menu
+        else:
+            return None
