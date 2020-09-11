@@ -20,7 +20,7 @@ def tabuleiro_false() -> list:
 def tabuleiro_novo(pecas: Pecas) -> list:
     """
     :return: list 8x8 onde os espacos vazios valem None
-    e os espacos com pecas possuem seu respectivo objeto
+    e os espacos com pecas são objetos
     """
 
     tabuleiro = tabuleiro_none()
