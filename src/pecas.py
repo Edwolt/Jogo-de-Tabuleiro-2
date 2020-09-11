@@ -114,6 +114,18 @@ class Rei(P):
         if valida_coordenadas(i+1, j-1):
             res[i+1][j-1] = self.valida_posicao(tabuleiro, (i+1, j-1))
 
+        # Verifica se é possível fazer o Roque
+        if not self.movimentou:
+            torre = tabuleiro[i][0]
+            if torre is not None and torre.nome == 'Torre' and not torre.movimentou:
+                # TODO verifica se há pecas entre
+                # TODO verifica se deixa o rei em xeque ou passa em casas em xeque
+                res[i][j-2] = True
+
+            torre = tabuleiro[i][7]
+            if torre is not None and torre.nome == 'Torre' and not torre.movimentou:
+                res[i][j+2] = True
+
         return res
 
 
