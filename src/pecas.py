@@ -1,6 +1,8 @@
 import pygame
 from pygame import Surface
 
+from util import tabuleiro_false
+
 
 # TODO id e identificador não são bons nomes de variáveis para esse contexto
 def id_peca(nome: str, cor: bool) -> str:
@@ -51,7 +53,7 @@ class Rei(P):
         # TODO Roque
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
         # TODO Cuidado com cheque
         # TODO Roque
         pass
@@ -67,7 +69,7 @@ class Rainha(P):
         # TODO
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
         # TODO
         pass
 
@@ -82,7 +84,7 @@ class Bispo(P):
         # TODO
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
         # TODO
         pass
 
@@ -97,7 +99,7 @@ class Cavalo(P):
         # TODO
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
         # TODO
         pass
 
@@ -112,7 +114,7 @@ class Torre(P):
         # TODO Roque
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
         # TODO Roque
         pass
 
@@ -129,7 +131,7 @@ class Peao(P):
         # TODO EnPassant
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
         # TODO Promoção
         # TODO EnPassant
         pass
