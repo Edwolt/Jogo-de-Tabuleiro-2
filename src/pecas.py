@@ -3,6 +3,7 @@ from pygame import Surface
 
 from util import tabuleiro_false
 
+# TODO Executar o Roque
 
 # TODO id e identificador não são bons nomes de variáveis para esse contexto
 def id_peca(nome: str, cor: bool) -> str:
@@ -87,7 +88,6 @@ class Rei(P):
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Cuidado com cheque
-        # TODO Roque
 
         res = tabuleiro_false()
         i, j = pos
@@ -118,13 +118,21 @@ class Rei(P):
         if not self.movimentou:
             torre = tabuleiro[i][0]
             if torre is not None and torre.nome == 'Torre' and not torre.movimentou:
-                # TODO verifica se há pecas entre
                 # TODO verifica se deixa o rei em xeque ou passa em casas em xeque
-                res[i][j-2] = True
+
+                pecas_entre = False
+                for jj in range(1, j):
+                    pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
+
+                res[i][j-2] = not pecas_entre
 
             torre = tabuleiro[i][7]
             if torre is not None and torre.nome == 'Torre' and not torre.movimentou:
-                res[i][j+2] = True
+                pecas_entre = False
+                for jj in range(j + 1, 7):
+                    pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
+
+                res[i][j+2] = not pecas_entre
 
         return res
 
@@ -225,7 +233,6 @@ class Torre(P):
         self.movimentou = movimentou
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
-        # TODO Roque
         res = tabuleiro_false()
         direcoes = [
             (-1, 0),  # Cima
