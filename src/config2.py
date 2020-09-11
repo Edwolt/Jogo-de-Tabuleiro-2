@@ -17,17 +17,17 @@ class Config:
 
         x, y = pos
 
-        color = (0, 0, 0)
+        cor = (0, 0, 0)
         if tipo == 'vazio':
-            color = self.vazio[(x+y) % 2]
+            cor = self.vazio[(x+y) % 2]
         elif tipo == 'click':
-            color = self.click
+            cor = self.click
         elif tipo == 'movimento':
-            color = self.movimento
+            cor = self.movimento
         elif tipo == 'captura':
-            color = self.movimento
+            cor = self.movimento
 
-        quad.fill(color)
+        quad.fill(cor)
         surf.blit(quad, (1, 1))
         return surf
 

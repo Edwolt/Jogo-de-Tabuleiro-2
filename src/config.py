@@ -16,17 +16,17 @@ class Config:
         surf = Surface((size[0], size[1]))
         x, y = pos
 
-        color = (0, 0, 0)
+        cor = (0, 0, 0)
         if tipo == 'vazio':
-            color = self.vazio[(x+y) % 2]
+            cor = self.vazio[(x+y) % 2]
         elif tipo == 'click':
-            color = self.click
+            cor = self.click
         elif tipo == 'movimento':
-            color = self.movimento
+            cor = self.movimento
         elif tipo == 'captura':
-            color = self.movimento
+            cor = self.movimento
 
-        surf.fill(color)
+        surf.fill(cor)
         return surf
 
     def titulo(self, vez: bool) -> None:
