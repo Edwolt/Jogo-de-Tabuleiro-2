@@ -3,7 +3,7 @@ from pygame import Surface
 from pygame.event import Event
 
 from config import Config
-from util import tabuleiro_none, tabuleiro_novo
+from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from pecas import Pecas
 
 
@@ -17,8 +17,8 @@ class Xadrez:
         self.config = Config()
         self.pecas: Peca = Pecas()
 
-        self.click_color = (153, 0, 0)
         self.click = None
+        self.movimento = tabuleiro_false()
 
         self.qsize = (0, 0)
 
@@ -34,10 +34,16 @@ class Xadrez:
         """
 
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
-            self.click = (
-                event.pos[0] // self.qsize[0],
-                event.pos[1] // self.qsize[1]
-            )
+            i = int(event.pos[1] // self.qsize[1])
+            j = int(event.pos[0] // self.qsize[0])
+
+            self.click = (i, j)
+
+            if self.tabuleiro[i][j] is None:
+                self.movimento = tabuleiro_false()
+            else:
+                self.movimento = self.tabuleiro[i][j].get_movimentos(self.tabuleiro, (i,j))
+
             self.atualizacao = True
 
     # TODO canva não é um bom nome para essa variavel (pecas tambem usou o mesmo nome)
@@ -54,11 +60,15 @@ class Xadrez:
         if self.atualizacao:
             for y, linha in enumerate(self.tabuleiro):
                 for x, peca in enumerate(linha):
+                    # j, i = x, y
+
                     surf = Surface(qsize)
 
                     tipo = 'vazio'
-                    if self.click and x == self.click[0] and y == self.click[1]:
+                    if self.click and y == self.click[0] and x == self.click[1]:
                         tipo = 'click'
+                    elif self.movimento[y][x]:
+                        tipo = 'movimento'
 
                     surf.fill(self.config.quadrado((x, y), tipo))
 

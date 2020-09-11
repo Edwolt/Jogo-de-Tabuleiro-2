@@ -76,29 +76,26 @@ class Rei(P):
         # Casas acima do rei
         if(valida_coordenadas(i-1, j-1)):
             res[i-1][j-1] = valida_posicao(tabuleiro, (i-1, j-1), self.cor)
-
         if(valida_coordenadas(i-1, j)):
-            res[i-1, j] = valida_posicao(tabuleiro, (i-1, j), self.cor)
-
+            res[i-1][j] = valida_posicao(tabuleiro, (i-1, j), self.cor)
         if(valida_coordenadas(i-1, j + 1)):
-            res[i-1, j+1] = valida_posicao(tabuleiro, (i-1, j+1), self.cor)
+            res[i-1][j+1] = valida_posicao(tabuleiro, (i-1, j+1), self.cor)
 
         # Casas do meio
         if(valida_coordenadas(i, j-1)):
-            res[i, j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
-
+            res[i][j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
         if(valida_coordenadas(i-1, j+1)):
-            res[i, j+1] = valida_posicao(tabuleiro, (i, j+1), self.cor)
+            res[i][j+1] = valida_posicao(tabuleiro, (i, j+1), self.cor)
 
         # Casas abaixo do rei
         if(valida_coordenadas(i+1, j-1)):
-            res[i+1, j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
-
+            res[i+1][j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
         if(valida_coordenadas(i+1, j)):
-            res[i+1, j] = valida_posicao(tabuleiro, (i+1, j), self.cor)
-
+            res[i+1][j] = valida_posicao(tabuleiro, (i+1, j), self.cor)
         if(valida_coordenadas(i+1, j-1)):
-            res[i+1, j-1] = valida_posicao(tabuleiro, (i+1, j-1), self.cor)
+            res[i+1][j-1] = valida_posicao(tabuleiro, (i+1, j-1), self.cor)
+
+        return res
 
 
 class Rainha(P):

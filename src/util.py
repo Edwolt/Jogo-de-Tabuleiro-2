@@ -1,6 +1,3 @@
-from pecas import Pecas
-
-
 def tabuleiro_none() -> list:
     """
     :return: list 8x8 com todos os campos sendo None
@@ -17,8 +14,9 @@ def tabuleiro_false() -> list:
     return [[False] * 8 for _ in range(8)]
 
 
-def tabuleiro_novo(pecas: Pecas) -> list:
+def tabuleiro_novo(pecas) -> list:
     """
+    :param pecas: objeto da classe Peca
     :return: list 8x8 onde os espacos vazios valem None
     e os espacos com pecas são objetos
     """
