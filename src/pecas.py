@@ -78,16 +78,12 @@ class Rei(P):
         self.nome = 'Rei'
         self.sprite = sprite
         self.cor = cor
+
         self.movimentou = movimentou
 
-    def valida_posicao(self, tabuleiro, pos):
+    def valida_posicao(self, tabuleiro: list, pos: tuple) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
-
-    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
-        # TODO Cuidado com cheque
-        # TODO Roque
-        pass
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Cuidado com cheque
@@ -127,10 +123,6 @@ class Rainha(P):
         self.sprite = sprite
         self.cor = cor
 
-    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
-        # TODO
-        pass
-
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         res = tabuleiro_false()
 
@@ -157,10 +149,6 @@ class Bispo(P):
         self.sprite = sprite
         self.cor = cor
 
-    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
-        # TODO
-        pass
-
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         res = tabuleiro_false()
 
@@ -183,10 +171,6 @@ class Cavalo(P):
         self.sprite = sprite
         self.cor = cor
 
-    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
-        # TODO
-        pass
-
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO
         pass
@@ -198,9 +182,7 @@ class Torre(P):
         self.sprite = sprite
         self.cor = cor
 
-    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
-        # TODO Roque
-        pass
+        self.movimentou = movimentou
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Roque
@@ -220,21 +202,38 @@ class Torre(P):
 
 
 class Peao(P):
-    def __init__(self, sprite: Surface, cor: bool):
+    def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'Peao'
-        self.identificador = id_peca(self.nome, cor)
         self.sprite = sprite
         self.cor = cor
+        self.movimentou = movimentou
 
-    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
-        # TODO Promoção
-        # TODO EnPassant
-        pass
+    def valida_captura(self, tabuleiro: list, pos: tuple) -> bool:
+        i, j = pos
+        return tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Promoção
         # TODO EnPassant
-        pass
+
+        res = tabuleiro_false()
+
+        i, j = pos
+        i += -1 if self.cor else 1
+        if valida_coordenadas(i) and tabuleiro[i][j] is None:
+            res[i][j] = True
+            i += -1 if self.cor else 1
+            if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
+                res[i][j] = True
+
+        i, j = pos
+        i += -1 if self.cor else 1
+        if(valida_coordenadas(i, j-1)):
+            res[i][j-1] = self.valida_captura(tabuleiro, (i, j-1))
+        if(valida_coordenadas(i, j+1)):
+            res[i][j+1] = self.valida_captura(tabuleiro, (i, j+1))
+
+        return res
 
 
 class Pecas():
