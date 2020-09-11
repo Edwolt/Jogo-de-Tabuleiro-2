@@ -56,11 +56,9 @@ class Xadrez:
                 for x, peca in enumerate(linha):
                     surf = Surface(qsize)
 
-                    tipo = str()
+                    tipo = 'vazio'
                     if self.click and x == self.click[0] and y == self.click[1]:
                         tipo = 'click'
-                    else:
-                        tipo = 'vazio'
 
                     surf.fill(self.config.quadrado((x, y), tipo))
 
