@@ -1,7 +1,7 @@
 import pygame
 from pygame import Surface
 
-from util import tabuleiro_false
+# from util import tabuleiro_false
 
 
 # TODO id e identificador não são bons nomes de variáveis para esse contexto
