@@ -1,6 +1,3 @@
-from pygame import Surface
-
-
 class Config:
     def __init__(self):
         self.vazio = (
@@ -14,6 +11,10 @@ class Config:
 
     def quadrado(self, size, pos: tuple, tipo: str, complemento=None) -> Surface:
         surf = Surface((size[0], size[1]))
+        quad = Surface((size[0] - 2, size[1] - 2))
+
+        surf.fill((50, 50, 50))
+
         x, y = pos
 
         color = (0, 0, 0)
@@ -26,7 +27,8 @@ class Config:
         elif tipo == 'captura':
             color = self.movimento
 
-        surf.fill(color)
+        quad.fill(color)
+        surf.blit(quad, (1, 1))
         return surf
 
     def titulo(self, vez: bool) -> None:

@@ -42,7 +42,8 @@ class Xadrez:
             if self.tabuleiro[i][j] is None:
                 self.movimento = tabuleiro_false()
             else:
-                self.movimento = self.tabuleiro[i][j].get_movimentos(self.tabuleiro, (i,j))
+                self.movimento = self.tabuleiro[i][j].get_movimentos(
+                    self.tabuleiro, (i, j))
 
             self.atualizacao = True
 
@@ -61,16 +62,13 @@ class Xadrez:
             for y, linha in enumerate(self.tabuleiro):
                 for x, peca in enumerate(linha):
                     # j, i = x, y
-
-                    surf = Surface(qsize)
-
                     tipo = 'vazio'
                     if self.click and y == self.click[0] and x == self.click[1]:
                         tipo = 'click'
                     elif self.movimento[y][x]:
                         tipo = 'movimento'
 
-                    surf.fill(self.config.quadrado((x, y), tipo))
+                    surf = self.config.quadrado(qsize, (x, y), tipo)
 
                     if peca:
                         peca.draw(surf)
