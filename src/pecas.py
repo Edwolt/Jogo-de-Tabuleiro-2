@@ -1,7 +1,7 @@
 import pygame
 from pygame import Surface
 
-# from util import tabuleiro_false
+from util import tabuleiro_false
 
 
 # TODO id e identificador não são bons nomes de variáveis para esse contexto
@@ -23,6 +23,20 @@ Ideia para fazer o movimento:
 * Calcula onde a peça em questão pode ir
 * Desconta do resultado onde as peças nao pode ir
 '''
+
+
+def protege_rei():
+    # TODO verifica se movimentar para uma casa ataca o rei
+    pass
+
+
+def valida_coordenadas(a, b=0):
+    return 0 <= a < 8 and 0 <= b < 8
+
+
+def valida_posicao(tabuleiro, pos, cor):
+    linha, coluna = pos
+    return tabuleiro[linha][coluna] is None or tabuleiro[linha][coluna].cor != cor
 
 
 class P():
@@ -51,10 +65,40 @@ class Rei(P):
         # TODO Roque
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Cuidado com cheque
         # TODO Roque
-        pass
+
+        i, j = pos
+
+        res = tabuleiro_false()
+
+        # Casas acima do rei
+        if(valida_coordenadas(i-1, j-1)):
+            res[i-1][j-1] = valida_posicao(tabuleiro, (i-1, j-1), self.cor)
+
+        if(valida_coordenadas(i-1, j)):
+            res[i-1, j] = valida_posicao(tabuleiro, (i-1, j), self.cor)
+
+        if(valida_coordenadas(i-1, j + 1)):
+            res[i-1, j+1] = valida_posicao(tabuleiro, (i-1, j+1), self.cor)
+
+        # Casas do meio
+        if(valida_coordenadas(i, j-1)):
+            res[i, j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
+
+        if(valida_coordenadas(i-1, j+1)):
+            res[i, j+1] = valida_posicao(tabuleiro, (i, j+1), self.cor)
+
+        # Casas abaixo do rei
+        if(valida_coordenadas(i+1, j-1)):
+            res[i+1, j-1] = valida_posicao(tabuleiro, (i, j-1), self.cor)
+
+        if(valida_coordenadas(i+1, j)):
+            res[i+1, j] = valida_posicao(tabuleiro, (i+1, j), self.cor)
+
+        if(valida_coordenadas(i+1, j-1)):
+            res[i+1, j-1] = valida_posicao(tabuleiro, (i+1, j-1), self.cor)
 
 
 class Rainha(P):
@@ -67,7 +111,7 @@ class Rainha(P):
         # TODO
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO
         pass
 
@@ -82,7 +126,7 @@ class Bispo(P):
         # TODO
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO
         pass
 
@@ -97,7 +141,7 @@ class Cavalo(P):
         # TODO
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO
         pass
 
@@ -112,7 +156,7 @@ class Torre(P):
         # TODO Roque
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Roque
         pass
 
@@ -129,7 +173,7 @@ class Peao(P):
         # TODO EnPassant
         pass
 
-    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Promoção
         # TODO EnPassant
         pass
