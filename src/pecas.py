@@ -32,14 +32,14 @@ Ideia para fazer o movimento:
 '''
 
 
-class Peca():
+class P():
     """Classe abstrata para as peças"""
     def draw(self, canva) -> None:
         """Desenha o sprite na surface"""
         draw_image(canva, self.sprite)
 
 
-class Rei(Peca):
+class Rei(P):
     def __init__(self, sprite: Surface, cor: bool):
         """
         :param sprite: Uma Surface com a imagem da peca
@@ -52,21 +52,21 @@ class Rei(Peca):
         self.cor = cor
 
 
-class Rainha(Peca):
+class Rainha(P):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'Rainha'
         self.sprite = sprite
         self.cor = cor
 
 
-class Bispo(Peca):
+class Bispo(P):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'Bispo'
         self.sprite = sprite
         self.cor = cor
 
 
-class Cavalo(Peca):
+class Cavalo(P):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'Cavalo'
         self.sprite = sprite
@@ -76,14 +76,14 @@ class Cavalo(Peca):
         draw_image(canva, self.sprite)
 
 
-class Torre(Peca):
+class Torre(P):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'Torre'
         self.sprite = sprite
         self.cor = cor
 
 
-class Peao(Peca):
+class Peao(P):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'Peao'
         self.identificador = id_peca(self.nome, cor)
