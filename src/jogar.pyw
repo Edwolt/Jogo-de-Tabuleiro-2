@@ -1,6 +1,8 @@
 import pygame
+from pygame.locals import *
 
 from xadrez import Xadrez
+from menu import Menu
 
 
 size = (800, 800)
@@ -11,18 +13,20 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(size)
     clock = pygame.time.Clock()
 
-    xadrez = Xadrez()
-    xadrez.carregar()
+    janela = Xadrez()
+    janela.carregar()
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == QUIT:
                 pygame.quit()
                 quit(0)
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                janela = janela.escape()
+            else:
+                janela.event(event)
 
-            xadrez.event(event)
-
-        if xadrez.draw(screen):
+        if janela.draw(screen):
             pygame.display.flip()  # Atualiza toda tela (para atualizar função tem o update)
 
         clock.tick(framerate)

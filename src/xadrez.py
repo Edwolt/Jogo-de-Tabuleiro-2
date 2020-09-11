@@ -5,6 +5,7 @@ from pygame.event import Event
 from config import Config
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from pecas import Pecas
+from menu import Menu
 
 
 class Xadrez:
@@ -81,3 +82,9 @@ class Xadrez:
             return True
         else:
             return False
+
+    def escape(self):
+        self.atualizacao = True
+        menu = Menu(self)
+        menu.carregar()
+        return menu
