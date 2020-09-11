@@ -44,12 +44,12 @@ class Menu:
                     self.sel = 0
 
             elif event.key == pygame.K_RETURN:
-                opcao = self.opcoes[self.sel]
-                if opcao == 'Sair':
+                opcao = self.opcoes[self.sel].lower()
+                if opcao == 'sair':
                     pygame.quit()
                     quit(0)
                 else:
-                    print(f'`{opcao}` não implementado')
+                    print(f'`{self.opcoes[self.sel]}` não implementado')
                     self.escape = True
 
             elif event.key == pygame.K_ESCAPE:
