@@ -5,6 +5,7 @@ from util import tabuleiro_false
 
 # TODO Executar o Roque
 
+
 # TODO id e identificador não são bons nomes de variáveis para esse contexto
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
@@ -17,13 +18,13 @@ def caminho_asset(identificador: str) -> str:
     return f'assets/{identificador}.png'
 
 
-''' TODO
+""" TODO
 Ideia para fazer o movimento:
 * Encontra onde está o rei da mesma cor
 * Descobre quais pecas não podem sair do lugar por que criam xeque
 * Calcula onde a peça em questão pode ir
 * Desconta do resultado onde as peças nao pode ir
-'''
+"""
 
 
 def protege_rei():
@@ -320,5 +321,5 @@ class Pecas():
     def Torre(self, cor: bool, movimentou: bool = False) -> Torre:
         return Torre(self.get_asset('Torre', cor), cor, movimentou=movimentou)
 
-    def Peao(self, cor: bool) -> Peao:
-        return Peao(self.get_asset('Peao', cor), cor)
+    def Peao(self, cor: bool, movimentou: bool = False) -> Peao:
+        return Peao(self.get_asset('Peao', cor), cor, movimentou=movimentou)
