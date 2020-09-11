@@ -103,7 +103,7 @@ class Cavalo(P):
 
 
 class Torre(P):
-    def __init__(self, sprite: Surface, cor: bool):
+    def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'Torre'
         self.sprite = sprite
         self.cor = cor
@@ -159,7 +159,7 @@ class Pecas():
         return self.assets[id_peca(nome, cor)]
 
     def Rei(self, cor: bool, movimentou: bool = False) -> Rei:
-        return Rei(self.get_asset('Rei', cor), cor)
+        return Rei(self.get_asset('Rei', cor), cor, movimentou=movimentou)
 
     def Rainha(self, cor: bool) -> Rainha:
         return Rainha(self.get_asset('Rainha', cor), cor)
@@ -170,8 +170,8 @@ class Pecas():
     def Cavalo(self, cor: bool) -> Cavalo:
         return Cavalo(self.get_asset('Cavalo', cor), cor)
 
-    def Torre(self, cor: bool) -> Torre:
-        return Torre(self.get_asset('Torre', cor), cor)
+    def Torre(self, cor: bool, movimentou: bool = False) -> Torre:
+        return Torre(self.get_asset('Torre', cor), cor, movimentou=movimentou)
 
     def Peao(self, cor: bool) -> Peao:
         return Peao(self.get_asset('Peao', cor), cor)
