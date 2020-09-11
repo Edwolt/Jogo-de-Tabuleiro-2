@@ -68,9 +68,8 @@ class Rei(P):
         # TODO Cuidado com cheque
         # TODO Roque
 
-        i, j = pos
-
         res = tabuleiro_false()
+        i, j = pos
 
         # Casas acima do rei
         if(valida_coordenadas(i-1, j-1)):
@@ -108,8 +107,31 @@ class Rainha(P):
         pass
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
-        # TODO
-        pass
+        res = tabuleiro_false()
+
+        direcoes = [
+            (-1, 0),  # Cima
+            (1, 0),  # Baixo
+            (0, -1),  # Esquerda
+            (0, 1),  # Direita
+            (-1, 1),  # Cima Direita
+            (-1, -1),  # Cima Esquerda
+            (1, 1),  # Baixo Direita
+            (1, -1),  # Baixo Esquerda
+        ]
+
+        for di, dj in direcoes:
+            i, j = pos
+            i, j = i+di, j+dj
+            while valida_coordenadas(i, j):
+                if tabuleiro[i][j] is None:
+                    res[i][j] = True
+                else:
+                    res[i][j] = self.cor != tabuleiro[i][j].cor
+                    break  # Se a casa não está vazia, não tem porquê olhar adiante
+                i, j = i+di, j+dj
+
+        return res
 
 
 class Bispo(P):
