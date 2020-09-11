@@ -36,13 +36,22 @@ class Menu:
                     self.sel -= 1
                 else:
                     self.sel = len(self.opcoes) - 1
+
             elif event.key == K_DOWN:
                 if self.sel < len(self.opcoes) - 1:
                     self.sel += 1
                 else:
                     self.sel = 0
+
             elif event.key == pygame.K_RETURN:
-                self.escape = True
+                opcao = self.opcoes[self.sel]
+                if opcao == 'Sair':
+                    pygame.quit()
+                    quit(0)
+                else:
+                    print(f'`{opcao}` não implementado')
+                    self.escape = True
+
             elif event.key == pygame.K_ESCAPE:
                 self.escape = True
 
