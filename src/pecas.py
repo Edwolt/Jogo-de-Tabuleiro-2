@@ -6,7 +6,7 @@ from util import tabuleiro_false
 # TODO Executar o Roque
 
 
-# TODO id e identificador não são bons nomes de variáveis para esse contexto
+# TODO id e identificador não são bons nomes de variáveis
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
     cor_str = 'branco' if cor else 'preto'

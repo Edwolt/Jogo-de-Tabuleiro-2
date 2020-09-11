@@ -47,7 +47,8 @@ class Xadrez:
 
             self.atualizacao = True
 
-    # TODO canva não é um bom nome para essa variavel (pecas tambem usou o mesmo nome)
+    # TODO canva não é um bom nome para essa variavel
+    # (pecas tambem usou o mesmo nome)
     def draw(self, canva) -> bool:
         """
         :param canva: Surface onde o jogo sera desenhado
