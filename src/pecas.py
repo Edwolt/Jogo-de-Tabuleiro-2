@@ -30,7 +30,18 @@ def protege_rei():
     pass
 
 
-def valida_coordenadas(a, b=0):
+def valida_coordenadas(a: int, b: int = 0) -> bool:
+    """
+    Verifica se uma coordanada é válida dentro do tabuleiro
+
+    Pode ser usado das seguintes formas:
+    * valida_coordenada(a)
+      Verifica se o valor a é um valor válido para
+      ser a componente de uma coordenada
+
+    * valida_coordenada(a, b)
+      Verifica se o valor da coordenada (a, b) é válido
+    """
     return 0 <= a < 8 and 0 <= b < 8
 
 
