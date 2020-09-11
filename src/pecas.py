@@ -16,7 +16,7 @@ def caminho_asset(identificador: str) -> str:
     return f'assets/{identificador}.png'
 
 
-'''
+''' TODO
 Ideia para fazer o movimento:
 * Encontra onde está o rei da mesma cor
 * Descobre quais pecas não podem sair do lugar por que criam xeque
@@ -35,16 +35,26 @@ class P():
 
 
 class Rei(P):
-    def __init__(self, sprite: Surface, cor: bool):
+    def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         """
         :param sprite: Uma Surface com a imagem da peca
         :param cor: True: 'branco'; False: 'preto'
         """
 
         self.nome = 'Rei'
-        self.identificador = id_peca(self.nome, cor)
         self.sprite = sprite
         self.cor = cor
+        self.movimentou = movimentou
+
+    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO Cuidado com cheque
+        # TODO Roque
+        pass
+
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO Cuidado com cheque
+        # TODO Roque
+        pass
 
 
 class Rainha(P):
@@ -53,12 +63,28 @@ class Rainha(P):
         self.sprite = sprite
         self.cor = cor
 
+    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO
+        pass
+
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO
+        pass
+
 
 class Bispo(P):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'Bispo'
         self.sprite = sprite
         self.cor = cor
+
+    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO
+        pass
+
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO
+        pass
 
 
 class Cavalo(P):
@@ -67,8 +93,13 @@ class Cavalo(P):
         self.sprite = sprite
         self.cor = cor
 
-    def draw(self, canva: Surface) -> None:
-        draw_image(canva, self.sprite)
+    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO
+        pass
+
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO
+        pass
 
 
 class Torre(P):
@@ -76,6 +107,14 @@ class Torre(P):
         self.nome = 'Torre'
         self.sprite = sprite
         self.cor = cor
+
+    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO Roque
+        pass
+
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO Roque
+        pass
 
 
 class Peao(P):
@@ -85,8 +124,15 @@ class Peao(P):
         self.sprite = sprite
         self.cor = cor
 
-    def draw(self, canva: Surface) -> None:
-        draw_image(canva, self.sprite)
+    def valida_movimento(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO Promoção
+        # TODO EnPassant
+        pass
+
+    def get_movimentos(self, tabuleiro: list, old_pos: tuple, new_pos: tuple) -> bool:
+        # TODO Promoção
+        # TODO EnPassant
+        pass
 
 
 class Pecas():
@@ -110,7 +156,7 @@ class Pecas():
         """Retorna o asset da peca com o nome e a cor dada"""
         return self.assets[id_peca(nome, cor)]
 
-    def Rei(self, cor: bool) -> Rei:
+    def Rei(self, cor: bool, movimentou: bool = False) -> Rei:
         return Rei(self.get_asset('Rei', cor), cor)
 
     def Rainha(self, cor: bool) -> Rainha:
