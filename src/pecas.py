@@ -93,25 +93,25 @@ class Rei(P):
         i, j = pos
 
         # Casas acima do rei
-        if(valida_coordenadas(i-1, j-1)):
+        if valida_coordenadas(i-1, j-1):
             res[i-1][j-1] = self.valida_posicao(tabuleiro, (i-1, j-1))
-        if(valida_coordenadas(i-1, j)):
+        if valida_coordenadas(i-1, j):
             res[i-1][j] = self.valida_posicao(tabuleiro, (i-1, j))
-        if(valida_coordenadas(i-1, j + 1)):
+        if valida_coordenadas(i-1, j + 1):
             res[i-1][j+1] = self.valida_posicao(tabuleiro, (i-1, j+1))
 
         # Casas do meio
-        if(valida_coordenadas(i, j-1)):
+        if valida_coordenadas(i, j-1):
             res[i][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
-        if(valida_coordenadas(i-1, j+1)):
+        if valida_coordenadas(i-1, j+1):
             res[i][j+1] = self.valida_posicao(tabuleiro, (i, j+1))
 
         # Casas abaixo do rei
-        if(valida_coordenadas(i+1, j-1)):
+        if valida_coordenadas(i+1, j-1):
             res[i+1][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
-        if(valida_coordenadas(i+1, j)):
+        if valida_coordenadas(i+1, j):
             res[i+1][j] = self.valida_posicao(tabuleiro, (i+1, j))
-        if(valida_coordenadas(i+1, j-1)):
+        if valida_coordenadas(i+1, j-1):
             res[i+1][j-1] = self.valida_posicao(tabuleiro, (i+1, j-1))
 
         return res
@@ -178,27 +178,27 @@ class Cavalo(P):
         i, j = pos
 
         # Casas acima
-        if(valida_coordenadas(i-2, j-1)):
+        if valida_coordenadas(i-2, j-1):
             res[i-2][j-1] = self.valida_posicao(tabuleiro, (i-2, j-1))
-        if(valida_coordenadas(i-2, j+1)):
+        if valida_coordenadas(i-2, j+1):
             res[i-2][j+1] = self.valida_posicao(tabuleiro, (i-2, j+1))
 
         # Casas abaixo
-        if(valida_coordenadas(i+2, j-1)):
+        if valida_coordenadas(i+2, j-1):
             res[i+2][j-1] = self.valida_posicao(tabuleiro, (i+2, j-1))
-        if(valida_coordenadas(i+2, j+1)):
+        if valida_coordenadas(i+2, j+1):
             res[i+2][j+1] = self.valida_posicao(tabuleiro, (i+2, j+1))
 
         # Casas a esquerda
-        if(valida_coordenadas(i-1, j-2)):
+        if valida_coordenadas(i-1, j-2):
             res[i-1][j-2] = self.valida_posicao(tabuleiro, (i-1, j-2))
-        if(valida_coordenadas(i+1, j-2)):
+        if valida_coordenadas(i+1, j-2):
             res[i+1][j-2] = self.valida_posicao(tabuleiro, (i+1, j-2))
 
         # Casas a direira
-        if(valida_coordenadas(i-1, j+2)):
+        if valida_coordenadas(i-1, j+2):
             res[i-1][j+2] = self.valida_posicao(tabuleiro, (i-1, j+2))
-        if(valida_coordenadas(i+1, j+2)):
+        if valida_coordenadas(i+1, j+2):
             res[i+1][j+2] = self.valida_posicao(tabuleiro, (i+1, j+2))
 
         return res
@@ -255,9 +255,9 @@ class Peao(P):
 
         i, j = pos
         i += -1 if self.cor else 1
-        if(valida_coordenadas(i, j-1)):
+        if valida_coordenadas(i, j-1):
             res[i][j-1] = self.valida_captura(tabuleiro, (i, j-1))
-        if(valida_coordenadas(i, j+1)):
+        if valida_coordenadas(i, j+1):
             res[i][j+1] = self.valida_captura(tabuleiro, (i, j+1))
 
         return res
