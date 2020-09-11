@@ -7,14 +7,12 @@ from util import tabuleiro_false
 # TODO id e identificador não são bons nomes de variáveis para esse contexto
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
-
     cor_str = 'branco' if cor else 'preto'
     return f'{nome}_{cor_str}'
 
 
 def caminho_asset(identificador: str) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
-
     return f'assets/{identificador}.png'
 
 
@@ -138,6 +136,8 @@ class Peao(P):
 
 
 class Pecas():
+    """Ajuda na criação de objetos pecas"""
+
     def __init__(self):
         self.assets = dict()
         self.pecas = ['Rei', 'Rainha', 'Bispo', 'Cavalo', 'Torre', 'Peao']
