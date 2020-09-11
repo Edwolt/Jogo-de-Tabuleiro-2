@@ -9,8 +9,9 @@ from util import tabuleiro_false
 # TODO id e identificador não são bons nomes de variáveis
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
-    cor_str = 'branco' if cor else 'preto'
-    return f'{nome}_{cor_str}'
+    identificador = nome
+    identificador += '1' if cor else '0'
+    return identificador
 
 
 def caminho_asset(identificador: str) -> str:
@@ -77,7 +78,7 @@ class Rei(P):
         :param cor: True: 'branco'; False: 'preto'
         """
 
-        self.nome = 'Rei'
+        self.nome = 'rei'
         self.sprite = sprite
         self.cor = cor
 
@@ -118,7 +119,7 @@ class Rei(P):
         # Verifica se é possível fazer o Roque
         if not self.movimentou:
             torre = tabuleiro[i][0]
-            if torre is not None and torre.nome == 'Torre' and not torre.movimentou:
+            if torre is not None and torre.nome == 'torre' and not torre.movimentou:
                 # TODO verifica se deixa o rei em xeque ou passa em casas em xeque
 
                 pecas_entre = False
@@ -128,7 +129,7 @@ class Rei(P):
                 res[i][j-2] = not pecas_entre
 
             torre = tabuleiro[i][7]
-            if torre is not None and torre.nome == 'Torre' and not torre.movimentou:
+            if torre is not None and torre.nome == 'torre' and not torre.movimentou:
                 pecas_entre = False
                 for jj in range(j + 1, 7):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
@@ -140,7 +141,7 @@ class Rei(P):
 
 class Rainha(P):
     def __init__(self, sprite: Surface, cor: bool):
-        self.nome = 'Rainha'
+        self.nome = 'rainha'
         self.sprite = sprite
         self.cor = cor
 
@@ -165,7 +166,7 @@ class Rainha(P):
 
 class Bispo(P):
     def __init__(self, sprite: Surface, cor: bool):
-        self.nome = 'Bispo'
+        self.nome = 'bispo'
         self.sprite = sprite
         self.cor = cor
 
@@ -186,7 +187,7 @@ class Bispo(P):
 
 class Cavalo(P):
     def __init__(self, sprite: Surface, cor: bool):
-        self.nome = 'Cavalo'
+        self.nome = 'cavalo'
         self.sprite = sprite
         self.cor = cor
 
@@ -227,7 +228,7 @@ class Cavalo(P):
 
 class Torre(P):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
-        self.nome = 'Torre'
+        self.nome = 'torre'
         self.sprite = sprite
         self.cor = cor
 
@@ -250,7 +251,7 @@ class Torre(P):
 
 class Peao(P):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
-        self.nome = 'Peao'
+        self.nome = 'peao'
         self.sprite = sprite
         self.cor = cor
         self.movimentou = movimentou
@@ -288,12 +289,12 @@ class Pecas():
 
     def __init__(self):
         self.assets = dict()
-        self.pecas = ['Rei', 'Rainha', 'Bispo', 'Cavalo', 'Torre', 'Peao']
 
     def carregar(self) -> None:
         """Carrega os assets das peças em RAM"""
 
-        for i in self.pecas:
+        pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
+        for i in pecas:
             id_branco = id_peca(i, True)
             id_preto = id_peca(i, False)
 
@@ -307,19 +308,19 @@ class Pecas():
         return self.assets[id_peca(nome, cor)]
 
     def Rei(self, cor: bool, movimentou: bool = False) -> Rei:
-        return Rei(self.get_asset('Rei', cor), cor, movimentou=movimentou)
+        return Rei(self.get_asset('rei', cor), cor, movimentou=movimentou)
 
     def Rainha(self, cor: bool) -> Rainha:
-        return Rainha(self.get_asset('Rainha', cor), cor)
+        return Rainha(self.get_asset('rainha', cor), cor)
 
     def Bispo(self, cor: bool) -> Bispo:
-        return Bispo(self.get_asset('Bispo', cor), cor)
+        return Bispo(self.get_asset('bispo', cor), cor)
 
     def Cavalo(self, cor: bool) -> Cavalo:
-        return Cavalo(self.get_asset('Cavalo', cor), cor)
+        return Cavalo(self.get_asset('cavalo', cor), cor)
 
     def Torre(self, cor: bool, movimentou: bool = False) -> Torre:
-        return Torre(self.get_asset('Torre', cor), cor, movimentou=movimentou)
+        return Torre(self.get_asset('torre', cor), cor, movimentou=movimentou)
 
     def Peao(self, cor: bool, movimentou: bool = False) -> Peao:
-        return Peao(self.get_asset('Peao', cor), cor, movimentou=movimentou)
+        return Peao(self.get_asset('peao', cor), cor, movimentou=movimentou)
