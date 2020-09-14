@@ -42,11 +42,21 @@ class Xadrez:
 
             self.click = (i, j)
 
-            if self.movimento and self.movimento[i][j] and click_antigo:
-                m, n = click_antigo
-                self.tabuleiro[i][j] = self.tabuleiro[m][n]
-                self.tabuleiro[m][n] = None
-                self.movimento = None
+            if self.movimento and click_antigo:
+                if isinstance(self.movimento[i][j], bool):
+                    m, n = click_antigo
+                    self.tabuleiro[i][j] = self.tabuleiro[m][n]
+                    self.tabuleiro[m][n] = None
+                    self.movimento = None
+                elif isinstance(self.movimento[i][j], tuple):
+                    movimento = (
+                        i for i in self.movimento[i][j] if isinstance(i, tuple)
+                    )
+
+                    for mov in movimento:
+                        (i, j), peca = mov
+                        self.tabuleiro[i][j] = peca
+
             elif self.tabuleiro[i][j] is None:
                 self.movimento = None
             else:

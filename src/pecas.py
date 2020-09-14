@@ -89,6 +89,12 @@ class Rei(P):
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+        """
+        :return: list 8x8 dizendo se é possivel movimentar ou não
+        Caso seja um tuple é porque o movimento é especial, onde:
+        * O primeiro elemento o nome do movimento
+        * Os próximos elementos são tuples com as coordenadas e o que ela deve receber
+        """
         # TODO Cuidado com cheque
 
         res = tabuleiro_false()
@@ -126,7 +132,14 @@ class Rei(P):
                 for jj in range(1, j):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
-                res[i][j-2] = not pecas_entre
+                if not pecas_entre:
+                    res[i][j-2] = (
+                        'roque',
+                        ((i, j-2), self),
+                        ((i, j-1), torre),
+                        ((i, j), None),
+                        ((i, 0), None),
+                    )
 
             torre = tabuleiro[i][7]
             if torre is not None and torre.nome == 'torre' and not torre.movimentou:
@@ -134,7 +147,14 @@ class Rei(P):
                 for jj in range(j + 1, 7):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
-                res[i][j+2] = not pecas_entre
+                if not pecas_entre:
+                    res[i][j-2] = (
+                        'roque',
+                        ((i, j+2), self),
+                        ((i, j+1), torre),
+                        ((i, j), None),
+                        ((i, 7), None),
+                    )
 
         return res
 
