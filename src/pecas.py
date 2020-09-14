@@ -292,21 +292,22 @@ class Peao(P):
         # TODO EnPassant
 
         res = tabuleiro_false()
+        promocao = 0 if self.cor else 7
 
         i, j = pos
         i += -1 if self.cor else 1
         if valida_coordenadas(i) and tabuleiro[i][j] is None:
-            res[i][j] = True
+            res[i][j] = 'promocao' if i == self.promocao else True
             i += -1 if self.cor else 1
             if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
                 res[i][j] = True
 
         i, j = pos
         i += -1 if self.cor else 1
-        if valida_coordenadas(i, j-1):
-            res[i][j-1] = self.valida_captura(tabuleiro, (i, j-1))
-        if valida_coordenadas(i, j+1):
-            res[i][j+1] = self.valida_captura(tabuleiro, (i, j+1))
+        if valida_coordenadas(i, j-1) and self.valida_captura(tabuleiro, (i, j-1)):
+            res[i][j-1] = 'promocao' if i == promocao else True
+        if valida_coordenadas(i, j+1) and self.valida_captura(tabuleiro, (i, j+1)):
+            res[i][j+1] = 'promocao' if i == promocao else True
 
         return res
 

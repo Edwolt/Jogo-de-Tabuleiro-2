@@ -39,21 +39,27 @@ class Xadrez:
 
         l, c = pos
         m, n = nova_pos
+        movimento = self.movimento[l][c]
 
-        if isinstance(self.movimento[l][c], bool) and self.movimento[l][c]:
+        if isinstance(movimento, bool) and movimento:
             self.tabuleiro[l][c] = self.tabuleiro[m][n]
             self.tabuleiro[m][n] = None
-
             self.tabuleiro[l][c].notifica_movimento()
             return True
 
-        elif isinstance(self.movimento[l][c], tuple):
-            movimento = (
+        elif isinstance(movimento, str) and movimento == 'promocao':
+            self.tabuleiro[l][c] = self.pecas.Rainha()
+            self.tabuleiro[m][n] = None
+            self.tabuleiro[l][c].notifica_movimento()
+            return True
+
+        elif isinstance(movimento, tuple):
+            mov = (
                 i for i in self.movimento[l][c] if isinstance(i, tuple)
             )
 
-            for mov in movimento:
-                (i, j), peca = mov
+            for op in mov:
+                (i, j), peca = op
                 if peca is not None:
                     peca.notifica_movimento()
                 self.tabuleiro[i][j] = peca
