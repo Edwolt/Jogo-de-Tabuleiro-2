@@ -2,8 +2,8 @@ from pygame.locals import *
 from pygame import Surface
 from pygame.event import Event
 
-from config import Config
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
+from config import Config
 from pecas import Pecas
 from menu import Menu
 
@@ -42,9 +42,13 @@ class Xadrez:
 
             if self.tabuleiro[i][j] is None:
                 self.movimento = tabuleiro_false()
+            elif self.movimento[i][j]:
+                # Executa movimento
             else:
                 self.movimento = self.tabuleiro[i][j].get_movimentos(
-                    self.tabuleiro, (i, j))
+                    self.tabuleiro,
+                    (i, j)
+                )
             self.atualizacao = True
 
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
@@ -66,6 +70,7 @@ class Xadrez:
             for y, linha in enumerate(self.tabuleiro):
                 for x, peca in enumerate(linha):
                     # j, i = x, y
+
                     tipo = 'vazio'
                     if self.click and y == self.click[0] and x == self.click[1]:
                         tipo = 'click'
