@@ -70,6 +70,9 @@ class P():
         sprite_escala = pygame.transform.scale(self.sprite, canva.get_size())
         canva.blit(sprite_escala, (0, 0))
 
+    def notifica_movimento(self):
+        return
+
 
 class Rei(P):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
@@ -83,6 +86,9 @@ class Rei(P):
         self.cor = cor
 
         self.movimentou = movimentou
+
+    def notifica_movimento(self):
+        self.movimentou = True
 
     def valida_posicao(self, tabuleiro: list, pos: tuple) -> bool:
         i, j = pos
@@ -253,6 +259,9 @@ class Torre(P):
         self.cor = cor
 
         self.movimentou = movimentou
+
+    def notifica_movimento(self):
+        self.movimentou = True
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         res = tabuleiro_false()
