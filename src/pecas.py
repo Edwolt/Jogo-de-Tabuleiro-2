@@ -287,37 +287,27 @@ class Peao(P):
         i, j = pos
         return tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor
 
-    def valida_posicao(self, tabuleiro: list, pos: tuple):
-        i, j = pos
-        promocao = 0 if self.cor else 7
-
-        if valida_coordenadas(i, j) and tabuleiro[i][j] is None:
-            return 'promocao' if i == promocao else True
-        else:
-            return False
-
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Promoção
         # TODO EnPassant
 
         res = tabuleiro_false()
-
-        # Anda uma casa para frente
-        def anda(i): return i-1 if self.cor else i+1
+        promocao = 0 if self.cor else 7
 
         i, j = pos
-
-        i = anda(i)
-        res[i][j] = self.valida_posicao(tabuleiro, (i, j))
-        if res[i][j] != False:
-            i = anda(i)
-            if not self.movimentou:
-                res[i][j] = self.valida_posicao(tabuleiro, (i, j))
+        i += -1 if self.cor else 1
+        if valida_coordenadas(i) and tabuleiro[i][j] is None:
+            res[i][j] = 'promocao' if i == promocao else True
+            i += -1 if self.cor else 1
+            if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
+                res[i][j] = True
 
         i, j = pos
-        i = anda(i)
-        res[i][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
-        res[i][j+1] = self.valida_posicao(tabuleiro, (i, j+1))
+        i += -1 if self.cor else 1
+        if valida_coordenadas(i, j-1) and self.valida_captura(tabuleiro, (i, j-1)):
+            res[i][j-1] = 'promocao' if i == promocao else True
+        if valida_coordenadas(i, j+1) and self.valida_captura(tabuleiro, (i, j+1)):
+            res[i][j+1] = 'promocao' if i == promocao else True
 
         return res
 
