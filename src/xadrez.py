@@ -20,7 +20,7 @@ class Xadrez:
         self.pecas: Peca = Pecas()
 
         self.click = None
-        self.movimento = tabuleiro_false()
+        self.movimento = None
         self.qsize = (0, 0)
 
     def carregar(self) -> None:
@@ -35,15 +35,20 @@ class Xadrez:
         """
 
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            click_antigo = self.click
+
             i = int(event.pos[1] // self.qsize[1])
             j = int(event.pos[0] // self.qsize[0])
 
             self.click = (i, j)
 
-            if self.tabuleiro[i][j] is None:
-                self.movimento = tabuleiro_false()
-            elif self.movimento[i][j]:
-                # Executa movimento
+            if self.movimento and self.movimento[i][j] and click_antigo:
+                m, n = click_antigo
+                self.tabuleiro[i][j] = self.tabuleiro[m][n]
+                self.tabuleiro[m][n] = None
+                self.movimento = None
+            elif self.tabuleiro[i][j] is None:
+                self.movimento = None
             else:
                 self.movimento = self.tabuleiro[i][j].get_movimentos(
                     self.tabuleiro,
@@ -74,7 +79,7 @@ class Xadrez:
                     tipo = 'vazio'
                     if self.click and y == self.click[0] and x == self.click[1]:
                         tipo = 'click'
-                    elif self.movimento[y][x]:
+                    elif self.movimento and self.movimento[y][x]:
                         tipo = 'movimento'
 
                     surf = self.config.quadrado(qsize, (x, y), tipo)
