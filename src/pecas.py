@@ -3,8 +3,6 @@ from pygame import Surface
 
 from util import tabuleiro_false
 
-# TODO Executar o Roque
-
 
 # TODO id e identificador não são bons nomes de variáveis
 def id_peca(nome: str, cor: bool) -> str:
