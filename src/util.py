@@ -2,7 +2,6 @@ def tabuleiro_none() -> list:
     """
     :return: list 8x8 com todos os campos sendo None
     """
-
     return [[None] * 8 for _ in range(8)]
 
 
@@ -10,7 +9,6 @@ def tabuleiro_false() -> list:
     """
     :return: list 8x8 com todos os campos sendo False
     """
-
     return [[False] * 8 for _ in range(8)]
 
 

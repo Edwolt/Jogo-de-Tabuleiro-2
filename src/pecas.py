@@ -19,10 +19,10 @@ def caminho_asset(identificador: str) -> str:
 
 """ TODO
 Ideia para fazer o movimento:
-* Encontra onde está o rei da mesma cor
-* Descobre quais pecas não podem sair do lugar por que criam xeque
-* Calcula onde a peça em questão pode ir
-* Desconta do resultado onde as peças nao pode ir
+[ ] Encontra onde está o rei da mesma cor
+[ ] Descobre quais pecas não podem sair do lugar por que criam xeque
+[x] Calcula onde a peça em questão pode ir
+[ ] Desconta do resultado onde as peças nao pode ir
 """
 
 
@@ -171,16 +171,16 @@ class Rainha(P):
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         res = tabuleiro_false()
-        direcoes = [
-            (-1, 0),  # Cima
-            (1, 0),  # Baixo
-            (0, -1),  # Esquerda
-            (0, 1),  # Direita
-            (-1, 1),  # Cima Direita
+        direcoes = (
+            (-1, 0),   # Cima
+            (1, 0),    # Baixo
+            (0, -1),   # Esquerda
+            (0, 1),    # Direita
+            (-1, 1),   # Cima Direita
             (-1, -1),  # Cima Esquerda
-            (1, 1),  # Baixo Direita
-            (1, -1),  # Baixo Esquerda
-        ]
+            (1, 1),    # Baixo Direita
+            (1, -1),   # Baixo Esquerda
+        )
 
         for direcao in direcoes:
             movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
@@ -196,12 +196,12 @@ class Bispo(P):
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         res = tabuleiro_false()
-        direcoes = [
-            (-1, 1),  # Cima Direita
+        direcoes = (
+            (-1, 1),   # Cima Direita
             (-1, -1),  # Cima Esquerda
-            (1, 1),  # Baixo Direita
-            (1, -1),  # Baixo Esquerda
-        ]
+            (1, 1),    # Baixo Direita
+            (1, -1),   # Baixo Esquerda
+        )
 
         for direcao in direcoes:
             movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
@@ -263,12 +263,12 @@ class Torre(P):
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         res = tabuleiro_false()
-        direcoes = [
+        direcoes = (
             (-1, 0),  # Cima
-            (1, 0),  # Baixo
+            (1, 0),   # Baixo
             (0, -1),  # Esquerda
-            (0, 1),  # Direita
-        ]
+            (0, 1),   # Direita
+        )
 
         for direcao in direcoes:
             movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
