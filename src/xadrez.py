@@ -48,7 +48,7 @@ class Xadrez:
             return True
 
         elif isinstance(movimento, str) and movimento == 'promocao':
-            self.tabuleiro[l][c] = self.pecas.Rainha()
+            self.tabuleiro[l][c] = self.pecas.Rainha(self.tabuleiro[m][n].cor)
             self.tabuleiro[m][n] = None
             self.tabuleiro[l][c].notifica_movimento()
             return True
