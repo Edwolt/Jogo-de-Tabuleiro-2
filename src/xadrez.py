@@ -27,6 +27,50 @@ class Xadrez:
         self.pecas.carregar()
         self.tabuleiro = tabuleiro_novo(self.pecas)
 
+    def movimenta_peca(self, pos, nova_pos) -> bool:
+        """
+        Movimenta a peça se o movimento for validao
+        retornando se foi possível ou não
+
+        :param pos: Posição da peça a ser movimentada
+        :param nova_pos: Para onde será movimentada
+        :return: Se a peça foi movimentada
+        """
+
+        l, c = pos
+        m, n = nova_pos
+
+        if isinstance(self.movimento[l][c], bool) and self.movimento[l][c]:
+            self.tabuleiro[l][c] = self.tabuleiro[m][n]
+            self.tabuleiro[m][n] = None
+
+            self.tabuleiro[l][c].notifica_movimento()
+            return True
+
+        elif isinstance(self.movimento[l][c], tuple):
+            movimento = (
+                i for i in self.movimento[l][c] if isinstance(i, tuple)
+            )
+
+            for mov in movimento:
+                (i, j), peca = mov
+                if peca is not None:
+                    peca.notifica_movimento()
+                self.tabuleiro[i][j] = peca
+            return True
+
+        return False
+
+    def atualiza_movimentos(self, pos) -> None:
+        i, j = pos
+        if self.tabuleiro[i][j] is None:
+            self.movimento = None
+        else:
+            self.movimento = self.tabuleiro[i][j].get_movimentos(
+                self.tabuleiro,
+                (i, j)
+            )
+
     def event(self, event: Event) -> None:
         """
         Recebe um evento e executa uma operação com ele
@@ -42,35 +86,15 @@ class Xadrez:
 
             self.click = (i, j)
 
-            # Faz movimento
+            movimentado = False
             if self.movimento and click_antigo:
-                if isinstance(self.movimento[i][j], bool) and self.movimento[i][j]:
-                    m, n = click_antigo
-                    self.tabuleiro[i][j] = self.tabuleiro[m][n]
-                    self.tabuleiro[m][n] = None
+                if self.movimenta_peca(self.click, click_antigo):
+                    self.movimento = None
+                    movimentado = True
 
-                    self.tabuleiro[i][j].notifica_movimento()
-                elif isinstance(self.movimento[i][j], tuple):
-                    movimento = (
-                        i for i in self.movimento[i][j] if isinstance(i, tuple)
-                    )
+            if not movimentado:
+                self.atualiza_movimentos(self.click)
 
-                    for mov in movimento:
-                        (i, j), peca = mov
-                        if peca is not None:
-                            peca.notifica_movimento()
-                        self.tabuleiro[i][j] = peca
-
-                self.movimento = None
-
-            # Atualiza movimentos
-            if self.tabuleiro[i][j] is None:
-                self.movimento = None
-            else:
-                self.movimento = self.tabuleiro[i][j].get_movimentos(
-                    self.tabuleiro,
-                    (i, j)
-                )
             self.atualizacao = True
 
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
