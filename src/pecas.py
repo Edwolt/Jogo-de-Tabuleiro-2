@@ -63,6 +63,8 @@ def movimenta_direcao(res: list, tabuleiro: list, pos: tuple, direcao: tuple, co
 class P():
     """Classe abstrata para as peças"""
 
+    # def __init__(self, sprite: Surface, cor: bool): pass
+
     def draw(self, canva) -> None:
         """Desenha o sprite na surface"""
         sprite_escala = pygame.transform.scale(self.sprite, canva.get_size())
@@ -70,6 +72,8 @@ class P():
 
     def notifica_movimento(self):
         return
+
+    # def get_movimentos(self, tabuleiro: list, pos: tuple) -> list: pass
 
 
 class Rei(P):
