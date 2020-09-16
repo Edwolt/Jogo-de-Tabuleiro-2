@@ -4,6 +4,7 @@ from pygame import draw
 
 from util import tabuleiro_false
 
+# TODO transformar movimentos especiais em uma função ou um objeto em vez de uma tupla complexa
 
 # TODO id e identificador não são bons nomes de variáveis
 def id_peca(nome: str, cor: bool) -> str:
@@ -281,32 +282,6 @@ class Torre(P):
         return res
 
 
-class EnPassant(P):
-    def __init__(self, cor: bool, pos: tuple):
-        self.nome = 'enpassant'
-        self.cor = cor
-        self.pos = pos
-        self.atual = True
-
-    def draw(self, canva) -> None:
-        size = canva.get_size()
-        cor = (255, 255, 255) if self.cor else (0, 0, 0)
-        centro = (size[0] // 2, size[1] // 2)
-        raio = min(centro[0], centro[1]) // 2
-
-        draw.circle(canva, cor, centro, raio)
-
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
-        return tabuleiro_false()
-
-    def remove(self) -> bool:
-        if self.atual:
-            self.atual = False
-            return False
-        else:
-            return True
-
-
 class Peao(P):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'peao'
@@ -323,22 +298,16 @@ class Peao(P):
         promocao = 0 if self.cor else 7
 
         if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
-            if tabuleiro[i][j].nome == 'enpassant':
-                capturado = tabuleiro[i][j].pos
-                return (
-                    'usa_enpassant',
-                    (nova_pos, self),
-                    ((capturado), None),
-                    (pos, None)
-                )
-            elif i == promocao:
+            #TODO enpassant
+            if i == promocao:
                 return 'promocao'
             else:
                 return True
+        else:
+            return False
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Promoção
-        # TODO EnPassant
 
         res = tabuleiro_false()
         promocao = 0 if self.cor else 7
@@ -349,13 +318,7 @@ class Peao(P):
             res[i][j] = 'promocao' if i == promocao else True
             i += -1 if self.cor else 1
             if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
-                enpassant_i = i+1 if self.cor else i-1
-                res[i][j] = (
-                    'cria_enpassant',
-                    ((i, j), self),
-                    ((enpassant_i, j), EnPassant(self.cor, (i, j))),
-                    (pos, None)
-                )
+                res[i][j] = 'promocao' if i == promocao else True # TODO enpassant
 
         i, j = pos
         i += -1 if self.cor else 1
