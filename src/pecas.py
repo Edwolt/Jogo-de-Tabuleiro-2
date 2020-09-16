@@ -1,5 +1,6 @@
 import pygame
 from pygame import Surface
+from pygame import draw
 
 from util import tabuleiro_false
 
@@ -280,6 +281,32 @@ class Torre(P):
         return res
 
 
+class EnPassant(P):
+    def __init__(self, cor: bool, pos: tuple):
+        self.nome = 'enpassant'
+        self.cor = cor
+        self.pos = pos
+        self.atual = True
+
+    def draw(self, canva) -> None:
+        size = canva.get_size()
+        cor = (255, 255, 255) if self.cor else (0, 0, 0)
+        centro = (size[0] // 2, size[1] // 2)
+        raio = min(centro[0], centro[1]) // 2
+
+        draw.circle(canva, cor, centro, raio)
+
+    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+        return tabuleiro_false()
+
+    def remove(self) -> bool:
+        if self.atual:
+            self.atual = False
+            return False
+        else:
+            return True
+
+
 class Peao(P):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'peao'
@@ -287,9 +314,27 @@ class Peao(P):
         self.cor = cor
         self.movimentou = movimentou
 
-    def valida_captura(self, tabuleiro: list, pos: tuple) -> bool:
-        i, j = pos
-        return tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor
+    def notifica_movimento(self):
+        self.movimentou = True
+
+    def criar_captura(self, tabuleiro: list, pos: tuple, nova_pos: tuple):
+        m, n = pos
+        i, j = nova_pos
+        promocao = 0 if self.cor else 7
+
+        if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
+            if tabuleiro[i][j].nome == 'enpassant':
+                capturado = tabuleiro[i][j].pos
+                return (
+                    'usa_enpassant',
+                    (nova_pos, self),
+                    ((capturado), None),
+                    (pos, None)
+                )
+            elif i == promocao:
+                return 'promocao'
+            else:
+                return True
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         # TODO Promoção
@@ -304,14 +349,20 @@ class Peao(P):
             res[i][j] = 'promocao' if i == promocao else True
             i += -1 if self.cor else 1
             if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
-                res[i][j] = True
+                enpassant_i = i+1 if self.cor else i-1
+                res[i][j] = (
+                    'cria_enpassant',
+                    ((i, j), self),
+                    ((enpassant_i, j), EnPassant(self.cor, (i, j))),
+                    (pos, None)
+                )
 
         i, j = pos
         i += -1 if self.cor else 1
-        if valida_coordenadas(i, j-1) and self.valida_captura(tabuleiro, (i, j-1)):
-            res[i][j-1] = 'promocao' if i == promocao else True
-        if valida_coordenadas(i, j+1) and self.valida_captura(tabuleiro, (i, j+1)):
-            res[i][j+1] = 'promocao' if i == promocao else True
+        if valida_coordenadas(i, j-1):
+            res[i][j-1] = self.criar_captura(tabuleiro, pos, (i, j-1))
+        if valida_coordenadas(i, j+1):
+            res[i][j+1] = self.criar_captura(tabuleiro, pos, (i, j+1))
 
         return res
 

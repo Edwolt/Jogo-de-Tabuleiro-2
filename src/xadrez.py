@@ -27,6 +27,14 @@ class Xadrez:
         self.pecas.carregar()
         self.tabuleiro = tabuleiro_novo(self.pecas)
 
+    def remove_enpassants(self):
+        self.tabuleiro = [
+            [
+                None if j is not None and j.nome == 'enpassant' and j.remove() else j
+                for j in i
+            ] for i in self.tabuleiro
+        ]
+
     def movimenta_peca(self, pos, nova_pos) -> bool:
         """
         Movimenta a peça se o movimento for validao
@@ -98,7 +106,9 @@ class Xadrez:
                     self.movimento = None
                     movimentado = True
 
-            if not movimentado:
+            if movimentado:
+                self.remove_enpassants()
+            else:
                 self.atualiza_movimentos(self.click)
 
             self.atualizacao = True
