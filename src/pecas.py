@@ -68,18 +68,25 @@ class M():
 
 
 class Roque(M):
-    def __init__(self, pos_rei: tuple, pos_torre: tuple):
+    def __init__(self, rei: tuple, nova_rei: tuple, torre: tuple, nova_torre):
         self.nome = 'roque'
-        self.pos_rei = pos_rei
-        self.pos_torre = pos_torre
+        self.rei = rei
+        self.nova_rei = nova_rei
+        self.torre = torre
+        self.nova_torre = nova_torre
 
     def flags(self, flags: list) -> None:
         return
 
-    def executar(self, tabuleiro: list) -> None:
-        irei, jrei = self.pos_rei
-        itorre, jtorre = self.pos_torre
-        pass
+    def mover(self, tabuleiro: list, pos: tuple, nova_pos: tuple):
+        i, j = pos
+        m, n = nova_pos
+        tabuleiro[m][n] = tabuleiro[i][j]
+        tabuleiro[i][j] = None
+
+    def executar(self, tabuleiro: list, flags: list) -> None:
+        self.mover(tabuleiro, self.rei, self.nova_rei)
+        self.mover(tabuleiro, self.torre, self.nova_torre)
 
 
 class P():
@@ -169,6 +176,12 @@ class Rei(P):
                         ((i, j-1), torre),
                         ((i, j), None),
                         ((i, 0), None),
+                    )
+                    res[i][j-2] = Roque(
+                        (i, j),
+                        (i, j-2),
+                        (i, 0),
+                        (i, j-1)
                     )
 
             torre = tabuleiro[i][7]
