@@ -65,8 +65,16 @@ def movimenta_direcao(res: list, tabuleiro: list, pos: tuple, direcao: tuple, co
 
 
 def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor: bool) -> None:
-    for direcao in direcoes:
-        movimenta_direcao(res, tabuleiro, pos, direcao, cor)
+    for (di, dj) in direcoes:
+        i, j = pos
+        i, j = i + di, j + dj
+        while valida_coordenadas(i, j):
+            if tabuleiro[i][j] is None:
+                res[i][j] = True
+            else:
+                res[i][j] = cor != tabuleiro[i][j].cor
+                break  # Se a casa não está vazia, não tem porquê olhar adiante
+            i, j = i+di, j+dj
 
 
 class M():
