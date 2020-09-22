@@ -7,6 +7,8 @@ from util import tabuleiro_false
 # TODO transformar movimentos especiais em uma função ou um objeto em vez de uma tupla complexa
 
 # TODO id e identificador não são bons nomes de variáveis
+
+
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
     identificador = nome
@@ -60,6 +62,23 @@ def movimenta_direcao(res: list, tabuleiro: list, pos: tuple, direcao: tuple, co
             res[i][j] = cor != tabuleiro[i][j].cor
             break  # Se a casa não está vazia, não tem porquê olhar adiante
         i, j = i+di, j+dj
+
+
+def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor: bool) -> None:
+    for direcao in direcoes:
+        movimenta_direcao(res, tabuleiro, pos, direcao, cor)
+
+
+class M():
+    pass
+
+
+class Roque(M):
+    def __init__(self, pos_rei: tuple, pos_torre: tuple):
+        self.nome = 'roque'
+
+    def executar():
+        pass
 
 
 class P():
@@ -188,9 +207,7 @@ class Rainha(P):
             (1, -1),   # Baixo Esquerda
         )
 
-        for direcao in direcoes:
-            movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
-
+        calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
         return res
 
 
@@ -209,9 +226,7 @@ class Bispo(P):
             (1, -1),   # Baixo Esquerda
         )
 
-        for direcao in direcoes:
-            movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
-
+        calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
         return res
 
 
@@ -276,8 +291,7 @@ class Torre(P):
             (0, 1),   # Direita
         )
 
-        for direcao in direcoes:
-            movimenta_direcao(res, tabuleiro, pos, direcao, self.cor)
+        calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
 
         return res
 
@@ -298,7 +312,7 @@ class Peao(P):
         promocao = 0 if self.cor else 7
 
         if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
-            #TODO enpassant
+            # TODO enpassant
             if i == promocao:
                 return 'promocao'
             else:
@@ -318,7 +332,7 @@ class Peao(P):
             res[i][j] = 'promocao' if i == promocao else True
             i += -1 if self.cor else 1
             if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
-                res[i][j] = 'promocao' if i == promocao else True # TODO enpassant
+                res[i][j] = 'promocao' if i == promocao else True  # TODO enpassant
 
         i, j = pos
         i += -1 if self.cor else 1
