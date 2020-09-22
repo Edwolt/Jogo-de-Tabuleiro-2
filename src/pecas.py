@@ -37,15 +37,8 @@ def protege_rei():
 
 def valida_coordenadas(a: int, b: int = 0) -> bool:
     """
-    Verifica se uma coordanada é válida dentro do tabuleiro
-
-    Pode ser usado das seguintes formas:
-    * valida_coordenada(a)
-      Verifica se o valor a é um valor válido para
-      ser a componente de uma coordenada
-
-    * valida_coordenada(a, b)
-      Verifica se o valor da coordenada (a, b) é válido
+    valida_coordenada(a):    Verifica se a é um valor válido para componente de uma coordenada
+    valida_coordenada(a, b): Verifica se (a, b) é uma coordenada válida
     """
     return 0 <= a < 8 and 0 <= b < 8
 
@@ -170,12 +163,7 @@ class Rei(P):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 if not pecas_entre:
-                    res[i][j-2] = Roque(
-                        (i, j),
-                        (i, j-2),
-                        (i, 0),
-                        (i, j-1)
-                    )
+                    res[i][j-2] = Roque((i, j), (i, j-2), (i, 0), (i, j-1))
 
             torre = tabuleiro[i][7]
             if torre is not None and torre.nome == 'torre' and not torre.movimentou:
@@ -184,12 +172,7 @@ class Rei(P):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 if not pecas_entre:
-                    res[i][j+2] = Roque(
-                        (i, j),
-                        (i, j+2),
-                        (i, 7),
-                        (i, j+1)
-                    )
+                    res[i][j+2] = Roque((i, j), (i, j+2), (i, 7), (i, j+1))
 
         return res
 
@@ -212,7 +195,6 @@ class Rainha(P):
             (1, 1),    # Baixo Direita
             (1, -1),   # Baixo Esquerda
         )
-
         calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
         return res
 
@@ -231,7 +213,6 @@ class Bispo(P):
             (1, 1),    # Baixo Direita
             (1, -1),   # Baixo Esquerda
         )
-
         calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
         return res
 
@@ -296,9 +277,7 @@ class Torre(P):
             (0, -1),  # Esquerda
             (0, 1),   # Direita
         )
-
         calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
-
         return res
 
 
