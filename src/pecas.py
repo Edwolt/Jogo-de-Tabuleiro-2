@@ -170,13 +170,6 @@ class Rei(P):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 if not pecas_entre:
-                    res[i][j-2] = (
-                        'roque',
-                        ((i, j-2), self),
-                        ((i, j-1), torre),
-                        ((i, j), None),
-                        ((i, 0), None),
-                    )
                     res[i][j-2] = Roque(
                         (i, j),
                         (i, j-2),
@@ -191,12 +184,11 @@ class Rei(P):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 if not pecas_entre:
-                    res[i][j-2] = (
-                        'roque',
-                        ((i, j+2), self),
-                        ((i, j+1), torre),
-                        ((i, j), None),
-                        ((i, 7), None),
+                    res[i][j+2] = Roque(
+                        (i, j),
+                        (i, j+2),
+                        (i, 7),
+                        (i, j+1)
                     )
 
         return res
