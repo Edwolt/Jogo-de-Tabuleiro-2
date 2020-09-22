@@ -50,20 +50,6 @@ def valida_coordenadas(a: int, b: int = 0) -> bool:
     return 0 <= a < 8 and 0 <= b < 8
 
 
-def movimenta_direcao(res: list, tabuleiro: list, pos: tuple, direcao: tuple, cor: bool) -> None:
-    di, dj = direcao
-    i, j = pos
-
-    i, j = i+di, j+dj
-    while valida_coordenadas(i, j):
-        if tabuleiro[i][j] is None:
-            res[i][j] = True
-        else:
-            res[i][j] = cor != tabuleiro[i][j].cor
-            break  # Se a casa não está vazia, não tem porquê olhar adiante
-        i, j = i+di, j+dj
-
-
 def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor: bool) -> None:
     for (di, dj) in direcoes:
         i, j = pos
@@ -74,7 +60,7 @@ def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor:
             else:
                 res[i][j] = cor != tabuleiro[i][j].cor
                 break  # Se a casa não está vazia, não tem porquê olhar adiante
-            i, j = i+di, j+dj
+            i, j = i + di, j + dj
 
 
 class M():
@@ -84,8 +70,15 @@ class M():
 class Roque(M):
     def __init__(self, pos_rei: tuple, pos_torre: tuple):
         self.nome = 'roque'
+        self.pos_rei = pos_rei
+        self.pos_torre = pos_torre
 
-    def executar():
+    def flags(self, flags: list) -> None:
+        return
+
+    def executar(self, tabuleiro: list) -> None:
+        irei, jrei = self.pos_rei
+        itorre, jtorre = self.pos_torre
         pass
 
 
