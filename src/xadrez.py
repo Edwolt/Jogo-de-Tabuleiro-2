@@ -101,8 +101,7 @@ class Xadrez:
             return False
 
         size = canva.get_size()
-        qsize = (size[0] // 8, size[1] // 8)
-        self.qsize = qsize
+        self.qsize = qsize = (size[0] // 8, size[1] // 8)
 
         for y, linha in enumerate(self.tabuleiro):
             for x, peca in enumerate(linha):
@@ -129,7 +128,7 @@ class Xadrez:
         if self.escape:
             self.atualizacao = True
             self.escape = False
-            menu = Menu(self)
+            menu = Menu(self, self.config)
             menu.carregar()
             return menu
         else:

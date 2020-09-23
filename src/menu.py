@@ -6,11 +6,13 @@ from pygame.locals import *
 
 
 class Menu:
-    def __init__(self, xadrez):
+    def __init__(self, xadrez, config):
         self.xadrez = xadrez
-        self.escape = False
+        self.config = config
 
+        self.escape = False
         self.atualizacao = True
+
         self.fonte = Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             50
