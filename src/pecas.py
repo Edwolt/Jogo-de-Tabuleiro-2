@@ -7,18 +7,6 @@ from util import tabuleiro_false
 # TODO id e identificador não são bons nomes de variáveis
 
 
-def id_peca(nome: str, cor: bool) -> str:
-    """Retorna o identificador do tipo de peca"""
-    identificador = nome
-    identificador += '1' if cor else '0'
-    return identificador
-
-
-def caminho_asset(identificador: str) -> str:
-    """Retorna o caminho para o asset da peca com o identificador passado"""
-    return f'assets/{identificador}.png'
-
-
 """ TODO
 Ideia para fazer o movimento:
 [ ] Encontra onde está o rei da mesma cor
@@ -48,6 +36,7 @@ def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor:
                 break  # Se a casa não está vazia, não tem porquê olhar adiante
             i, j = i + di, j + dj
 
+##### Movimentos #####
 
 class M():
     pass
@@ -94,6 +83,7 @@ class Promocao(M):
         i, j = self.promocao
         tabuleiro[i][j] = pecas.Rainha(cor)
 
+##### Peças #####
 
 class P():
     """Classe abstrata para as peças"""
@@ -337,6 +327,19 @@ class Peao(P):
             res[i][j+1] = self.criar_captura(tabuleiro, pos, (i, j+1))
 
         return res
+
+##### Exportando Peças #####
+
+def id_peca(nome: str, cor: bool) -> str:
+    """Retorna o identificador do tipo de peca"""
+    identificador = nome
+    identificador += '1' if cor else '0'
+    return identificador
+
+
+def caminho_asset(identificador: str) -> str:
+    """Retorna o caminho para o asset da peca com o identificador passado"""
+    return f'assets/{identificador}.png'
 
 
 class Pecas():

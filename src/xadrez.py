@@ -101,7 +101,7 @@ class Xadrez:
             return False
 
         size = canva.get_size()
-        qsize = (size[0] / 8, size[1] / 8)
+        qsize = (size[0] // 8, size[1] // 8)
         self.qsize = qsize
 
         for y, linha in enumerate(self.tabuleiro):
