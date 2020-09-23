@@ -60,19 +60,7 @@ class Xadrez:
                 return True
             else:
                 return False
-
-        elif isinstance(movimento, tuple):
-            mov = (
-                i for i in self.movimento[l][c] if isinstance(i, tuple)
-            )
-
-            for op in mov:
-                (i, j), peca = op
-                if peca is not None:
-                    peca.notifica_movimento()
-                self.tabuleiro[i][j] = peca
-            return True
-
+                
         else:
             movimento.executar(self.tabuleiro, self.pecas, None)
 

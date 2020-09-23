@@ -326,8 +326,6 @@ class Peao(P):
             return False
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
-        # TODO Promoção
-
         res = tabuleiro_false()
         promocao = 0 if self.cor else 7
 
