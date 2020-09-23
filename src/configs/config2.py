@@ -12,11 +12,11 @@ class Config:
         # 'menu': (214, 165, 132),
         # 'cor_fonte': (124, 49, 0)
 
-    def quadrado(self, size, pos: tuple, tipo: str, complemento=None) -> Surface:
-        surf = Surface((size[0], size[1]))
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
+        size = canva.get_size()
         quad = Surface((size[0] - 2, size[1] - 2))
 
-        surf.fill((100, 100, 100))
+        canva.fill((100, 100, 100))
 
         x, y = pos
 
@@ -31,8 +31,7 @@ class Config:
             cor = self.movimento
 
         quad.fill(cor)
-        surf.blit(quad, (1, 1))
-        return surf
+        canva.blit(quad, (1, 1))
 
     def titulo(self, vez: bool) -> None:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')

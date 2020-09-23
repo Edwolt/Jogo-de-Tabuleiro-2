@@ -113,7 +113,8 @@ class Xadrez:
                 elif self.movimento and self.movimento[y][x]:
                     tipo = 'movimento'
 
-                surf = self.config.quadrado(qsize, (x, y), tipo)
+                surf = Surface(qsize)
+                self.config.quadrado(surf, (x, y), tipo)
 
                 if peca:
                     peca.draw(surf)

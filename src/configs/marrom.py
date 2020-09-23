@@ -12,8 +12,7 @@ class Config:
         # 'menu': (214, 165, 132),
         # 'cor_fonte': (124, 49, 0)
 
-    def quadrado(self, size, pos: tuple, tipo: str, complemento=None) -> Surface:
-        surf = Surface((size[0], size[1]))
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         x, y = pos
 
         cor = (0, 0, 0)
@@ -26,8 +25,7 @@ class Config:
         elif tipo == 'captura':
             cor = self.movimento
 
-        surf.fill(cor)
-        return surf
+        canva.fill(cor)
 
     def titulo(self, vez: bool) -> None:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
