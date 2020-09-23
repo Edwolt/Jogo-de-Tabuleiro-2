@@ -4,3 +4,5 @@ Estou refazendo o código do repositório
 a fim de fazer o jogo ficar completo, e restruturar o código de forma mais legível
 
 Esse repositório é um jogo feito em python usando o pygame
+
+![Imagem](imagens/xadrez.png)
