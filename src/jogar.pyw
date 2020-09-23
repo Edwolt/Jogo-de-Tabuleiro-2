@@ -25,7 +25,7 @@ if __name__ == '__main__':
                 janela.event(event)
 
         if janela.draw(screen):
-            pygame.display.flip()  # Atualiza toda tela (para atualização parcial tem o update)
+            pygame.display.flip()
 
         nova_janela = janela.new()
         if nova_janela:

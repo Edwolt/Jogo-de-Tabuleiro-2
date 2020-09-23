@@ -45,17 +45,17 @@ class Menu:
                 else:
                     self.sel = 0
 
-            elif event.key == pygame.K_RETURN:
+            elif event.key == K_RETURN:
                 self.atualizacao = True
                 opcao = self.opcoes[self.sel].lower()
                 if opcao == 'sair':
                     pygame.quit()
                     quit(0)
                 else:
-                    print(f'`{self.opcoes[self.sel]}` não implementado')
+                    print(f'{self.opcoes[self.sel]} não implementado')
                     self.escape = True
 
-            elif event.key == pygame.K_ESCAPE:
+            elif event.key == K_ESCAPE:
                 self.escape = True
 
     def draw(self, canva: Surface):

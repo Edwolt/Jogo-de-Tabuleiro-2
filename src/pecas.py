@@ -141,9 +141,7 @@ class Rei(P):
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
         """
         :return: list 8x8 dizendo se é possivel movimentar ou não
-        Caso seja um tuple é porque o movimento é especial, onde:
-        * O primeiro elemento o nome do movimento
-        * Os próximos elementos são tuples com as coordenadas e o que ela deve receber
+        Caso o movimento seja especial é retornado um objeto de uma subclasse de M
         """
         # TODO Cuidado com cheque
 

@@ -66,7 +66,6 @@ class Xadrez:
     def event(self, event: Event) -> None:
         """
         Recebe um evento e executa uma operação com ele
-
         :param event: evento
         """
 
