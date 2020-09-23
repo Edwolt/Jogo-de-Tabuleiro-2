@@ -36,10 +36,17 @@ def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor:
                 break  # Se a casa não está vazia, não tem porquê olhar adiante
             i, j = i + di, j + dj
 
+
+######################
 ##### Movimentos #####
+######################
+
 
 class M():
-    pass
+    def flags(self, flags: list) -> None:
+        return
+
+    # def executar(self, tabuleiro: list, pecas, flags: list) -> None
 
 
 class Roque(M):
@@ -49,9 +56,6 @@ class Roque(M):
         self.nova_rei = nova_rei
         self.torre = torre
         self.nova_torre = nova_torre
-
-    def flags(self, flags: list) -> None:
-        return
 
     def mover(self, tabuleiro: list, pos: tuple, nova_pos: tuple):
         i, j = pos
@@ -72,8 +76,27 @@ class Promocao(M):
         self.promocao = promocao
         pass
 
+    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
+        i, j = self.pos
+        cor = tabuleiro[i][j].cor
+        tabuleiro[i][j] = None
+
+        i, j = self.promocao
+        tabuleiro[i][j] = pecas.Rainha(cor)
+
+
+class EnPassant(M):  # TODO
+    def __init__(self):
+        self.nome = 'enpassant'
+
     def flags(self, flags: list) -> None:
-        return
+        pos = (0, 0)
+        flags.append(
+            (
+                'enpassant',
+                pos
+            )
+        )
 
     def executar(self, tabuleiro: list, pecas, flags: list) -> None:
         i, j = self.pos
@@ -83,7 +106,11 @@ class Promocao(M):
         i, j = self.promocao
         tabuleiro[i][j] = pecas.Rainha(cor)
 
+
+#################
 ##### Peças #####
+#################
+
 
 class P():
     """Classe abstrata para as peças"""
@@ -328,7 +355,10 @@ class Peao(P):
 
         return res
 
+
+############################
 ##### Exportando Peças #####
+############################
 
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
