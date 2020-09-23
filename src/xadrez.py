@@ -5,6 +5,7 @@ from pygame.event import Event
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from config import Config
 from pecas import Pecas
+from pecas import M as Movimento
 from menu import Menu
 
 
@@ -60,8 +61,8 @@ class Xadrez:
                 return True
             else:
                 return False
-                
-        else:
+
+        elif isinstance(movimento, Movimento):
             movimento.executar(self.tabuleiro, self.pecas, None)
 
     def atualiza_movimentos(self, pos) -> None:
