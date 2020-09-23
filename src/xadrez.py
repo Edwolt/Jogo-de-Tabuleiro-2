@@ -74,7 +74,7 @@ class Xadrez:
             return True
 
         else:
-            movimento.executar(self.tabuleiro, None)
+            movimento.executar(self.tabuleiro, self.pecas, None)
 
     def atualiza_movimentos(self, pos) -> None:
         i, j = pos

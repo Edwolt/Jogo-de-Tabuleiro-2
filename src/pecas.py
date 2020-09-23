@@ -75,11 +75,31 @@ class Roque(M):
         i, j = pos
         m, n = nova_pos
         tabuleiro[m][n] = tabuleiro[i][j]
+        tabuleiro[m][n].notifica_movimento()
         tabuleiro[i][j] = None
 
-    def executar(self, tabuleiro: list, flags: list) -> None:
+    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
         self.mover(tabuleiro, self.rei, self.nova_rei)
         self.mover(tabuleiro, self.torre, self.nova_torre)
+
+
+class Promocao(M):
+    def __init__(self, pos: tuple, promocao: tuple):
+        self.nome = 'promocao'
+        self.pos = pos
+        self.promocao = promocao
+        pass
+
+    def flags(self, flags: list) -> None:
+        return
+
+    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
+        i, j = self.pos
+        cor = tabuleiro[i][j].cor
+        tabuleiro[i][j] = None
+
+        i, j = self.promocao
+        tabuleiro[i][j] = pecas.Rainha(cor)
 
 
 class P():
@@ -299,7 +319,7 @@ class Peao(P):
         if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
             # TODO enpassant
             if i == promocao:
-                return 'promocao'
+                return Promocao(pos, nova_pos)
             else:
                 return True
         else:
@@ -314,10 +334,11 @@ class Peao(P):
         i, j = pos
         i += -1 if self.cor else 1
         if valida_coordenadas(i) and tabuleiro[i][j] is None:
-            res[i][j] = 'promocao' if i == promocao else True
+            res[i][j] = Promocao(pos, (i, j)) if i == promocao else True
             i += -1 if self.cor else 1
             if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
-                res[i][j] = 'promocao' if i == promocao else True  # TODO enpassant
+                res[i][j] = Promocao(pos, (i, j)) if i == promocao else True
+                # TODO enpassant
 
         i, j = pos
         i += -1 if self.cor else 1
