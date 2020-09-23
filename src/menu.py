@@ -32,18 +32,21 @@ class Menu:
     def event(self, event: Event):
         if event.type == KEYDOWN:
             if event.key == K_UP:
+                self.atualizacao = True
                 if self.sel > 0:
                     self.sel -= 1
                 else:
                     self.sel = len(self.opcoes) - 1
 
             elif event.key == K_DOWN:
+                self.atualizacao = True
                 if self.sel < len(self.opcoes) - 1:
                     self.sel += 1
                 else:
                     self.sel = 0
 
             elif event.key == pygame.K_RETURN:
+                self.atualizacao = True
                 opcao = self.opcoes[self.sel].lower()
                 if opcao == 'sair':
                     pygame.quit()
@@ -56,6 +59,9 @@ class Menu:
                 self.escape = True
 
     def draw(self, canva: Surface):
+        if not self.atualizacao:
+            return False
+
         canva.fill((0, 0, 0))
 
         _, altura = self.fonte.size('')
@@ -68,6 +74,7 @@ class Menu:
             canva.blit(texto, (0, y))
             y += altura
 
+        self.atualizacao = False
         return True
 
     def new(self):

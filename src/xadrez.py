@@ -42,28 +42,16 @@ class Xadrez:
         m, n = nova_pos
         movimento = self.movimento[l][c]
 
-        if isinstance(movimento, bool):
-            if movimento:
-                self.tabuleiro[l][c] = self.tabuleiro[m][n]
-                self.tabuleiro[m][n] = None
-                self.tabuleiro[l][c].notifica_movimento()
-                return True
-            else:
-                return False
-
-        elif isinstance(movimento, str) and movimento == 'promocao':
-            if movimento == 'promocao':
-                self.tabuleiro[l][c] = self.pecas.Rainha(
-                    self.tabuleiro[m][n].cor
-                )
-                self.tabuleiro[m][n] = None
-                self.tabuleiro[l][c].notifica_movimento()
-                return True
-            else:
-                return False
+        if isinstance(movimento, bool) and movimento:
+            self.tabuleiro[l][c] = self.tabuleiro[m][n]
+            self.tabuleiro[m][n] = None
+            self.tabuleiro[l][c].notifica_movimento()
+            return True
 
         elif isinstance(movimento, Movimento):
             movimento.executar(self.tabuleiro, self.pecas, None)
+
+        return False
 
     def atualiza_movimentos(self, pos) -> None:
         i, j = pos
@@ -110,33 +98,33 @@ class Xadrez:
         :return: Retorna se a tela precisa ser atualizada
         """
 
+        if not self.atualizacao:
+            return False
+
         size = canva.get_size()
         qsize = (size[0] / 8, size[1] / 8)
         self.qsize = qsize
 
-        if self.atualizacao:
-            for y, linha in enumerate(self.tabuleiro):
-                for x, peca in enumerate(linha):
-                    # j, i = x, y
+        for y, linha in enumerate(self.tabuleiro):
+            for x, peca in enumerate(linha):
+                # j, i = x, y
 
-                    tipo = 'vazio'
-                    if self.click and y == self.click[0] and x == self.click[1]:
-                        tipo = 'click'
-                    elif self.movimento and self.movimento[y][x]:
-                        tipo = 'movimento'
+                tipo = 'vazio'
+                if self.click and y == self.click[0] and x == self.click[1]:
+                    tipo = 'click'
+                elif self.movimento and self.movimento[y][x]:
+                    tipo = 'movimento'
 
-                    surf = self.config.quadrado(qsize, (x, y), tipo)
+                surf = self.config.quadrado(qsize, (x, y), tipo)
 
-                    if peca:
-                        peca.draw(surf)
+                if peca:
+                    peca.draw(surf)
 
-                    pos = (qsize[0] * x, qsize[1] * y)
-                    canva.blit(surf, pos)
+                pos = (qsize[0] * x, qsize[1] * y)
+                canva.blit(surf, pos)
 
-            self.atualizacao = False
-            return True
-        else:
-            return False
+        self.atualizacao = False
+        return True
 
     def new(self):
         if self.escape:
