@@ -33,9 +33,6 @@ class Menu:
             'Sair'
         ]
 
-        self.opcoes = self.listar_configs()
-        print(self.opcoes)
-
         self.sel = 0
 
     def carregar(self):
