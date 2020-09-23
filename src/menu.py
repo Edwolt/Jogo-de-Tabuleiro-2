@@ -9,13 +9,9 @@ from glob import glob
 
 class Menu:
     def listar_configs(self) -> list:
-        cam = 'configs'
-        ext = 'py'
-        l = len(cam + '/')
-        r = -len('.' + ext)
-
-        return [i[l:r] for i in glob(f'{cam}/*.{ext}')]
-        # return [i[8:-3] for i in glob('configs/*py)]
+        # 8 por causa do nome da pasta
+        # -3 por causa da extensao
+        return [i[8:-3] for i in glob('configs/*py')]
 
     def __init__(self, xadrez, config):
         self.xadrez = xadrez
