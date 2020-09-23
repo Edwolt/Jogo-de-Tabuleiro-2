@@ -18,11 +18,11 @@ class Config:
 
         canva.fill((100, 100, 100))
 
-        x, y = pos
+        i, j = pos
 
         cor = (0, 0, 0)
         if tipo == 'vazio':
-            cor = self.vazio[(x+y) % 2]
+            cor = self.vazio[(i+j) % 2]
         elif tipo == 'click':
             cor = self.click
         elif tipo == 'movimento':
@@ -39,7 +39,7 @@ class Config:
     def menu_cor(self, texto: str, selecionado: bool) -> tuple:
         return (255, 255, 255)
 
-    def titulo(self, vez: bool) -> None:
+    def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
 
     # 'menu': lambda cores, menu: self.cores['menu'],

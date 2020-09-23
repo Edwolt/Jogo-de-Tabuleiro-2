@@ -1,5 +1,4 @@
 from pygame import Surface
-
 from random import randint
 
 
@@ -28,4 +27,4 @@ class Config:
     def titulo(self, vez: bool) -> str:
         x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]
         p = p1 if vez else p2
-        return f'{x}: {p}'
+        return f'{x} : {p}'

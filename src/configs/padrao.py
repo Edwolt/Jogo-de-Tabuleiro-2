@@ -1,17 +1,18 @@
 from pygame import Surface
 
+
 class Config:
     def __init__(self):
         self.vazio = (
-            (214, 165, 132),
-            (124, 49, 0)
+            (255, 255, 255),
+            (0, 0, 0)
         )
-        self.click = (153, 0, 0)
-        self.movimento = (229, 126, 0)
-        # 'menu': (214, 165, 132),
-        # 'cor_fonte': (124, 49, 0)
+        self.click = (255, 0, 0)
+        self.movimento = (0, 255, 255)
+        self.background = (0, 0, 0)
+        self.foreground = (255, 255, 255)
 
-    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None):
         i, j = pos
 
         cor = (0, 0, 0)
@@ -27,13 +28,10 @@ class Config:
         canva.fill(cor)
 
     def menu_fundo(self, canva: Surface) -> None:
-        canva.fill((0, 0, 0))
+        canva.fill(self.background)
 
     def menu_cor(self, texto: str, selecionado: bool) -> tuple:
-        return (255, 255, 255)
+        return self.foreground
 
-    def titulo(self, vez: bool) -> None:
+    def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
-
-    # 'menu': lambda cores, menu: self.cores['menu'],
-    # 'cor_fonte': lambda cores, menu: self.cores['cor_fonte']
