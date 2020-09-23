@@ -27,6 +27,11 @@ class Config:
 
         canva.fill(cor)
 
+    def menu_fundo(self, canva: Surface) -> None:
+        canva.fill((0, 0, 0))
+
+    def menu_cor(self, texto, selecionado)->tuple:
+
     def titulo(self, vez: bool) -> None:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
 

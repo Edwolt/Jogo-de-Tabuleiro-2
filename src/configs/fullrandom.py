@@ -20,7 +20,10 @@ class Config:
         canva.fill(randcor())
 
     def menu_fundo(self, canva: Surface) -> None:
-        canva.fill(randcor)
+        canva.fill(randcor())
+
+    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
+        return randcor()
 
     def titulo(self, vez: bool) -> str:
         x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]

@@ -64,15 +64,19 @@ class Menu:
         if not self.atualizacao:
             return False
 
-        canva.fill((0, 0, 0))
+        self.config.menu_fundo(canva)
 
-        _, altura = self.fonte.size('')
+        altura = self.fonte.size('')[1]
         y = 0
         for num, i in enumerate(self.opcoes):
             texto_str = '> ' if self.sel == num else '  '
             texto_str += i
 
-            texto = self.fonte.render(texto_str, 0, (255, 255, 255))
+            texto = self.fonte.render(
+                texto_str,
+                0,
+                self.config.menu_cor(texto_str, self.sel == num)
+            )
             canva.blit(texto, (0, y))
             y += altura
 

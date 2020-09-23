@@ -33,6 +33,12 @@ class Config:
         quad.fill(cor)
         canva.blit(quad, (1, 1))
 
+    def menu_fundo(self, canva: Surface) -> None:
+        canva.fill((0, 0, 0))
+
+    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
+        return (255, 255, 255)
+
     def titulo(self, vez: bool) -> None:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
 
