@@ -5,25 +5,17 @@ from pygame.event import Event
 from pygame.locals import *
 
 from glob import glob
-# from os import listdir
-# from os.path import isfile, join
 
 
 class Menu:
     def listar_configs(self) -> list:
         cam = 'configs'
         ext = 'py'
-        l = len(f'{cam}/')
-        r = -len(f'.{ext}')
+        l = len(cam + '/')
+        r = -len('.' + ext)
 
         return [i[l:r] for i in glob(f'{cam}/*.{ext}')]
-
         # return [i[8:-3] for i in glob('configs/*py)]
-
-        # return [i.split('/')[-1][:-3] for i in glob('configs/*.py')]
-
-        # path = 'configs/'
-        # return [i[:-3] for i in listdir(path) if isfile(join(path, i))]
 
     def __init__(self, xadrez, config):
         self.xadrez = xadrez
@@ -44,6 +36,9 @@ class Menu:
             'Voltar',
             'Sair'
         ]
+
+        self.opcoes = self.listar_configs()
+        print(self.opcoes)
 
         self.sel = 0
 
