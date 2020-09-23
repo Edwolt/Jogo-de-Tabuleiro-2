@@ -4,8 +4,6 @@ from pygame import draw
 
 from util import tabuleiro_false
 
-# TODO transformar movimentos especiais em uma função ou um objeto em vez de uma tupla complexa
-
 # TODO id e identificador não são bons nomes de variáveis
 
 
@@ -28,11 +26,6 @@ Ideia para fazer o movimento:
 [x] Calcula onde a peça em questão pode ir
 [ ] Desconta do resultado onde as peças nao pode ir
 """
-
-
-def protege_rei():
-    # TODO verifica se movimentar para uma casa ataca o rei
-    pass
 
 
 def valida_coordenadas(a: int, b: int = 0) -> bool:
@@ -355,8 +348,7 @@ class Pecas():
     def carregar(self) -> None:
         """Carrega os assets das peças em RAM"""
 
-        pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
-        for i in pecas:
+        for i in ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']:
             id_branco = id_peca(i, True)
             id_preto = id_peca(i, False)
 

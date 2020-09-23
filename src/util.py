@@ -21,7 +21,7 @@ def tabuleiro_novo(pecas) -> list:
 
     tabuleiro = tabuleiro_none()
 
-    # Brancos
+    # Brancas
     tabuleiro[0][0] = pecas.Torre(False)
     tabuleiro[0][1] = pecas.Cavalo(False)
     tabuleiro[0][2] = pecas.Bispo(False)
@@ -33,7 +33,7 @@ def tabuleiro_novo(pecas) -> list:
     for i in range(8):  # Peões
         tabuleiro[1][i] = pecas.Peao(False)
 
-    # Pretos
+    # Pretas
     tabuleiro[7][0] = pecas.Torre(True)
     tabuleiro[7][1] = pecas.Cavalo(True)
     tabuleiro[7][2] = pecas.Bispo(True)
