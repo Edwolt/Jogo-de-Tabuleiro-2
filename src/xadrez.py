@@ -134,4 +134,4 @@ class Xadrez:
             menu.carregar()
             return menu
         else:
-            return None
+            return self

@@ -95,4 +95,4 @@ class Menu:
             self.escape = False
             return self.xadrez
         else:
-            return None
+            return self

@@ -25,9 +25,6 @@ if __name__ == '__main__':
                 janela.event(event)
 
         janela.draw(screen)
-
-        nova_janela = janela.new()
-        if nova_janela:
-            janela = nova_janela
+        janela = janela.new()
 
         clock.tick(framerate)
