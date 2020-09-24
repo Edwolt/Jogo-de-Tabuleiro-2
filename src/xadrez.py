@@ -1,5 +1,6 @@
 from pygame.locals import *
-from pygame import display, Surface
+from pygame import display
+from pygame import Surface
 from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
@@ -70,7 +71,7 @@ class Xadrez:
         :param event: evento
         """
 
-        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
             click_antigo = self.click
 
             self.click = (

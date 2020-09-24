@@ -1,12 +1,11 @@
 import pygame
+from pygame import draw, transform, image
 from pygame import Surface
-from pygame import draw
 
 from util import tabuleiro_false
 
-# TODO id e identificador não são bons nomes de variáveis
 
-
+##### Movimentos #####
 """ TODO
 Ideia para fazer o movimento:
 [ ] Encontra onde está o rei da mesma cor
@@ -16,7 +15,6 @@ Ideia para fazer o movimento:
 """
 
 
-##### Movimentos #####
 class M():
     def flags(self, flags: list) -> None:
         return
@@ -111,7 +109,7 @@ class P():
 
     def draw(self, canva) -> None:
         """Desenha o sprite na surface"""
-        sprite_escala = pygame.transform.scale(self.sprite, canva.get_size())
+        sprite_escala = transform.scale(self.sprite, canva.get_size())
         canva.blit(sprite_escala, (0, 0))
 
     def notifica_movimento(self) -> None:
@@ -349,6 +347,7 @@ class Peao(P):
 
 
 ##### Exportando Peças #####
+# TODO id e identificador não são bons nomes de variáveis
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
     identificador = nome
@@ -375,8 +374,8 @@ class Pecas():
             id_preto = id_peca(i, False)
 
             self.assets.update({
-                id_branco: pygame.image.load(caminho_asset(id_branco)),
-                id_preto: pygame.image.load(caminho_asset(id_preto))
+                id_branco: image.load(caminho_asset(id_branco)),
+                id_preto: image.load(caminho_asset(id_preto))
             })
 
     def get_asset(self, nome: str, cor: bool) -> Surface:

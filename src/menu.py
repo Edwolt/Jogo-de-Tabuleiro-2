@@ -1,7 +1,8 @@
 import pygame
-from pygame.font import Font
-from pygame import display, Surface
+from pygame import display
+from pygame import Surface
 from pygame.event import Event
+from pygame.font import Font
 from pygame.locals import *
 
 from glob import glob
