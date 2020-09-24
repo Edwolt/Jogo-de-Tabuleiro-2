@@ -16,27 +16,6 @@ Ideia para fazer o movimento:
 """
 
 
-def valida_coordenadas(a: int, b: int = 0) -> bool:
-    """
-    valida_coordenada(a):    Verifica se a é um valor válido para componente de uma coordenada
-    valida_coordenada(a, b): Verifica se (a, b) é uma coordenada válida
-    """
-    return 0 <= a < 8 and 0 <= b < 8
-
-
-def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor: bool) -> None:
-    for (di, dj) in direcoes:
-        i, j = pos
-        i, j = i + di, j + dj
-        while valida_coordenadas(i, j):
-            if tabuleiro[i][j] is None:
-                res[i][j] = True
-            else:
-                res[i][j] = cor != tabuleiro[i][j].cor
-                break  # Se a casa não está vazia, não tem porquê olhar adiante
-            i, j = i + di, j + dj
-
-
 ##### Movimentos #####
 class M():
     def flags(self, flags: list) -> None:
@@ -104,6 +83,27 @@ class EnPassant(M):  # TODO
 
 
 ##### Peças #####
+def valida_coordenadas(a: int, b: int = 0) -> bool:
+    """
+    valida_coordenada(a):    Verifica se a é um valor válido para componente de uma coordenada
+    valida_coordenada(a, b): Verifica se (a, b) é uma coordenada válida
+    """
+    return 0 <= a < 8 and 0 <= b < 8
+
+
+def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor: bool) -> None:
+    for (di, dj) in direcoes:
+        i, j = pos
+        i, j = i + di, j + dj
+        while valida_coordenadas(i, j):
+            if tabuleiro[i][j] is None:
+                res[i][j] = True
+            else:
+                res[i][j] = cor != tabuleiro[i][j].cor
+                break  # Se a casa não está vazia, não tem porquê olhar adiante
+            i, j = i + di, j + dj
+
+
 class P():
     """Classe abstrata para as peças"""
 
