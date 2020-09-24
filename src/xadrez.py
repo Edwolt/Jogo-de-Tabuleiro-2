@@ -1,5 +1,5 @@
 from pygame.locals import *
-from pygame import Surface
+from pygame import display, Surface
 from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
@@ -91,14 +91,14 @@ class Xadrez:
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             self.escape = True
 
-    def draw(self, canva) -> bool:
+    def draw(self, canva) -> None:
         """
         :param canva: Surface onde o jogo sera desenhado
         :return: Retorna se a tela precisa ser atualizada
         """
 
         if not self.atualizacao:
-            return False
+            return
 
         size = canva.get_size()
         self.qsize = qsize = (size[0] // 8, size[1] // 8)
@@ -123,7 +123,8 @@ class Xadrez:
                 canva.blit(surf, pos)
 
         self.atualizacao = False
-        return True
+        display.flip()
+        
 
     def new(self):
         if self.escape:

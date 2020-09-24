@@ -24,8 +24,7 @@ if __name__ == '__main__':
             else:
                 janela.event(event)
 
-        if janela.draw(screen):
-            pygame.display.flip()
+        janela.draw(screen)
 
         nova_janela = janela.new()
         if nova_janela:

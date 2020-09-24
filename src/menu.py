@@ -1,6 +1,6 @@
 import pygame
 from pygame.font import Font
-from pygame import Surface
+from pygame import display, Surface
 from pygame.event import Event
 from pygame.locals import *
 
@@ -67,9 +67,9 @@ class Menu:
             elif event.key == K_ESCAPE:
                 self.escape = True
 
-    def draw(self, canva: Surface):
+    def draw(self, canva: Surface) -> None:
         if not self.atualizacao:
-            return False
+            return
 
         self.config.menu_fundo(canva)
 
@@ -88,7 +88,7 @@ class Menu:
             y += altura
 
         self.atualizacao = False
-        return True
+        display.flip()
 
     def new(self):
         if self.escape:
