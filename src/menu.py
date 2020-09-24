@@ -8,11 +8,6 @@ from glob import glob
 
 
 class Menu:
-    def listar_configs(self) -> list:
-        # 8 por causa do nome da pasta
-        # -3 por causa da extensao
-        return [i[8:-3] for i in glob('configs/*py')]
-
     def __init__(self, xadrez, config):
         self.xadrez = xadrez
         self.config = config
@@ -35,10 +30,16 @@ class Menu:
 
         self.sel = 0
 
-    def carregar(self):
+    def listar_configs(self) -> list:
+        # 8 por causa do nome da pasta
+        # -3 por causa da extensao
+        return [i[8:-3] for i in glob('configs/*py')]
+
+    ##### Interface #####
+    def carregar(self) -> None:
         return
 
-    def event(self, event: Event):
+    def event(self, event: Event) -> None:
         if event.type == KEYDOWN:
             if event.key == K_UP:
                 self.atualizacao = True

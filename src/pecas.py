@@ -37,11 +37,7 @@ def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor:
             i, j = i + di, j + dj
 
 
-######################
 ##### Movimentos #####
-######################
-
-
 class M():
     def flags(self, flags: list) -> None:
         return
@@ -57,7 +53,7 @@ class Roque(M):
         self.torre = torre
         self.nova_torre = nova_torre
 
-    def mover(self, tabuleiro: list, pos: tuple, nova_pos: tuple):
+    def mover(self, tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
         i, j = pos
         m, n = nova_pos
         tabuleiro[m][n] = tabuleiro[i][j]
@@ -107,11 +103,7 @@ class EnPassant(M):  # TODO
         tabuleiro[i][j] = pecas.Rainha(cor)
 
 
-#################
 ##### Peças #####
-#################
-
-
 class P():
     """Classe abstrata para as peças"""
 
@@ -122,7 +114,7 @@ class P():
         sprite_escala = pygame.transform.scale(self.sprite, canva.get_size())
         canva.blit(sprite_escala, (0, 0))
 
-    def notifica_movimento(self):
+    def notifica_movimento(self) -> None:
         return
 
     # def get_movimentos(self, tabuleiro: list, pos: tuple) -> list: pass
@@ -141,7 +133,7 @@ class Rei(P):
 
         self.movimentou = movimentou
 
-    def notifica_movimento(self):
+    def notifica_movimento(self) -> None:
         self.movimentou = True
 
     def valida_posicao(self, tabuleiro: list, pos: tuple) -> bool:
@@ -294,7 +286,7 @@ class Torre(P):
 
         self.movimentou = movimentou
 
-    def notifica_movimento(self):
+    def notifica_movimento(self) -> None:
         self.movimentou = True
 
     def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
@@ -316,7 +308,7 @@ class Peao(P):
         self.cor = cor
         self.movimentou = movimentou
 
-    def notifica_movimento(self):
+    def notifica_movimento(self) -> None:
         self.movimentou = True
 
     def criar_captura(self, tabuleiro: list, pos: tuple, nova_pos: tuple):
@@ -356,10 +348,7 @@ class Peao(P):
         return res
 
 
-############################
 ##### Exportando Peças #####
-############################
-
 def id_peca(nome: str, cor: bool) -> str:
     """Retorna o identificador do tipo de peca"""
     identificador = nome

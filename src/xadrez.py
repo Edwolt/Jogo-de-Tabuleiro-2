@@ -24,10 +24,6 @@ class Xadrez:
         self.movimento = None
         self.qsize = (0, 0)
 
-    def carregar(self) -> None:
-        self.pecas.carregar()
-        self.tabuleiro = tabuleiro_novo(self.pecas)
-
     def movimenta_peca(self, pos, nova_pos) -> bool:
         """
         Movimenta a peça se o movimento for validao
@@ -62,6 +58,11 @@ class Xadrez:
                 self.tabuleiro,
                 (i, j)
             )
+
+    ##### Interface #####
+    def carregar(self) -> None:
+        self.pecas.carregar()
+        self.tabuleiro = tabuleiro_novo(self.pecas)
 
     def event(self, event: Event) -> None:
         """
