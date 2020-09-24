@@ -72,10 +72,10 @@ class Xadrez:
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             click_antigo = self.click
 
-            i = int(event.pos[1] // self.qsize[1])
-            j = int(event.pos[0] // self.qsize[0])
-
-            self.click = (i, j)
+            self.click = (
+                int(event.pos[1] // self.qsize[1]),
+                int(event.pos[0] // self.qsize[0])
+            )
 
             movimentado = False
             if self.movimento and click_antigo:
@@ -101,7 +101,7 @@ class Xadrez:
             return
 
         size = canva.get_size()
-        self.qsize = qsize = (size[0] // 8, size[1] // 8)
+        self.qsize = (size[0] // 8, size[1] // 8)
 
         for y, linha in enumerate(self.tabuleiro):
             for x, peca in enumerate(linha):
@@ -113,18 +113,17 @@ class Xadrez:
                 elif self.movimento and self.movimento[y][x]:
                     tipo = 'movimento'
 
-                surf = Surface(qsize)
+                surf = Surface(self.qsize)
                 self.config.quadrado(surf, (x, y), tipo)
 
                 if peca:
                     peca.draw(surf)
 
-                pos = (qsize[0] * x, qsize[1] * y)
+                pos = (self.qsize[0] * x, self.qsize[1] * y)
                 canva.blit(surf, pos)
 
         self.atualizacao = False
         display.flip()
-        
 
     def new(self):
         if self.escape:
