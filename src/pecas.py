@@ -75,6 +75,7 @@ class AvancoDuplo(M):
         i, j = self.pos
         m, n = self.nova_pos
         tabuleiro[m][n] = tabuleiro[i][j]
+        tabuleiro[i][j] = None
         tabuleiro[m][n].notifica_movimento()
 
 
