@@ -1,4 +1,6 @@
 import pygame
+from pygame import display
+from pygame.time import Clock
 from pygame.locals import *
 
 from xadrez import Xadrez
@@ -10,8 +12,8 @@ framerate = 60
 
 if __name__ == '__main__':
     pygame.init()
-    screen = pygame.display.set_mode(size)
-    clock = pygame.time.Clock()
+    screen = display.set_mode(size)
+    clock = Clock()
 
     janela = Xadrez()
     janela.carregar()
