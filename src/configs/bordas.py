@@ -1,4 +1,5 @@
-from pygame import Surface
+from pygame import Surface, Rect
+from pygame import draw
 
 
 class Config:
@@ -14,7 +15,10 @@ class Config:
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         size = canva.get_size()
-        quad = Surface((size[0] - 2, size[1] - 2))
+        quad = Rect(
+            1, 1,
+            size[0] - 2, size[1] - 2
+        )
 
         canva.fill((100, 100, 100))
 
@@ -30,8 +34,7 @@ class Config:
         elif tipo == 'captura':
             cor = self.movimento
 
-        quad.fill(cor)
-        canva.blit(quad, (1, 1))
+        draw.rect(canva, cor, quad)
 
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill((0, 0, 0))
