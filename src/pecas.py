@@ -331,11 +331,12 @@ class Peao(P):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_enpassant(self, flags: list, pos: tuple):
+    def get_enpassant(self, flags: list, nova_pos):
         for flag in flags:
             if flag[0] == 'enpassant':
                 _, cor, meio, final = flag
-                if self.cor == cor and pos == meio:
+                print(nova_pos, meio, nova_pos == meio)
+                if self.cor != cor and nova_pos == meio:
                     return meio, final
         return None
 
@@ -351,7 +352,8 @@ class Peao(P):
             else:
                 return True
         else:
-            enpassant = self.get_enpassant(flags, pos)
+            enpassant = self.get_enpassant(flags, nova_pos)
+            print(enpassant)
             if enpassant is not None:
                 meio, final = enpassant
                 return EnPassant(pos, final, meio)
