@@ -24,15 +24,29 @@ def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
 
 
 class M():
+    """Classe abstrata para os movimentos especiais"""
+
     def executar(self, tabuleiro: list, pecas, flags: list) -> None:
+        """
+        Executa o movimento no tabuleiro
+        :param flags: lista de flags do tabuleiro
+        """
         pass
 
     def update_flags(self, flags: list) -> None:
+        """Atualiza a lista de flags do tabuleiro"""
         pass
 
 
 class Roque(M):
     def __init__(self, rei: tuple, nova_rei: tuple, torre: tuple, nova_torre):
+        """[summary]
+        :param rei: posição atual do rei
+        :param nova_rei: posiçãol para a qual o rei será movido
+        :param torre: posição atual da torre
+        :param nova_torre: posição para o qual a torre será movida
+        """
+
         self.nome = 'roque'
         self.rei = rei
         self.nova_rei = nova_rei
@@ -46,6 +60,11 @@ class Roque(M):
 
 class Promocao(M):
     def __init__(self, pos: tuple, promocao: tuple):
+        """
+        :param pos: posição atual do peão
+        :param promocao: posição para o qual o peão será movido causando a promoção
+        """
+
         self.nome = 'promocao'
         self.pos = pos
         self.promocao = promocao
@@ -62,6 +81,13 @@ class Promocao(M):
 
 class AvancoDuplo(M):
     def __init__(self, cor: bool, pos: tuple, meio: tuple, nova_pos: tuple):
+        """
+        :param cor: cor da peça (True: 'branco'; False: 'preto')
+        :param pos: posicão do peão
+        :param meio: posição pela qual o peão passará
+        :param nova_pos: posição final do peão
+        """
+
         self.cor = cor
         self.pos = pos
         self.meio = meio
@@ -83,6 +109,12 @@ class AvancoDuplo(M):
 
 class EnPassant(M):
     def __init__(self, pos: tuple, capturado_pos: tuple, nova_pos: tuple):
+        """
+        :param pos: posição do peão aliado
+        :param capturado_pos: posição do peão inimigo a ser capturado
+        :param nova_pos: posição para o qual o peão aliado será movido
+        """
+
         self.nome = 'enpassant'
         self.pos = pos
         self.capturado_pos = capturado_pos
@@ -120,6 +152,10 @@ class P():
     """Classe abstrata para as peças"""
 
     def __init__(self, sprite: Surface, cor: bool):
+        """
+        :param sprite: Uma Surface com a imagem da peca
+        :param cor: True: 'branco'; False: 'preto'
+        """
         pass
 
     def draw(self, canva) -> None:
@@ -131,16 +167,16 @@ class P():
         return
 
     def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+        """
+        :param flags: flags do tabuleiro
+        :return: list 8x8 dizendo se é possivel movimentar ou não
+        Caso o movimento seja especial é retornado um objeto de uma subclasse de M
+        """
         pass
 
 
 class Rei(P):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
-        """
-        :param sprite: Uma Surface com a imagem da peca
-        :param cor: True: 'branco'; False: 'preto'
-        """
-
         self.nome = 'rei'
         self.sprite = sprite
         self.cor = cor
@@ -155,12 +191,7 @@ class Rei(P):
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
     def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
-        """
-        :return: list 8x8 dizendo se é possivel movimentar ou não
-        Caso o movimento seja especial é retornado um objeto de uma subclasse de M
-        """
         # TODO Cuidado com cheque
-
         res = tabuleiro_false()
         i, j = pos
 
