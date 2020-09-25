@@ -19,6 +19,9 @@ class M():
     def executar(self, tabuleiro: list, pecas, flags: list) -> None:
         pass
 
+    def update_flags(self, flags: list) -> None:
+        pass
+
 
 class Roque(M):
     def __init__(self, rei: tuple, nova_rei: tuple, torre: tuple, nova_torre):
@@ -64,6 +67,13 @@ class AvancoDuplo(M):
         self.nova_pos = nova_pos
 
     def executar(self, tabuleiro: list, flags: list, pecas) -> None:
+        i, j = self.pos
+        m, n = self.nova_pos
+        tabuleiro[m][n] = tabuleiro[i][j]
+        tabuleiro[i][j] = None
+        tabuleiro[m][n].notifica_movimento()
+
+    def update_flags(self, flags: list) -> None:
         flags.append(
             (
                 'enpassant',
@@ -72,11 +82,6 @@ class AvancoDuplo(M):
                 self.nova_pos
             )
         )
-        i, j = self.pos
-        m, n = self.nova_pos
-        tabuleiro[m][n] = tabuleiro[i][j]
-        tabuleiro[i][j] = None
-        tabuleiro[m][n].notifica_movimento()
 
 
 class EnPassant(M):

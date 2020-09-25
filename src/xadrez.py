@@ -44,10 +44,17 @@ class Xadrez:
             self.tabuleiro[l][c] = self.tabuleiro[m][n]
             self.tabuleiro[m][n] = None
             self.tabuleiro[l][c].notifica_movimento()
+
+            self.flags.clear()
             return True
 
         elif isinstance(movimento, Movimento):
             movimento.executar(self.tabuleiro, self.flags, self.pecas)
+
+            self.flags.clear()
+            movimento.update_flags(self.flags)
+            return True
+
         return False
 
     def atualiza_movimentos(self, pos) -> None:
@@ -73,7 +80,6 @@ class Xadrez:
         """
 
         if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
-            print(self.flags)
             click_antigo = self.click
 
             self.click = (
