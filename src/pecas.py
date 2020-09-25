@@ -97,6 +97,7 @@ class EnPassant(M):
         ni, nj = self.nova_pos
         tabuleiro[ci][cj] = None
         tabuleiro[ni][nj] = tabuleiro[i][j]
+        tabuleiro[i][j] = None
         tabuleiro[ni][nj].notifica_movimento()
 
 
