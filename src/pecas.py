@@ -1,9 +1,11 @@
+"""Peças de xadrez"""
+
 import pygame
 from pygame import draw, transform, image
 from pygame import Surface
 
 from util import tabuleiro_false
-
+from movimentos import Roque, Promocao, AvancoDuplo, EnPassant
 
 """ TODO
 Ideia para fazer o movimento:
@@ -12,118 +14,6 @@ Ideia para fazer o movimento:
 [x] Calcula onde a peça em questão pode ir
 [ ] Desconta do resultado onde as peças nao pode ir
 """
-
-
-##### Movimentos #####
-def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
-    i, j = pos
-    m, n = nova_pos
-    tabuleiro[m][n] = tabuleiro[i][j]
-    tabuleiro[m][n].notifica_movimento()
-    tabuleiro[i][j] = None
-
-
-class M():
-    """Classe abstrata para os movimentos especiais"""
-
-    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
-        """
-        Executa o movimento no tabuleiro
-        :param flags: lista de flags do tabuleiro
-        """
-        pass
-
-    def update_flags(self, flags: list) -> None:
-        """Atualiza a lista de flags do tabuleiro"""
-        pass
-
-
-class Roque(M):
-    def __init__(self, rei: tuple, nova_rei: tuple, torre: tuple, nova_torre):
-        """[summary]
-        :param rei: posição atual do rei
-        :param nova_rei: posiçãol para a qual o rei será movido
-        :param torre: posição atual da torre
-        :param nova_torre: posição para o qual a torre será movida
-        """
-
-        self.nome = 'roque'
-        self.rei = rei
-        self.nova_rei = nova_rei
-        self.torre = torre
-        self.nova_torre = nova_torre
-
-    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        mover_peca(tabuleiro, self.rei, self.nova_rei)
-        mover_peca(tabuleiro, self.torre, self.nova_torre)
-
-
-class Promocao(M):
-    def __init__(self, pos: tuple, promocao: tuple):
-        """
-        :param pos: posição atual do peão
-        :param promocao: posição para o qual o peão será movido causando a promoção
-        """
-
-        self.nome = 'promocao'
-        self.pos = pos
-        self.promocao = promocao
-        pass
-
-    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        i, j = self.pos
-        cor = tabuleiro[i][j].cor
-        tabuleiro[i][j] = None
-
-        i, j = self.promocao
-        tabuleiro[i][j] = pecas.Rainha(cor)
-
-
-class AvancoDuplo(M):
-    def __init__(self, cor: bool, pos: tuple, meio: tuple, nova_pos: tuple):
-        """
-        :param cor: cor da peça (True: 'branco'; False: 'preto')
-        :param pos: posicão do peão
-        :param meio: posição pela qual o peão passará
-        :param nova_pos: posição final do peão
-        """
-
-        self.cor = cor
-        self.pos = pos
-        self.meio = meio
-        self.nova_pos = nova_pos
-
-    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        mover_peca(tabuleiro, self.pos, self.nova_pos)
-
-    def update_flags(self, flags: list) -> None:
-        flags.append(
-            (
-                'enpassant',
-                self.cor,
-                self.meio,
-                self.nova_pos
-            )
-        )
-
-
-class EnPassant(M):
-    def __init__(self, pos: tuple, capturado_pos: tuple, nova_pos: tuple):
-        """
-        :param pos: posição do peão aliado
-        :param capturado_pos: posição do peão inimigo a ser capturado
-        :param nova_pos: posição para o qual o peão aliado será movido
-        """
-
-        self.nome = 'enpassant'
-        self.pos = pos
-        self.capturado_pos = capturado_pos
-        self.nova_pos = nova_pos
-
-    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        mover_peca(tabuleiro, self.pos, self.nova_pos)
-        i, j = self.capturado_pos
-        tabuleiro[i][j] = None
 
 
 ##### Peças #####
@@ -148,7 +38,7 @@ def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor:
             i, j = i + di, j + dj
 
 
-class P():
+class Peca():
     """Classe abstrata para as peças"""
 
     def __init__(self, sprite: Surface, cor: bool):
@@ -175,7 +65,7 @@ class P():
         pass
 
 
-class Rei(P):
+class Rei(Peca):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'rei'
         self.sprite = sprite
@@ -242,7 +132,7 @@ class Rei(P):
         return res
 
 
-class Rainha(P):
+class Rainha(Peca):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'rainha'
         self.sprite = sprite
@@ -264,7 +154,7 @@ class Rainha(P):
         return res
 
 
-class Bispo(P):
+class Bispo(Peca):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'bispo'
         self.sprite = sprite
@@ -282,7 +172,7 @@ class Bispo(P):
         return res
 
 
-class Cavalo(P):
+class Cavalo(Peca):
     def __init__(self, sprite: Surface, cor: bool):
         self.nome = 'cavalo'
         self.sprite = sprite
@@ -323,7 +213,7 @@ class Cavalo(P):
         return res
 
 
-class Torre(P):
+class Torre(Peca):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'torre'
         self.sprite = sprite
@@ -346,7 +236,7 @@ class Torre(P):
         return res
 
 
-class Peao(P):
+class Peao(Peca):
     def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
         self.nome = 'peao'
         self.sprite = sprite
@@ -422,7 +312,7 @@ def caminho_asset(identificador: str) -> str:
     return f'assets/{identificador}.png'
 
 
-class Pecas():
+class CriadorPecas():
     """Ajuda na criação de objetos pecas"""
 
     def __init__(self):

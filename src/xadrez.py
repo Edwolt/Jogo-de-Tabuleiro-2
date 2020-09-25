@@ -5,8 +5,8 @@ from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from config import Config
-from pecas import Pecas
-from pecas import M as Movimento
+from pecas import CriadorPecas
+from movimentos import MovimentoEspecial
 from menu import Menu
 
 
@@ -20,7 +20,7 @@ class Xadrez:
         self.flags = list()
 
         self.config = Config('padrao')
-        self.pecas: Peca = Pecas()
+        self.criador_pecas: CriadorPecas = CriadorPecas()
 
         self.click = None
         self.movimento = None
@@ -48,8 +48,8 @@ class Xadrez:
             self.flags.clear()
             return True
 
-        elif isinstance(movimento, Movimento):
-            movimento.executar(self.tabuleiro, self.flags, self.pecas)
+        elif isinstance(movimento, MovimentoEspecial):
+            movimento.executar(self.tabuleiro, self.flags, self.criador_pecas)
 
             self.flags.clear()
             movimento.update_flags(self.flags)
@@ -70,8 +70,8 @@ class Xadrez:
 
     ##### Interface #####
     def carregar(self) -> None:
-        self.pecas.carregar()
-        self.tabuleiro = tabuleiro_novo(self.pecas)
+        self.criador_pecas.carregar()
+        self.tabuleiro = tabuleiro_novo(self.criador_pecas)
 
     def event(self, event: Event) -> None:
         """
