@@ -10,8 +10,6 @@ class Config:
         )
         self.click = (153, 0, 0)
         self.movimento = (229, 126, 0)
-        # 'menu': (214, 165, 132),
-        # 'cor_fonte': (124, 49, 0)
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         size = canva.get_size()
@@ -44,6 +42,3 @@ class Config:
 
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
-
-    # 'menu': lambda cores, menu: self.cores['menu'],
-    # 'cor_fonte': lambda cores, menu: self.cores['cor_fonte']
