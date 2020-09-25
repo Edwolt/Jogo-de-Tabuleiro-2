@@ -5,7 +5,6 @@ from pygame import Surface
 from util import tabuleiro_false
 
 
-##### Movimentos #####
 """ TODO
 Ideia para fazer o movimento:
 [ ] Encontra onde está o rei da mesma cor
@@ -13,6 +12,15 @@ Ideia para fazer o movimento:
 [x] Calcula onde a peça em questão pode ir
 [ ] Desconta do resultado onde as peças nao pode ir
 """
+
+
+##### Movimentos #####
+def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
+    i, j = pos
+    m, n = nova_pos
+    tabuleiro[m][n] = tabuleiro[i][j]
+    tabuleiro[m][n].notifica_movimento()
+    tabuleiro[i][j] = None
 
 
 class M():
@@ -31,16 +39,9 @@ class Roque(M):
         self.torre = torre
         self.nova_torre = nova_torre
 
-    def mover(self, tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
-        i, j = pos
-        m, n = nova_pos
-        tabuleiro[m][n] = tabuleiro[i][j]
-        tabuleiro[m][n].notifica_movimento()
-        tabuleiro[i][j] = None
-
     def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        self.mover(tabuleiro, self.rei, self.nova_rei)
-        self.mover(tabuleiro, self.torre, self.nova_torre)
+        mover_peca(tabuleiro, self.rei, self.nova_rei)
+        mover_peca(tabuleiro, self.torre, self.nova_torre)
 
 
 class Promocao(M):
@@ -67,11 +68,7 @@ class AvancoDuplo(M):
         self.nova_pos = nova_pos
 
     def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        i, j = self.pos
-        m, n = self.nova_pos
-        tabuleiro[m][n] = tabuleiro[i][j]
-        tabuleiro[i][j] = None
-        tabuleiro[m][n].notifica_movimento()
+        mover_peca(tabuleiro, self.pos, self.nova_pos)
 
     def update_flags(self, flags: list) -> None:
         flags.append(
@@ -92,13 +89,9 @@ class EnPassant(M):
         self.nova_pos = nova_pos
 
     def executar(self, tabuleiro: list, flags: list, pecas) -> None:
-        i, j = self.pos
-        ci, cj = self.capturado_pos
-        ni, nj = self.nova_pos
-        tabuleiro[ci][cj] = None
-        tabuleiro[ni][nj] = tabuleiro[i][j]
+        mover_peca(tabuleiro, self.pos, self.nova_pos)
+        i, j = self.capturado_pos
         tabuleiro[i][j] = None
-        tabuleiro[ni][nj].notifica_movimento()
 
 
 ##### Peças #####
@@ -336,7 +329,6 @@ class Peao(P):
         for flag in flags:
             if flag[0] == 'enpassant':
                 _, cor, meio, final = flag
-                print(nova_pos, meio, nova_pos == meio)
                 if self.cor != cor and nova_pos == meio:
                     return meio, final
         return None
@@ -354,7 +346,6 @@ class Peao(P):
                 return True
         else:
             enpassant = self.get_enpassant(flags, nova_pos)
-            print(enpassant)
             if enpassant is not None:
                 meio, final = enpassant
                 return EnPassant(pos, final, meio)
