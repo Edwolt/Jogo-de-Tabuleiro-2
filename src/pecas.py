@@ -16,10 +16,8 @@ Ideia para fazer o movimento:
 
 
 class M():
-    def flags(self, flags: list) -> None:
-        return
-
-    # def executar(self, tabuleiro: list, pecas, flags: list) -> None
+    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
+        pass
 
 
 class Roque(M):
@@ -37,7 +35,7 @@ class Roque(M):
         tabuleiro[m][n].notifica_movimento()
         tabuleiro[i][j] = None
 
-    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
+    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
         self.mover(tabuleiro, self.rei, self.nova_rei)
         self.mover(tabuleiro, self.torre, self.nova_torre)
 
@@ -49,7 +47,7 @@ class Promocao(M):
         self.promocao = promocao
         pass
 
-    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
+    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
         i, j = self.pos
         cor = tabuleiro[i][j].cor
         tabuleiro[i][j] = None
@@ -58,26 +56,42 @@ class Promocao(M):
         tabuleiro[i][j] = pecas.Rainha(cor)
 
 
-class EnPassant(M):  # TODO
-    def __init__(self):
-        self.nome = 'enpassant'
+class AvancoDuplo(M):
+    def __init__(self, cor: bool, pos: tuple, meio: tuple, nova_pos: tuple):
+        self.cor = cor
+        self.pos = pos
+        self.meio = meio
+        self.nova_pos = nova_pos
 
-    def flags(self, flags: list) -> None:
-        pos = (0, 0)
+    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
         flags.append(
             (
                 'enpassant',
-                pos
+                self.cor,
+                self.meio,
+                self.nova_pos
             )
         )
-
-    def executar(self, tabuleiro: list, pecas, flags: list) -> None:
         i, j = self.pos
-        cor = tabuleiro[i][j].cor
-        tabuleiro[i][j] = None
+        m, n = self.nova_pos
+        tabuleiro[m][n] = tabuleiro[i][j]
+        tabuleiro[m][n].notifica_movimento()
 
-        i, j = self.promocao
-        tabuleiro[i][j] = pecas.Rainha(cor)
+
+class EnPassant(M):
+    def __init__(self, pos: tuple, capturado_pos: tuple, nova_pos: tuple):
+        self.nome = 'enpassant'
+        self.pos = pos
+        self.capturado_pos = capturado_pos
+        self.nova_pos = nova_pos
+
+    def executar(self, tabuleiro: list, flags: list, pecas) -> None:
+        i, j = self.pos
+        ci, cj = self.capturado_pos
+        ni, nj = self.nova_pos
+        tabuleiro[ci][cj] = None
+        tabuleiro[ni][nj] = tabuleiro[i][j]
+        tabuleiro[ni][nj].notifica_movimento()
 
 
 ##### Peças #####
@@ -105,7 +119,8 @@ def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor:
 class P():
     """Classe abstrata para as peças"""
 
-    # def __init__(self, sprite: Surface, cor: bool): pass
+    def __init__(self, sprite: Surface, cor: bool):
+        pass
 
     def draw(self, canva) -> None:
         """Desenha o sprite na surface"""
@@ -115,7 +130,8 @@ class P():
     def notifica_movimento(self) -> None:
         return
 
-    # def get_movimentos(self, tabuleiro: list, pos: tuple) -> list: pass
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+        pass
 
 
 class Rei(P):
@@ -138,7 +154,7 @@ class Rei(P):
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
         """
         :return: list 8x8 dizendo se é possivel movimentar ou não
         Caso o movimento seja especial é retornado um objeto de uma subclasse de M
@@ -201,7 +217,7 @@ class Rainha(P):
         self.sprite = sprite
         self.cor = cor
 
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),   # Cima
@@ -223,7 +239,7 @@ class Bispo(P):
         self.sprite = sprite
         self.cor = cor
 
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
         res = tabuleiro_false()
         direcoes = (
             (-1, 1),   # Cima Direita
@@ -245,7 +261,7 @@ class Cavalo(P):
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
         res = tabuleiro_false()
         i, j = pos
 
@@ -287,7 +303,7 @@ class Torre(P):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),  # Cima
@@ -309,7 +325,15 @@ class Peao(P):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def criar_captura(self, tabuleiro: list, pos: tuple, nova_pos: tuple):
+    def get_enpassant(self, flags: list, pos: tuple):
+        for flag in flags:
+            if flag[0] == 'enpassant':
+                _, cor, meio, final = flag
+                if self.cor == cor and pos == meio:
+                    return meio, final
+        return None
+
+    def criar_captura(self, tabuleiro: list, flags: list, pos: tuple, nova_pos: tuple):
         m, n = pos
         i, j = nova_pos
         promocao = 0 if self.cor else 7
@@ -321,9 +345,14 @@ class Peao(P):
             else:
                 return True
         else:
-            return False
+            enpassant = self.get_enpassant(flags, pos)
+            if enpassant is not None:
+                meio, final = enpassant
+                return EnPassant(pos, final, meio)
+            else:
+                return False
 
-    def get_movimentos(self, tabuleiro: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
         res = tabuleiro_false()
         promocao = 0 if self.cor else 7
 
@@ -331,17 +360,19 @@ class Peao(P):
         i += -1 if self.cor else 1
         if valida_coordenadas(i) and tabuleiro[i][j] is None:
             res[i][j] = Promocao(pos, (i, j)) if i == promocao else True
-            i += -1 if self.cor else 1
-            if not self.movimentou and valida_coordenadas(i) and tabuleiro[i][j] is None:
-                res[i][j] = Promocao(pos, (i, j)) if i == promocao else True
-                # TODO enpassant
+            ii = i-1 if self.cor else i+1
+            if not self.movimentou and valida_coordenadas(ii) and tabuleiro[ii][j] is None:
+                if i == promocao:
+                    res[ii][j] = Promocao(pos, (ii, j))
+                else:
+                    res[ii][j] = AvancoDuplo(self.cor, pos, (i, j), (ii, j))
 
         i, j = pos
         i += -1 if self.cor else 1
         if valida_coordenadas(i, j-1):
-            res[i][j-1] = self.criar_captura(tabuleiro, pos, (i, j-1))
+            res[i][j-1] = self.criar_captura(tabuleiro, flags, pos, (i, j-1))
         if valida_coordenadas(i, j+1):
-            res[i][j+1] = self.criar_captura(tabuleiro, pos, (i, j+1))
+            res[i][j+1] = self.criar_captura(tabuleiro, flags, pos, (i, j+1))
 
         return res
 

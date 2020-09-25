@@ -17,6 +17,7 @@ class Xadrez:
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
         self.escape = False
+        self.flags = list()
 
         self.config = Config('padrao')
         self.pecas: Peca = Pecas()
@@ -46,8 +47,7 @@ class Xadrez:
             return True
 
         elif isinstance(movimento, Movimento):
-            movimento.executar(self.tabuleiro, self.pecas, None)
-
+            movimento.executar(self.tabuleiro, self.flags, self.pecas)
         return False
 
     def atualiza_movimentos(self, pos) -> None:
@@ -57,6 +57,7 @@ class Xadrez:
         else:
             self.movimento = self.tabuleiro[i][j].get_movimentos(
                 self.tabuleiro,
+                self.flags,
                 (i, j)
             )
 
@@ -72,6 +73,7 @@ class Xadrez:
         """
 
         if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
+            print(self.flags)
             click_antigo = self.click
 
             self.click = (
