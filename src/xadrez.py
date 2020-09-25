@@ -19,7 +19,7 @@ class Xadrez:
         self.escape = False
         self.flags = list()
 
-        self.config = Config('padrao')
+        self.config = Config('bordas')
         self.criador_pecas: CriadorPecas = CriadorPecas()
 
         self.click = None
