@@ -5,8 +5,7 @@ from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from config import Config
-from pecas import CriadorPecas
-from movimentos import MovimentoEspecial
+from pecas import MovimentoEspecial, CriadorPecas
 from menu import Menu
 
 

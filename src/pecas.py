@@ -5,7 +5,6 @@ from pygame import draw, transform, image
 from pygame import Surface
 
 from util import tabuleiro_false
-from movimentos import Roque, Promocao, AvancoDuplo, EnPassant
 
 """ TODO
 Ideia para fazer o movimento:
