@@ -24,6 +24,7 @@ class Xadrez:
         self.click = None
         self.movimento = None
         self.qsize = (0, 0)
+        self.vez = True
 
     def movimenta_peca(self, pos, nova_pos) -> bool:
         """
@@ -58,14 +59,17 @@ class Xadrez:
 
     def atualiza_movimentos(self, pos) -> None:
         i, j = pos
-        if self.tabuleiro[i][j] is None:
+        peca = self.tabuleiro[i][j]
+        if peca is None:
             self.movimento = None
-        else:
-            self.movimento = self.tabuleiro[i][j].get_movimentos(
+        elif peca.cor == self.vez:
+            self.movimento = peca.get_movimentos(
                 self.tabuleiro,
                 self.flags,
                 (i, j)
             )
+        else:
+            self.movimento = None
 
     ##### Interface #####
     def carregar(self) -> None:
@@ -94,6 +98,8 @@ class Xadrez:
 
             if not movimentado:
                 self.atualiza_movimentos(self.click)
+            else:
+                self.vez = not self.vez
 
             self.atualizacao = True
 
@@ -133,6 +139,7 @@ class Xadrez:
 
         self.atualizacao = False
         display.flip()
+        display.set_caption('Brancas' if self.vez else 'Pretas')
 
     def new(self):
         if self.escape:
