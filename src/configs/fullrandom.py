@@ -11,9 +11,13 @@ class Config:
         self.nomes = (
             ('Xadrez', 'Branco', 'Preto'),
             ('Jogo de Tabuleiro', 'Claro', 'Escuro'),
-            ('Chess', 'Black', 'White'),
+            ('Chess', 'White', 'Black'),
             ('Chess Game', 'Player 1', 'Player 2'),
         )
+
+
+        self.vez = True
+        self.titulo_anterior = '.'
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         canva.fill(randcor())
@@ -25,6 +29,11 @@ class Config:
         return randcor()
 
     def titulo(self, vez: bool) -> str:
-        x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]
-        p = p1 if vez else p2
-        return f'{x} : {p}'
+        if self.vez != vez:
+            self.vez = vez
+            x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]
+            p = p1 if vez else p2
+            self.titulo_anterior = f'{x} : {p}'
+            return f'{x} : {p}'
+        else:
+            return self.titulo_anterior
