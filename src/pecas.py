@@ -133,22 +133,22 @@ class Rei(Peca):
             res[i-1][j-1] = self.valida_posicao(tabuleiro, (i-1, j-1))
         if valida_coordenadas(i-1, j):
             res[i-1][j] = self.valida_posicao(tabuleiro, (i-1, j))
-        if valida_coordenadas(i-1, j + 1):
+        if valida_coordenadas(i-1, j+1):
             res[i-1][j+1] = self.valida_posicao(tabuleiro, (i-1, j+1))
 
         # Casas do meio
         if valida_coordenadas(i, j-1):
             res[i][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
-        if valida_coordenadas(i-1, j+1):
+        if valida_coordenadas(i, j+1):
             res[i][j+1] = self.valida_posicao(tabuleiro, (i, j+1))
 
         # Casas abaixo do rei
         if valida_coordenadas(i+1, j-1):
-            res[i+1][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
+            res[i+1][j-1] = self.valida_posicao(tabuleiro, (i+1, j-1))
         if valida_coordenadas(i+1, j):
             res[i+1][j] = self.valida_posicao(tabuleiro, (i+1, j))
-        if valida_coordenadas(i+1, j-1):
-            res[i+1][j-1] = self.valida_posicao(tabuleiro, (i+1, j-1))
+        if valida_coordenadas(i+1, j+1):
+            res[i+1][j+1] = self.valida_posicao(tabuleiro, (i+1, j+1))
 
         # Verifica se é possível fazer o Roque
         if not self.movimentou:
