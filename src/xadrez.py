@@ -139,7 +139,7 @@ class Xadrez:
 
         self.atualizacao = False
         display.flip()
-        display.set_caption('Brancas' if self.vez else 'Pretas')
+        display.set_caption(self.config.titulo(self.vez))
 
     def new(self):
         if self.escape:

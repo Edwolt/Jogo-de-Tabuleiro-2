@@ -90,6 +90,7 @@ class Menu:
             y += altura
 
         self.atualizacao = False
+        display.set_caption('Menu')
         display.flip()
 
     def new(self):
