@@ -376,7 +376,6 @@ class Peao(Peca):
         promocao = 0 if self.cor else 7
 
         if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
-            # TODO enpassant
             if i == promocao:
                 return Promocao(pos, nova_pos)
             else:
