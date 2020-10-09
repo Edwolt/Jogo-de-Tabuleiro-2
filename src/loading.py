@@ -1,3 +1,6 @@
+from pygame.event import Event
+from pygame import Surface
+
 class Loading():
     def __init__(self, janela):
         self.janela = janela
@@ -13,4 +16,5 @@ class Loading():
         pass
 
     def new(self):
+        self.janela.carregar()
         return self.janela

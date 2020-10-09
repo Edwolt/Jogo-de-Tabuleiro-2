@@ -7,12 +7,7 @@ from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from config import Config
 from pecas import MovimentoEspecial, CriadorPecas
 from menu import Menu
-
-
-def criar_xadrez():
-    xadrez = Xadrez()
-    xadrez.carregar()
-    return xadrez
+from loading import Loading
 
 
 class Xadrez:
@@ -156,3 +151,7 @@ class Xadrez:
             return menu
         else:
             return self
+
+
+def criar_xadrez():
+    return Loading(Xadrez())
