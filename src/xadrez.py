@@ -9,6 +9,12 @@ from pecas import MovimentoEspecial, CriadorPecas
 from menu import Menu
 
 
+def criar_xadrez():
+    xadrez = Xadrez()
+    xadrez.carregar()
+    return xadrez
+
+
 class Xadrez:
     """Toda a lógica do jogo"""
 
