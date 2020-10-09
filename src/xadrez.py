@@ -146,9 +146,7 @@ class Xadrez:
         if self.escape:
             self.atualizacao = True
             self.escape = False
-            menu = Menu(self, self.config)
-            menu.carregar()
-            return menu
+            return Menu(self, self.config)
         else:
             return self
 

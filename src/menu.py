@@ -37,9 +37,6 @@ class Menu:
         return [i[8:-3] for i in glob('configs/*py')]
 
     ##### Interface #####
-    def carregar(self) -> None:
-        return
-
     def event(self, event: Event) -> None:
         if event.type == KEYDOWN:
             if event.key == K_UP:
