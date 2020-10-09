@@ -422,6 +422,11 @@ def id_peca(nome: str, cor: bool) -> str:
     return identificador
 
 
+def todos_ids() -> list:
+    nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
+    return [id_peca(i, True) for i in nome_pecas] + [id_peca(i, False) for i in nome_pecas]
+
+
 def caminho_asset(identificador: str) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
     return f'assets/{identificador}.png'
@@ -433,17 +438,15 @@ class CriadorPecas():
     def __init__(self):
         self.assets = dict()
 
-    def carregar(self) -> None:
+    def carregar(self) -> tuple:
         """Carrega os assets das peças em RAM"""
+        identificadores = todos_ids()
+        n = len(identificadores)
 
-        for i in ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']:
-            id_branco = id_peca(i, True)
-            id_preto = id_peca(i, False)
-
-            self.assets.update({
-                id_branco: image.load(caminho_asset(id_branco)),
-                id_preto: image.load(caminho_asset(id_preto))
-            })
+        yield ((0, n))
+        for k, i in enumerate(identificadores):
+            self.assets[i] = image.load(caminho_asset(i))
+            yield ((k, n))
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""

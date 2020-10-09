@@ -16,5 +16,6 @@ class Loading():
         pass
 
     def new(self):
-        self.janela.carregar()
+        for i in self.janela.carregar():
+            pass
         return self.janela

@@ -73,9 +73,14 @@ class Xadrez:
             self.movimento = None
 
     ##### Interface #####
-    def carregar(self) -> None:
-        self.criador_pecas.carregar()
+    def carregar(self) -> tuple:
+        yield ((0, 0))
+        for i in self.criador_pecas.carregar():
+            yield ((0, 2)) + i
+
+        yield ((1, 2))
         self.tabuleiro = tabuleiro_novo(self.criador_pecas)
+        yield ((2, 2))
 
     def event(self, event: Event) -> None:
         """
