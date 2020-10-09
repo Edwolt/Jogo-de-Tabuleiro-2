@@ -151,5 +151,5 @@ class Xadrez:
             return self
 
 
-def criar_xadrez():
+def iniciar_xadrez():
     return Loading(Xadrez())
