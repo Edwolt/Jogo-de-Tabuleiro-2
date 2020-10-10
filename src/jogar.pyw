@@ -7,7 +7,7 @@ from xadrez import iniciar_xadrez
 from menu import Menu
 
 
-size = (800, 800)
+size = 800, 800
 framerate = 60
 
 if __name__ == '__main__':

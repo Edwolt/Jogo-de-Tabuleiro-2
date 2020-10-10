@@ -24,7 +24,7 @@ class Xadrez:
 
         self.click = None
         self.movimento = None
-        self.qsize = (0, 0)
+        self.qsize = 0, 0
         self.vez = True
 
     def movimenta_peca(self, pos, nova_pos) -> bool:
@@ -122,7 +122,7 @@ class Xadrez:
             return
 
         size = canva.get_size()
-        self.qsize = (size[0] // 8, size[1] // 8)
+        self.qsize = size[0] // 8, size[1] // 8
 
         for y, linha in enumerate(self.tabuleiro):
             for x, peca in enumerate(linha):
@@ -140,7 +140,7 @@ class Xadrez:
                 if peca:
                     peca.draw(surf)
 
-                pos = (self.qsize[0] * x, self.qsize[1] * y)
+                pos = x * self.qsize[0], y * self.qsize[1]
                 canva.blit(surf, pos)
 
         self.atualizacao = False

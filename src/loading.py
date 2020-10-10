@@ -30,7 +30,7 @@ class Loading():
         y = 10
         x = 10
         h = 15
-        w = canvas.get_height() - 2*x
+        w = canvas.get_height() - 2 * x
 
         for i in barras:
             tam, val = i

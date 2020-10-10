@@ -3,19 +3,16 @@ from pygame import Surface
 
 class Config:
     def __init__(self):
-        self.vazio = (
-            (255, 255, 255),
-            (0, 0, 0)
-        )
-        self.click = (255, 0, 0)
-        self.movimento = (0, 255, 255)
-        self.background = (0, 0, 0)
-        self.foreground = (255, 255, 255)
+        self.vazio = (255, 255, 255), (0, 0, 0)
+        self.click = 255, 0, 0
+        self.movimento = 0, 255, 255
+        self.background = 0, 0, 0
+        self.foreground = 255, 255, 255
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None):
         i, j = pos
 
-        cor = (0, 0, 0)
+        cor = 0, 0, 0
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2]
         elif tipo == 'click':

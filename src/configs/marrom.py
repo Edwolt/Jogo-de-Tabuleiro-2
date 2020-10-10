@@ -1,13 +1,11 @@
 from pygame import Surface
 
+
 class Config:
     def __init__(self):
-        self.vazio = (
-            (214, 165, 132),
-            (124, 49, 0)
-        )
-        self.click = (153, 0, 0)
-        self.movimento = (229, 126, 0)
+        self.vazio = (214, 165, 132), (124, 49, 0)
+        self.click = 153, 0, 0
+        self.movimento = 229, 126, 0
         # 'menu': (214, 165, 132),
         # 'cor_fonte': (124, 49, 0)
 

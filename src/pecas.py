@@ -323,14 +323,7 @@ class AvancoDuplo(MovimentoEspecial):
         mover_peca(tabuleiro, self.pos, self.nova_pos)
 
     def update_flags(self, flags: list) -> None:
-        flags.append(
-            (
-                'enpassant',
-                self.cor,
-                self.meio,
-                self.nova_pos
-            )
-        )
+        flags.append(('enpassant', self.cor, self.meio, self.nova_pos))
 
 
 class EnPassant(MovimentoEspecial):

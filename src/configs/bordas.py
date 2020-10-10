@@ -4,12 +4,9 @@ from pygame import draw
 
 class Config:
     def __init__(self):
-        self.vazio = (
-            (214, 165, 132),
-            (124, 49, 0)
-        )
-        self.click = (153, 0, 0)
-        self.movimento = (229, 126, 0)
+        self.vazio = (214, 165, 132), (124, 49, 0)
+        self.click = 153, 0, 0
+        self.movimento = 229, 126, 0
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         size = canva.get_size()
@@ -22,7 +19,7 @@ class Config:
 
         i, j = pos
 
-        cor = (0, 0, 0)
+        cor = 0, 0, 0
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2]
         elif tipo == 'click':
@@ -38,7 +35,7 @@ class Config:
         canva.fill((0, 0, 0))
 
     def menu_cor(self, texto: str, selecionado: bool) -> tuple:
-        return (255, 255, 255)
+        return 255, 255, 255
 
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
