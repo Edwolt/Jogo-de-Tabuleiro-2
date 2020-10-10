@@ -6,7 +6,7 @@ from pygame import display, draw
 class Loading():
     def __init__(self, janela):
         self.janela = janela
-        self.load = self.janela.carregar()
+        self.carregamento = self.janela.carregar()
         self.pronto = False
 
     def event(self, event: Event) -> None:
@@ -15,12 +15,13 @@ class Loading():
     # TODO Quando o draw for chamado carregar todos os itens e ir atualizando a Tela
     # Nesse caso o draw precisaria de outro nome
     def draw(self, canvas: Surface) -> None:
-        vermelho = (255, 0, 0)
-        verde = (0, 255, 0)
-
         canvas.fill((0, 0, 0))
+
+        cor_falta = (255, 0, 0)
+        cor_carregado = (0, 255, 0)
+
         try:
-            barras = next(self.load)
+            barras = next(self.carregamento)
         except StopIteration:
             self.pronto = True
             return
@@ -28,13 +29,24 @@ class Loading():
         w, h = canvas.get_size()
         y = 10
         x = 10
+        h = 15
+        w = canvas.get_height() - 2*x
 
         for i in barras:
             tam, val = i
-            bverde = Rect(x, y, (w - 2*x) * (val/tam), 15)
-            bvermelho = Rect(x, y, w - 2*x, 15)
-            draw.rect(canvas, vermelho, bvermelho)
-            draw.rect(canvas, verde, bverde)
+
+            draw.rect(
+                canvas,
+                cor_falta,
+                Rect(x, y, w, h)
+            )
+
+            draw.rect(
+                canvas,
+                cor_carregado,
+                Rect(x, y, w * (val/tam), h)
+            )
+
             display.flip()
             y += 20
 
