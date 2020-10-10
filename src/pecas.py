@@ -443,10 +443,10 @@ class CriadorPecas():
         identificadores = todos_ids()
         n = len(identificadores)
 
-        yield ((0, n))
+        yield [(n, 0)]
         for k, i in enumerate(identificadores):
             self.assets[i] = image.load(caminho_asset(i))
-            yield ((k, n))
+            yield [(n, k)]
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""

@@ -74,13 +74,13 @@ class Xadrez:
 
     ##### Interface #####
     def carregar(self) -> tuple:
-        yield ((0, 0))
+        yield [(2, 0)]
         for i in self.criador_pecas.carregar():
-            yield ((0, 2)) + i
+            yield [(2, 0)] + i
 
-        yield ((1, 2))
+        yield [(2, 1)]
         self.tabuleiro = tabuleiro_novo(self.criador_pecas)
-        yield ((2, 2))
+        yield [(2, 2)]
 
     def event(self, event: Event) -> None:
         """
