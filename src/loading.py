@@ -34,7 +34,7 @@ class Loading():
         for i in barras:
             tam, val = i
             bvermelho = Rect(x, y, (w - 2*x) * (val/tam), 15)
-            bverde = Rect(x, y, (w - 2*x) * (1 - val/tam), 15)
+            bverde = Rect(x, y, w - 2*x, 15)
             draw.rect(canvas, verde, bverde)
             draw.rect(canvas, vermelho, bvermelho)
             display.flip()
