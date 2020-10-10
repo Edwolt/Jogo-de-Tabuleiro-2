@@ -8,7 +8,7 @@ from menu import Menu
 
 
 size = (800, 800)
-framerate = 1
+framerate = 60
 
 if __name__ == '__main__':
     pygame.init()

@@ -21,9 +21,7 @@ class Loading():
         canvas.fill((0, 0, 0))
         try:
             barras = next(self.load)
-            print(barras)
         except StopIteration:
-            print('pronto')
             self.pronto = True
             return
 
@@ -33,10 +31,10 @@ class Loading():
 
         for i in barras:
             tam, val = i
-            bvermelho = Rect(x, y, (w - 2*x) * (val/tam), 15)
-            bverde = Rect(x, y, w - 2*x, 15)
-            draw.rect(canvas, verde, bverde)
+            bverde = Rect(x, y, (w - 2*x) * (val/tam), 15)
+            bvermelho = Rect(x, y, w - 2*x, 15)
             draw.rect(canvas, vermelho, bvermelho)
+            draw.rect(canvas, verde, bverde)
             display.flip()
             y += 20
 
