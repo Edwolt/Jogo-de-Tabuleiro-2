@@ -3,10 +3,7 @@ from pygame import Surface
 
 class Config:
     def __init__(self):
-        self.vazio = (
-            (255, 255, 255),  # Branco
-            (0, 0, 0)  # Preto
-        )
+        self.vazio = (94, 255, 91), (0, 14, 173)
         self.click = 255, 0, 0
         self.movimento = 0, 255, 255
         self.background = 0, 0, 0
