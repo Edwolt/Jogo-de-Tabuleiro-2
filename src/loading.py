@@ -28,7 +28,6 @@ class Loading():
         cor_falta = 255, 0, 0
         cor_carregado = 0, 255, 0
 
-        w, h = canvas.get_size()
         y = 10
         x = 10
         h = 15
