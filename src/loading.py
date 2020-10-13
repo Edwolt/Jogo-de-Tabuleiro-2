@@ -11,7 +11,7 @@ class Loading():
         self.barras = [(1, 0)]
         self.pronto = False
 
-        self.thread = Process(target=self.carregar(), args=())
+        self.processo = Process(self.carregar(), ())
         self.processo.start()
 
     def event(self, event: Event) -> None:
