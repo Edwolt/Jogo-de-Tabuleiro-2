@@ -20,35 +20,32 @@ class Loading():
         cor_falta = 255, 0, 0
         cor_carregado = 0, 255, 0
 
-        try:
-            barras = next(self.carregamento)
-        except StopIteration:
-            self.pronto = True
-            return
+        for barras in self.carregamento:
+            w, h = canvas.get_size()
+            y = 10
+            x = 10
+            h = 15
+            w = canvas.get_height() - 2 * x
 
-        w, h = canvas.get_size()
-        y = 10
-        x = 10
-        h = 15
-        w = canvas.get_height() - 2 * x
+            for i in barras:
+                tam, val = i
 
-        for i in barras:
-            tam, val = i
+                draw.rect(
+                    canvas,
+                    cor_falta,
+                    Rect(x, y, w, h)
+                )
 
-            draw.rect(
-                canvas,
-                cor_falta,
-                Rect(x, y, w, h)
-            )
+                draw.rect(
+                    canvas,
+                    cor_carregado,
+                    Rect(x, y, w * (val/tam), h)
+                )
 
-            draw.rect(
-                canvas,
-                cor_carregado,
-                Rect(x, y, w * (val/tam), h)
-            )
+                display.flip()
+                y += 20
 
-            display.flip()
-            y += 20
+        self.pronto = True
 
     def new(self):
         if self.pronto:
