@@ -10,26 +10,41 @@ from glob import glob
 from recursos import Recursos
 
 
+class Opcao:
+    def __init__(self, nome, funcao):
+        self.nome = nome
+        self.funcao = funcao
+
+
+def sair():
+    pygame.quit()
+    quit(0)
+
+
+primeiro_menu = (
+    Opcao('Config', lambda: print('Config não implementado')),
+    Opcao('Imagens', lambda: print('Imagens não implementado')),
+    Opcao('Fonte', lambda: print('Fonte não implementado')),
+    Opcao('Desfazer', lambda: print('Desfazer não implementado')),
+    Opcao('Voltar', lambda: print('Voltar não implementado')),
+    Opcao('Sair', sair)
+)
+
+
 class Menu:
-    def __init__(self, xadrez, recursos: Recursos):
+    def __init__(self, xadrez, recursos: Recursos, opcoes: tuple = primeiro_menu):
         self.xadrez = xadrez
         self.recursos = recursos
 
         self.escape = False
+        self.enter = None
         self.atualizacao = True
 
         self.fonte = Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             50
         )
-        self.opcoes = [
-            'Config',
-            'Imagens',
-            'Fonte',
-            'Desfazer',
-            'Voltar',
-            'Sair'
-        ]
+        self.opcoes = opcoes
 
         self.sel = 0
 
@@ -57,13 +72,7 @@ class Menu:
 
             elif event.key == K_RETURN:
                 self.atualizacao = True
-                opcao = self.opcoes[self.sel].lower()
-                if opcao == 'sair':
-                    pygame.quit()
-                    quit(0)
-                else:
-                    print(f'{self.opcoes[self.sel]} não implementado')
-                    self.escape = True
+                self.opcoes[self.sel].funcao()
 
             elif event.key == K_ESCAPE:
                 self.escape = True
@@ -78,7 +87,7 @@ class Menu:
         y = 0
         for num, i in enumerate(self.opcoes):
             texto_str = '> ' if self.sel == num else '  '
-            texto_str += i
+            texto_str += i.nome
 
             texto = self.fonte.render(
                 texto_str,
@@ -93,7 +102,9 @@ class Menu:
         display.flip()
 
     def new(self):
-        if self.escape:
+        if self.enter:
+            return self.enter
+        elif self.escape:
             self.escape = False
             return self.xadrez
         else:
