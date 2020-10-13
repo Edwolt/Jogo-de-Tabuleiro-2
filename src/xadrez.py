@@ -4,7 +4,7 @@ from pygame import Surface
 from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
-from config import Config
+from recursos import Recursos
 from pecas import MovimentoEspecial, CriadorPecas
 from menu import Menu
 from loading import Loading
@@ -13,13 +13,13 @@ from loading import Loading
 class Xadrez:
     """Toda a lógica do jogo"""
 
-    def __init__(self):
+    def __init__(self, recursos: Recursos):
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
         self.escape = False
         self.flags = list()
 
-        self.config = Config('bordas')
+        self.recursos = recursos
         self.criador_pecas: CriadorPecas = CriadorPecas()
 
         self.click = None
@@ -135,7 +135,7 @@ class Xadrez:
                     tipo = 'movimento'
 
                 surf = Surface(self.qsize)
-                self.config.quadrado(surf, (x, y), tipo)
+                self.recursos.config.quadrado(surf, (x, y), tipo)
 
                 if peca:
                     peca.draw(surf)
@@ -145,16 +145,16 @@ class Xadrez:
 
         self.atualizacao = False
         display.flip()
-        display.set_caption(self.config.titulo(self.vez))
+        display.set_caption(self.recursos.config.titulo(self.vez))
 
     def new(self):
         if self.escape:
             self.atualizacao = True
             self.escape = False
-            return Menu(self, self.config)
+            return Menu(self, self.recursos)
         else:
             return self
 
 
-def iniciar_xadrez():
-    return Loading(Xadrez())
+def iniciar_xadrez(recursos: Recursos = Recursos('padrao')):
+    return Loading(Xadrez(recursos))

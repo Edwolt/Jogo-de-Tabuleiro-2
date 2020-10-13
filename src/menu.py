@@ -7,11 +7,13 @@ from pygame.locals import *
 
 from glob import glob
 
+from recursos import Recursos
+
 
 class Menu:
-    def __init__(self, xadrez, config):
+    def __init__(self, xadrez, recursos: Recursos):
         self.xadrez = xadrez
-        self.config = config
+        self.recursos = recursos
 
         self.escape = False
         self.atualizacao = True
@@ -70,7 +72,7 @@ class Menu:
         if not self.atualizacao:
             return
 
-        self.config.menu_fundo(canva)
+        self.recursos.config.menu_fundo(canva)
 
         altura = self.fonte.size('')[1]
         y = 0
@@ -81,7 +83,7 @@ class Menu:
             texto = self.fonte.render(
                 texto_str,
                 0,
-                self.config.menu_cor(texto_str, self.sel == num)
+                self.recursos.config.menu_cor(texto_str, self.sel == num)
             )
             canva.blit(texto, (0, y))
             y += altura

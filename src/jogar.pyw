@@ -6,17 +6,17 @@ from pygame.locals import *
 from xadrez import iniciar_xadrez
 from menu import Menu
 from loading import Loading
+from recursos import Recursos
 
-
-size = 800, 800
-framerate = 60
 
 if __name__ == '__main__':
     pygame.init()
-    screen = display.set_mode(size)
+    recursos = Recursos('bordas', size=(800, 800), framerate=60)
+
+    screen = display.set_mode(recursos.size)
     clock = Clock()
 
-    janela = iniciar_xadrez()
+    janela = iniciar_xadrez(recursos)
 
     while True:
         for event in pygame.event.get():
@@ -30,4 +30,4 @@ if __name__ == '__main__':
         janela = janela.new()
 
         if not isinstance(janela, Loading):
-            clock.tick(framerate)
+            clock.tick(recursos.framerate)
