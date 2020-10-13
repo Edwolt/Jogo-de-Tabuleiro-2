@@ -6,7 +6,8 @@ from pygame import Surface
 
 from util import tabuleiro_false
 
-""" TODO
+# TODO protegendo rei
+"""
 Ideia para fazer o movimento:
 [ ] Encontra onde está o rei da mesma cor
 [ ] Descobre quais pecas não podem sair do lugar por que criam xeque

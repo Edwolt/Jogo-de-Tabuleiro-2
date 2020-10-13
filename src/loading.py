@@ -22,9 +22,6 @@ class Loading():
         self.barras = [(1, 1)]
         self.pronto = True
 
-    # TODO Quando o draw for chamado carregar todos os itens e ir atualizando a Tela
-    # Nesse caso o draw precisaria de outro nome
-
     def draw(self, canvas: Surface) -> None:
         canvas.fill((0, 0, 0))
 
