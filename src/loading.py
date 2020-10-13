@@ -9,7 +9,6 @@ from random import randint
 class Loading():
     def __init__(self, janela):
         self.janela = janela
-        self.barras = [(1, 0)]
         self.pronto = False
         self.carregamento = self.janela.carregar()
 
@@ -27,39 +26,40 @@ class Loading():
     # Nesse caso o draw precisaria de outro nome
 
     def draw(self, canvas: Surface) -> None:
+        canvas.fill((0, 0, 0))
 
         cor_falta = 255, 0, 0
         cor_carregado = 0, 255, 0
 
         w, h = canvas.get_size()
+        y = 10
         x = 10
         h = 15
         w = canvas.get_height() - 2 * x
 
-        for barras in self.janela.carregar():
-            canvas.fill((0, 0, 0))
-            y = 10
+        try:
+            barras = next(self.carregamento)
+        except StopIteration:
+            self.pronto = True
+            return
 
-            for i in barras:
-                tam, val = i
+        for i in barras:
+            tam, val = i
 
-                draw.rect(
-                    canvas,
-                    cor_falta,
-                    Rect(x, y, w, h)
-                )
+            draw.rect(
+                canvas,
+                cor_falta,
+                Rect(x, y, w, h)
+            )
 
-                draw.rect(
-                    canvas,
-                    cor_carregado,
-                    Rect(x, y, w * (val/tam), h)
-                )
+            draw.rect(
+                canvas,
+                cor_carregado,
+                Rect(x, y, w * (val/tam), h)
+            )
 
-                display.flip()
-                y += 20
-            sleep(randint(0, 2))
-
-        self.pronto = True
+            display.flip()
+            y += 20
 
     def new(self):
         if self.pronto:
