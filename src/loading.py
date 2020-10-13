@@ -17,8 +17,8 @@ class Loading():
     def draw(self, canvas: Surface) -> None:
         canvas.fill((0, 0, 0))
 
-        cor_falta = (255, 0, 0)
-        cor_carregado = (0, 255, 0)
+        cor_falta = 255, 0, 0
+        cor_carregado = 0, 255, 0
 
         try:
             barras = next(self.carregamento)
