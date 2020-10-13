@@ -2,7 +2,8 @@ from pygame.event import Event
 from pygame import Surface, Rect
 from pygame import display, draw
 
-from multiprocessing import Process
+from time import sleep
+from random import randint
 
 
 class Loading():
@@ -10,9 +11,7 @@ class Loading():
         self.janela = janela
         self.barras = [(1, 0)]
         self.pronto = False
-
-        self.processo = Process(self.carregar(), ())
-        self.processo.start()
+        self.carregamento = self.janela.carregar()
 
     def event(self, event: Event) -> None:
         pass
@@ -28,39 +27,42 @@ class Loading():
     # Nesse caso o draw precisaria de outro nome
 
     def draw(self, canvas: Surface) -> None:
-        canvas.fill((0, 0, 0))
 
         cor_falta = 255, 0, 0
         cor_carregado = 0, 255, 0
 
         w, h = canvas.get_size()
-        y = 10
         x = 10
         h = 15
         w = canvas.get_height() - 2 * x
 
-        print(self.barras)
-        for i in self.barras:
-            tam, val = i
+        for barras in self.janela.carregar():
+            canvas.fill((0, 0, 0))
+            y = 10
 
-            draw.rect(
-                canvas,
-                cor_falta,
-                Rect(x, y, w, h)
-            )
+            for i in barras:
+                tam, val = i
 
-            draw.rect(
-                canvas,
-                cor_carregado,
-                Rect(x, y, w * (val/tam), h)
-            )
+                draw.rect(
+                    canvas,
+                    cor_falta,
+                    Rect(x, y, w, h)
+                )
 
-            display.flip()
-            y += 20
+                draw.rect(
+                    canvas,
+                    cor_carregado,
+                    Rect(x, y, w * (val/tam), h)
+                )
+
+                display.flip()
+                y += 20
+            sleep(randint(0, 2))
+
+        self.pronto = True
 
     def new(self):
         if self.pronto:
-            self.processo.join()
             return self.janela
         else:
             return self

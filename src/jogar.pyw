@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from xadrez import iniciar_xadrez
 from menu import Menu
+from loading import Loading
 
 
 size = 800, 800
@@ -28,4 +29,5 @@ if __name__ == '__main__':
         janela.draw(screen)
         janela = janela.new()
 
-        clock.tick(framerate)
+        if not isinstance(janela, Loading):
+            clock.tick(framerate)
