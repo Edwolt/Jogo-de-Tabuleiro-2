@@ -12,5 +12,8 @@ class Recursos:
         self.size = size
         self.framerate = framerate
 
+    def set_config(self, config):
+        self.config = Config(config)
+
     def carregar(self):
         pass
