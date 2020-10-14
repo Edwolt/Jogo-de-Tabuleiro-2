@@ -2,18 +2,18 @@ import importlib
 
 
 def Config(nome: str):
-    return importlib.import_module(f'configs.{nome}').Config()
+    return importlib.import_module(f'configs.{nome}').Config()  # type: ignore
 
 
 # TODO carregar todas as imagens aqui
 class Recursos:
-    def __init__(self, config, size=(800, 800), framerate=60):
+    def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60):
         self.config = Config(config)
         self.size = size
         self.framerate = framerate
 
-    def set_config(self, config):
+    def set_config(self, config) -> None:
         self.config = Config(config)
 
     def carregar(self):
-        pass
+        ...

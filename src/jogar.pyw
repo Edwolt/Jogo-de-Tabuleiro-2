@@ -1,7 +1,7 @@
-import pygame
-from pygame import display
-from pygame.time import Clock
-from pygame.locals import *
+import pygame  # type: ignore
+from pygame import display  # type: ignore
+from pygame.time import Clock  # type: ignore
+from pygame.locals import *  # type: ignore
 
 from xadrez import iniciar_xadrez
 from menu import Menu

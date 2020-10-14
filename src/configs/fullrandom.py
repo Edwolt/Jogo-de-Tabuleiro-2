@@ -1,4 +1,4 @@
-from pygame import Surface
+from pygame import Surface  # type: ignore
 from random import randint
 
 
@@ -14,7 +14,6 @@ class Config:
             ('Chess', 'White', 'Black'),
             ('Chess Game', 'Player 1', 'Player 2'),
         )
-
 
         self.vez = True
         self.titulo_anterior = '.'

@@ -1,5 +1,5 @@
-from pygame import Surface, Rect
-from pygame import draw
+from pygame import Surface, Rect  # type: ignore
+from pygame import draw  # type: ignore
 
 
 class Config:

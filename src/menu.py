@@ -1,9 +1,11 @@
-import pygame
-from pygame import display
-from pygame import Surface
-from pygame.event import Event
-from pygame.font import Font
-from pygame.locals import *
+import pygame  # type: ignore
+from pygame import display  # type: ignore
+from pygame import Surface  # type: ignore
+from pygame.event import Event  # type: ignore
+from pygame.font import Font  # type: ignore
+from pygame.locals import *  # type: ignore
+
+from typing import Any
 
 from glob import glob
 
@@ -19,6 +21,7 @@ class Submenu:
     def __init__(self, recursos: Recursos):
         self.recursos = recursos
         self.sel = 0
+        self.opcoes: Any
 
     @property
     def tamanho(self) -> int:
@@ -136,7 +139,7 @@ class Menu:
         )
 
         if opcoes is None:
-            self.opcoes = MenuPrincipal(self.recursos)
+            self.opcoes: Submenu = MenuPrincipal(self.recursos)
         else:
             self.opcoes = opcoes
 

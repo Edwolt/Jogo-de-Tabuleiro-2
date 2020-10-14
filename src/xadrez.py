@@ -1,7 +1,9 @@
-from pygame.locals import *
-from pygame import display
-from pygame import Surface
-from pygame.event import Event
+from pygame.locals import *  # type: ignore
+from pygame import display  # type: ignore
+from pygame import Surface  # type: ignore
+from pygame.event import Event  # type: ignore
+
+from typing import Any, Optional, Tuple
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from recursos import Recursos
@@ -19,15 +21,15 @@ class Xadrez:
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
         self.escape = False
-        self.flags = list()
+        self.flags: list = list()
 
         self.criador_pecas: CriadorPecas = CriadorPecas()
-        self.click = None
-        self.movimento = None
+        self.click: Optional[Tuple[int, int]] = None
+        self.movimento: Any = None
         self.qsize = 0, 0
         self.vez = True
 
-    def movimenta_peca(self, pos, nova_pos) -> bool:
+    def movimenta_peca(self, pos: tuple, nova_pos: tuple) -> bool:
         """
         Movimenta a peça se o movimento for validao
         retornando se foi possível ou não

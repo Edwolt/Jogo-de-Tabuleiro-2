@@ -1,8 +1,8 @@
 """Peças de xadrez"""
 
-import pygame
-from pygame import draw, transform, image
-from pygame import Surface
+import pygame  # type: ignore
+from pygame import draw, transform, image  # type: ignore
+from pygame import Surface  # type: ignore
 
 from util import tabuleiro_false
 
@@ -69,6 +69,7 @@ class Peca():
         :param sprite: Uma Surface com a imagem da peca
         :param cor: True: 'branco'; False: 'preto'
         """
+        self.sprite: Surface
         pass
 
     def draw(self, canva) -> None:

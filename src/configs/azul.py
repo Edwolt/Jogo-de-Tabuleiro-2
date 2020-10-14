@@ -1,4 +1,4 @@
-from pygame import Surface
+from pygame import Surface  # type: ignore
 
 
 class Config:

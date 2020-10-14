@@ -1,6 +1,6 @@
-from pygame.event import Event
-from pygame import Surface, Rect
-from pygame import display, draw
+from pygame.event import Event  # type: ignore
+from pygame import Surface, Rect  # type: ignore
+from pygame import display, draw  # type: ignore
 
 from recursos import Recursos
 

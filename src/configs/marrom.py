@@ -1,4 +1,4 @@
-from pygame import Surface
+from pygame import Surface  # type: ignore
 
 
 class Config:
@@ -30,7 +30,7 @@ class Config:
     def menu_cor(self, texto: str, selecionado: bool) -> tuple:
         return (255, 255, 255)
 
-    def titulo(self, vez: bool) -> None:
+    def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
 
     # 'menu': lambda cores, menu: self.cores['menu'],
