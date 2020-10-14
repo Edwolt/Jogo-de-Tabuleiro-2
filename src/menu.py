@@ -14,6 +14,7 @@ class Submenu:
     def __init__(self):
         self.sel = 0
 
+    @property
     def tamanho(self) -> int:
         return len(self.opcoes)
 
@@ -27,16 +28,16 @@ class Submenu:
         if self.sel > 0:
             self.sel -= 1
         else:
-            self.sel = self.opcoes.tamanho() - 1
+            self.sel = self.opcoes.tamanho - 1
 
     def descer(self):
-        if self.sel < self.tamanho() - 1:
+        if self.sel < self.tamanho - 1:
             self.sel += 1
         else:
             self.sel = 0
 
     def listar(self) -> tuple:
-        for i in range(self.tamanho()):
+        for i in range(self.tamanho):
             yield self.sel == i, self.nome(i)
 
     def voltar(self):
@@ -55,6 +56,7 @@ class MenuConfigs(Submenu):
         return [i[8:-3] for i in glob('configs/*py')]
 
     ##### Interface #####
+    @property
     def tamanho(self) -> int:
         return len(self.configs) + 1
 
