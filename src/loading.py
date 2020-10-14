@@ -2,12 +2,11 @@ from pygame.event import Event
 from pygame import Surface, Rect
 from pygame import display, draw
 
-from time import sleep
-from random import randint
+from recursos import Recursos
 
 
 class Loading():
-    def __init__(self, janela):
+    def __init__(self, recursos: Recursos, janela):
         self.janela = janela
         self.pronto = False
         self.carregamento = self.janela.carregar()

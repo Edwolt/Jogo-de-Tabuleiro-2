@@ -14,14 +14,14 @@ class Xadrez:
     """Toda a lógica do jogo"""
 
     def __init__(self, recursos: Recursos):
+        self.recursos = recursos
+
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
         self.escape = False
         self.flags = list()
 
-        self.recursos = recursos
         self.criador_pecas: CriadorPecas = CriadorPecas()
-
         self.click = None
         self.movimento = None
         self.qsize = 0, 0
@@ -151,10 +151,10 @@ class Xadrez:
         if self.escape:
             self.atualizacao = True
             self.escape = False
-            return Menu(self, self.recursos)
+            return Menu(self.recursos, self)
         else:
             return self
 
 
 def iniciar_xadrez(recursos: Recursos = Recursos('padrao')):
-    return Loading(Xadrez(recursos))
+    return Loading(recursos, Xadrez(recursos))

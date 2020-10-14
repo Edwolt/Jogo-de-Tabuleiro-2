@@ -11,7 +11,8 @@ from recursos import Recursos
 
 
 class Submenu:
-    def __init__(self):
+    def __init__(self, recursos: Recursos):
+        self.recursos = recursos
         self.sel = 0
 
     @property
@@ -45,8 +46,8 @@ class Submenu:
 
 
 class MenuConfigs(Submenu):
-    def __init__(self, anterior):
-        super().__init__()
+    def __init__(self, recursos: Recursos, anterior):
+        super().__init__(recursos)
         self.anterior = anterior
         self.configs = self.listar_configs()
 
@@ -74,8 +75,8 @@ class MenuConfigs(Submenu):
 
 
 class MenuPrincipal(Submenu):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, recursos: Recursos):
+        super().__init__(recursos)
         self.opcoes = (
             'Config',
             'Imagens',
@@ -90,7 +91,7 @@ class MenuPrincipal(Submenu):
         i = self.sel if i is None else i
         opcao = self.nome(i).lower()
         if opcao == 'config':
-            return MenuConfigs(self)
+            return MenuConfigs(self.recursos, self)
         elif opcao == 'sair':
             pygame.quit()
             quit(0)
@@ -102,18 +103,20 @@ class MenuPrincipal(Submenu):
 
 
 class Menu:
-    def __init__(self, xadrez, recursos: Recursos, opcoes: Submenu = MenuPrincipal()):
-        self.xadrez = xadrez
+    def __init__(self, recursos: Recursos, xadrez, opcoes: Submenu = None):
         self.recursos = recursos
+        self.xadrez = xadrez
 
-        self.enter = None
         self.atualizacao = True
-
         self.fonte = Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             50
         )
-        self.opcoes = opcoes
+
+        if opcoes is None:
+            self.opcoes = MenuPrincipal(self.recursos)
+        else:
+            self.opcoes = opcoes
 
     ##### Interface #####
     def event(self, event: Event) -> None:
