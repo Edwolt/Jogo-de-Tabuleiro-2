@@ -12,32 +12,46 @@ from recursos import Recursos
 
 class Submenu:
     def __init__(self, recursos: Recursos):
+        """	
+        Classe abstrata para criar menus de opções	
+        A objeto armazena qual opção está armazenado nela e é capaz de executá-la	
+        """
         self.recursos = recursos
         self.sel = 0
 
     @property
     def tamanho(self) -> int:
+        """:return: Número de opções"""
         return len(self.opcoes)
 
     def nome(self, key) -> str:
+        """Retorna o neme da opção de numero"""
         return self.opcoes[key]
 
     def executar(self, key):
+        """Executa a opção de número key"""
         self.funcoes[key]()
 
     def subir(self):
+        """Muda o seletor para a opção de cima"""
         if self.sel > 0:
             self.sel -= 1
         else:
             self.sel = self.opcoes.tamanho - 1
 
     def descer(self):
+        """Muda o seletor para a opção de baixo"""
         if self.sel < self.tamanho - 1:
             self.sel += 1
         else:
             self.sel = 0
 
     def listar(self):
+        """	
+        :yield: (selecionado, nome)	
+        selecionado: se é aquela opção que está selecionada	
+        nome: nome da opção selecionada	
+        """
         for i in range(self.tamanho):
             yield self.sel == i, self.nome(i)
 
@@ -49,12 +63,17 @@ class MenuConfigs(Submenu):
     def __init__(self, recursos: Recursos, anterior):
         super().__init__(recursos)
         self.anterior = anterior
-        self.configs = self.listar_configs()
+        self.configs = list(self.listar_configs())
 
-    def listar_configs(self) -> list:
+    def listar_configs(self):
+        """	
+        :yield: [description]	
+        :rtype: Iterator[list]	
+        """
         # 8 por causa do nome da pasta
         # -3 por causa da extensao
-        return [i[8:-3] for i in glob('configs/*py')]
+        for i in glob('configs/*py'):
+            yield i[8:-3]
 
     ##### Interface #####
     @property
