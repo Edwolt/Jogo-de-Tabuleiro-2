@@ -73,7 +73,7 @@ class Xadrez:
             self.movimento = None
 
     ##### Interface #####
-    def carregar(self) -> tuple:
+    def carregar(self):
         yield [(2, 0)]
         for i in self.criador_pecas.carregar():
             yield [(2, 0)] + i
