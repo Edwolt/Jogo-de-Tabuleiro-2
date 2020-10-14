@@ -1,11 +1,8 @@
-from pygame import Surface  # type: ignore
+from pygame import Surface
 from random import randint
 
-from typing import Tuple, Optional
-Color = Tuple[int, int, int]
 
-
-def randcor() -> Color:
+def randcor() -> tuple:
     return randint(0, 255), randint(0, 255), randint(0, 255)
 
 
@@ -21,13 +18,13 @@ class Config:
         self.vez = True
         self.titulo_anterior = '.'
 
-    def quadrado(self, canva: Surface, pos: Tuple[int, int], tipo: str, complemento: Optional[list] = None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         canva.fill(randcor())
 
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(randcor())
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
         return randcor()
 
     def titulo(self, vez: bool) -> str:

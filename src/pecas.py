@@ -1,8 +1,6 @@
-"""Peças de xadrez"""
-
-import pygame  # type: ignore
-from pygame import draw, transform, image  # type: ignore
-from pygame import Surface  # type: ignore
+import pygame
+from pygame import draw, transform, image
+from pygame import Surface
 
 from util import tabuleiro_false
 
@@ -28,7 +26,7 @@ def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
 class MovimentoEspecial():
     """Classe abstrata para os movimentos especiais"""
 
-    def executar(self, tabuleiro: list, criador_pecas, flags: list) -> None:
+    def executar(self, tabuleiro: list, flags: list, criador_pecas) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro
@@ -48,7 +46,7 @@ def valida_coordenadas(a: int, b: int = 0) -> bool:
     return 0 <= a < 8 and 0 <= b < 8
 
 
-def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: list, cor: bool) -> None:
+def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: tuple, cor: bool) -> None:
     for (di, dj) in direcoes:
         i, j = pos
         i, j = i + di, j + dj
@@ -69,7 +67,6 @@ class Peca():
         :param sprite: Uma Surface com a imagem da peca
         :param cor: True: 'branco'; False: 'preto'
         """
-        self.sprite: Surface
         pass
 
     def draw(self, canva) -> None:
@@ -433,7 +430,7 @@ class CriadorPecas():
     def __init__(self):
         self.assets = dict()
 
-    def carregar(self) -> tuple:
+    def carregar(self):
         """Carrega os assets das peças em RAM"""
         identificadores = todos_ids()
         n = len(identificadores)

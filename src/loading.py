@@ -1,19 +1,15 @@
-from pygame.event import Event  # type: ignore
-from pygame import Surface, Rect  # type: ignore
-from pygame import display, draw  # type: ignore
+from pygame.event import Event
+from pygame import Surface, Rect
+from pygame import display, draw
 
 from recursos import Recursos
-
-from typing import Tuple
-from collections.abc import Generator
-Color = Tuple[int, int, int]
 
 
 class Loading():
     def __init__(self, recursos: Recursos, janela):
         self.janela = janela
-        self.pronto: bool = False
-        self.carregamento: Generator = self.janela.carregar()
+        self.pronto = False
+        self.carregamento = self.janela.carregar()
 
     def event(self, event: Event) -> None:
         pass
@@ -28,8 +24,8 @@ class Loading():
     def draw(self, canvas: Surface) -> None:
         canvas.fill((0, 0, 0))
 
-        cor_falta: Color = 255, 0, 0
-        cor_carregado: Color = 0, 255, 0
+        cor_falta = 255, 0, 0
+        cor_carregado = 0, 255, 0
 
         y = 10
         x = 10

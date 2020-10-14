@@ -1,9 +1,7 @@
-from pygame.locals import *  # type: ignore
-from pygame import display  # type: ignore
-from pygame import Surface  # type: ignore
-from pygame.event import Event  # type: ignore
-
-from typing import Any, Optional, Tuple
+from pygame.locals import *
+from pygame import display
+from pygame import Surface
+from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from recursos import Recursos
@@ -21,11 +19,11 @@ class Xadrez:
         self.atualizacao = True
         self.tabuleiro = tabuleiro_none()
         self.escape = False
-        self.flags: list = list()
+        self.flags = list()
 
         self.criador_pecas: CriadorPecas = CriadorPecas()
-        self.click: Optional[Tuple[int, int]] = None
-        self.movimento: Any = None
+        self.click = None
+        self.movimento = None
         self.qsize = 0, 0
         self.vez = True
 
@@ -75,7 +73,7 @@ class Xadrez:
             self.movimento = None
 
     ##### Interface #####
-    def carregar(self) -> tuple:
+    def carregar(self):
         yield [(2, 0)]
         for i in self.criador_pecas.carregar():
             yield [(2, 0)] + i

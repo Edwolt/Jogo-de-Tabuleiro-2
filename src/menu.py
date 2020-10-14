@@ -1,11 +1,9 @@
-import pygame  # type: ignore
-from pygame import display  # type: ignore
-from pygame import Surface  # type: ignore
-from pygame.event import Event  # type: ignore
-from pygame.font import Font  # type: ignore
-from pygame.locals import *  # type: ignore
-
-from typing import Any
+import pygame
+from pygame import display
+from pygame import Surface
+from pygame.event import Event
+from pygame.font import Font
+from pygame.locals import *
 
 from glob import glob
 
@@ -16,7 +14,6 @@ class Submenu:
     def __init__(self, recursos: Recursos):
         self.recursos = recursos
         self.sel = 0
-        self.opcoes: Any
 
     @property
     def tamanho(self) -> int:
@@ -40,7 +37,7 @@ class Submenu:
         else:
             self.sel = 0
 
-    def listar(self) -> tuple:
+    def listar(self):
         for i in range(self.tamanho):
             yield self.sel == i, self.nome(i)
 

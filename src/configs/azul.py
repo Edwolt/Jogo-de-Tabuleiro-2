@@ -1,7 +1,4 @@
-from pygame import Surface  # type: ignore
-
-from typing import Tuple, Optional
-Color = Tuple[int, int, int]
+from pygame import Surface
 
 
 class Config:
@@ -12,7 +9,7 @@ class Config:
         self.background = 0, 0, 0
         self.foreground = 255, 255, 255
 
-    def quadrado(self, canva: Surface, pos: Tuple[int, int], tipo: str, complemento: Optional[list] = None):
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None):
         i, j = pos
 
         cor = 0, 0, 0
@@ -30,7 +27,7 @@ class Config:
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(self.background)
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
         return self.foreground
 
     def titulo(self, vez: bool) -> str:

@@ -1,8 +1,5 @@
-from pygame import Surface, Rect  # type: ignore
-from pygame import draw  # type: ignore
-
-from typing import Tuple, Optional
-Color = Tuple[int, int, int]
+from pygame import Surface, Rect
+from pygame import draw
 
 
 class Config:
@@ -11,8 +8,8 @@ class Config:
         self.click = 153, 0, 0
         self.movimento = 229, 126, 0
 
-    def quadrado(self, canva: Surface, pos: Tuple[int, int], tipo: str, complemento: Optional[list] = None) -> None:
-        size: Tuple[int, int] = canva.get_size()
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
+        size = canva.get_size()
         quad: Rect = Rect(
             1, 1,
             size[0] - 2, size[1] - 2
@@ -22,7 +19,7 @@ class Config:
 
         i, j = pos
 
-        cor: Color = 0, 0, 0
+        cor = 0, 0, 0
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2]
         elif tipo == 'click':
@@ -37,7 +34,7 @@ class Config:
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill((0, 0, 0))
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
         return 255, 255, 255
 
     def titulo(self, vez: bool) -> str:

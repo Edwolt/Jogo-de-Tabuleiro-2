@@ -1,21 +1,18 @@
 from pygame import Surface  # type: ignore
 
-from typing import Tuple, Optional
-Color = Tuple[int, int, int]
-
 
 class Config:
     def __init__(self):
-        self.vazio: Tuple[Color, Color] = (214, 165, 132), (124, 49, 0)
-        self.click: Color = 153, 0, 0
-        self.movimento: Color = 229, 126, 0
+        self.vazio = (214, 165, 132), (124, 49, 0)
+        self.click = 153, 0, 0
+        self.movimento = 229, 126, 0
         # 'menu': (214, 165, 132),
         # 'cor_fonte': (124, 49, 0)
 
-    def quadrado(self, canva: Surface, pos: Tuple[int, int], tipo: str, complemento: Optional[list] = None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         i, j = pos
 
-        cor: Color = (0, 0, 0)
+        cor = 0, 0, 0
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2]
         elif tipo == 'click':
@@ -30,7 +27,7 @@ class Config:
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill((0, 0, 0))
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
         return 255, 255, 255
 
     def titulo(self, vez: bool) -> str:
