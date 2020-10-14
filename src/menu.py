@@ -17,15 +17,27 @@ class Submenu:
     def tamanho(self) -> int:
         return len(self.opcoes)
 
-    def nome(self, i=None) -> str:
-        return self.opcoes[self.sel if i is None else i]
+    def nome(self, key) -> str:
+        return self.opcoes[key]
+
+    def executar(self, key):
+        self.funcoes[key]()
+
+    def subir(self):
+        if self.sel > 0:
+            self.sel -= 1
+        else:
+            self.sel = self.opcoes.tamanho() - 1
+
+    def descer(self):
+        if self.sel < self.tamanho() - 1:
+            self.sel += 1
+        else:
+            self.sel = 0
 
     def listar(self) -> tuple:
         for i in range(self.tamanho()):
             yield self.sel == i, self.nome(i)
-
-    def executar(self, i=None):
-        self.funcoes[self.sel if i is None else i]()
 
     def voltar(self):
         return self.anterior
@@ -46,16 +58,17 @@ class MenuConfigs(Submenu):
     def tamanho(self) -> int:
         return len(self.configs) + 1
 
-    def nome(self, i=None) -> str:
-        i = self.sel if i is None else i
+    def nome(self, i) -> str:
         if 0 <= i < len(self.configs):
-            return self.configs
+            return self.configs[i]
         else:
             return 'Voltar'
 
-    def executar(self, i=None):
-        i = self.sel if i is None else i
-        self.recursos.set_config(self.configs[self.sel])
+    def executar(self, i):
+        if 0 <= i < len(self.configs):
+            self.recursos.set_config(self.configs[self.sel])
+        else:
+            return self.voltar()
 
 
 class MenuPrincipal(Submenu):
@@ -104,28 +117,19 @@ class Menu:
     def event(self, event: Event) -> None:
         if event.type == KEYDOWN:
             if event.key == K_UP:
-                self.atualizacao = True
-                if self.opcoes.sel > 0:
-                    self.opcoes.sel -= 1
-                else:
-                    self.sel = self.opcoes.tamanho() - 1
-
+                self.opcoes.subir()
             elif event.key == K_DOWN:
-                self.atualizacao = True
-                if self.opcoes.sel < self.opcoes.tamanho() - 1:
-                    self.opcoes.sel += 1
-                else:
-                    self.opcoes.sel = 0
-
+                self.opcoes.descer()
             elif event.key == K_RETURN:
-                self.atualizacao = True
-                self.opcoes.executar()
-
+                self.opcoes = self.opcoes.executar(self.opcoes.sel)
             elif event.key == K_ESCAPE:
                 self.opcoes = self.opcoes.voltar()
+            self.atualizacao = True
 
     def draw(self, canva: Surface) -> None:
         if not self.atualizacao:
+            return
+        if self.opcoes is None:
             return
 
         self.recursos.config.menu_fundo(canva)
