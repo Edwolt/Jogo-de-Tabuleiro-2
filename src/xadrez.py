@@ -58,7 +58,7 @@ class Xadrez:
 
         return False
 
-    def atualiza_movimentos(self, pos) -> None:
+    def atualiza_movimentos(self, pos: tuple) -> None:
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:

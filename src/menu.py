@@ -10,6 +10,7 @@ from glob import glob
 from recursos import Recursos
 
 
+# TODO em vez de submenu, talvez opcoes seja um melhor nome
 class Submenu:
     def __init__(self, recursos: Recursos):
         """	
