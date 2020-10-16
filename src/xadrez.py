@@ -21,7 +21,7 @@ class Xadrez:
         self.escape = False
         self.flags = list()
 
-        self.criador_pecas: CriadorPecas = CriadorPecas()
+        self.criador_pecas = CriadorPecas()
         self.click = None
         self.movimento = None
         self.qsize = 0, 0
