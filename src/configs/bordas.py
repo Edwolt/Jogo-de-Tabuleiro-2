@@ -1,12 +1,12 @@
-from pygame import Surface, Rect
+from pygame import Color, Surface, Rect
 from pygame import draw
 
 
 class Config:
     def __init__(self):
-        self.vazio = (214, 165, 132), (124, 49, 0)
-        self.click = 153, 0, 0
-        self.movimento = 229, 126, 0
+        self.vazio = Color(214, 165, 132), Color(124, 49, 0)
+        self.click = Color(153, 0, 0)
+        self.movimento = Color(229, 126, 0)
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         size = canva.get_size()
@@ -15,7 +15,7 @@ class Config:
             size[0] - 2, size[1] - 2
         )
 
-        canva.fill((100, 100, 100))
+        canva.fill(Color(100, 100, 100))
 
         i, j = pos
 
@@ -32,10 +32,10 @@ class Config:
         draw.rect(canva, cor, quad)
 
     def menu_fundo(self, canva: Surface) -> None:
-        canva.fill((0, 0, 0))
+        canva.fill(Color(0, 0, 0))
 
-    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
-        return 255, 255, 255
+    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+        return Color(255, 255, 255)
 
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')

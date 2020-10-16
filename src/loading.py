@@ -1,5 +1,5 @@
 from pygame.event import Event
-from pygame import Surface, Rect
+from pygame import Color, Surface, Rect
 from pygame import display, draw
 
 from recursos import Recursos
@@ -22,10 +22,10 @@ class Loading():
         self.pronto = True
 
     def draw(self, canvas: Surface) -> None:
-        canvas.fill((0, 0, 0))
+        canvas.fill(Color(0, 0, 0))
 
-        cor_falta = 255, 0, 0
-        cor_carregado = 0, 255, 0
+        cor_falta = Color(255, 0, 0)
+        cor_carregado = Color(0, 255, 0)
 
         y = 10
         x = 10

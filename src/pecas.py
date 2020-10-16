@@ -4,7 +4,7 @@ from pygame import Surface
 
 from util import tabuleiro_false
 
-# TODO protegendo rei
+# TODO proteger rei
 """
 Ideia para fazer o movimento:
 [ ] Encontra onde está o rei da mesma cor

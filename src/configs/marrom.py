@@ -1,11 +1,11 @@
-from pygame import Surface
+from pygame import Color, Surface
 
 
 class Config:
     def __init__(self):
-        self.vazio = (214, 165, 132), (124, 49, 0)
-        self.click = 153, 0, 0
-        self.movimento = 229, 126, 0
+        self.vazio = Color(214, 165, 132), Color(124, 49, 0)
+        self.click = Color(153, 0, 0)
+        self.movimento = Color(229, 126, 0)
         # 'menu': (214, 165, 132),
         # 'cor_fonte': (124, 49, 0)
 
@@ -25,10 +25,10 @@ class Config:
         canva.fill(cor)
 
     def menu_fundo(self, canva: Surface) -> None:
-        canva.fill((0, 0, 0))
+        canva.fill(Color(0, 0, 0))
 
-    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
-        return 255, 255, 255
+    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+        return Color(255, 255, 255)
 
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')

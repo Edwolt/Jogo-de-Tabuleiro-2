@@ -1,9 +1,9 @@
-from pygame import Surface
+from pygame import Color, Surface
 from random import randint
 
 
-def randcor() -> tuple:
-    return randint(0, 255), randint(0, 255), randint(0, 255)
+def randcor() -> Color:
+    return Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
 class Config:
@@ -24,7 +24,7 @@ class Config:
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(randcor())
 
-    def menu_cor(self, texto: str, selecionado: bool) -> tuple:
+    def menu_cor(self, texto: str, selecionado: bool) -> Color:
         return randcor()
 
     def titulo(self, vez: bool) -> str:
