@@ -10,8 +10,7 @@ from glob import glob
 from recursos import Recursos
 
 
-# TODO em vez de submenu, talvez opcoes seja um melhor nome
-class Submenu:
+class Opcoes:
     def __init__(self, recursos: Recursos):
         """	
         Classe abstrata para criar menus de opções	
@@ -60,7 +59,7 @@ class Submenu:
         return self.anterior
 
 
-class MenuConfigs(Submenu):
+class MenuConfigs(Opcoes):
     def __init__(self, recursos: Recursos, anterior):
         super().__init__(recursos)
         self.anterior = anterior
@@ -94,7 +93,7 @@ class MenuConfigs(Submenu):
             return self.voltar()
 
 
-class MenuPrincipal(Submenu):
+class MenuPrincipal(Opcoes):
     def __init__(self, recursos: Recursos):
         super().__init__(recursos)
         self.opcoes = (
@@ -123,7 +122,7 @@ class MenuPrincipal(Submenu):
 
 
 class Menu:
-    def __init__(self, recursos: Recursos, xadrez, opcoes: Submenu = None):
+    def __init__(self, recursos: Recursos, xadrez, opcoes: Opcoes = None):
         self.recursos = recursos
         self.xadrez = xadrez
 
@@ -134,7 +133,7 @@ class Menu:
         )
 
         if opcoes is None:
-            self.opcoes: Submenu = MenuPrincipal(self.recursos)
+            self.opcoes = MenuPrincipal(self.recursos)
         else:
             self.opcoes = opcoes
 
