@@ -38,7 +38,7 @@ class Submenu:
         if self.sel > 0:
             self.sel -= 1
         else:
-            self.sel = self.opcoes.tamanho - 1
+            self.sel = self.tamanho - 1
 
     def descer(self):
         """Muda o seletor para a opção de baixo"""
