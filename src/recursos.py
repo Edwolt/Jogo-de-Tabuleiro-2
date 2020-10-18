@@ -17,7 +17,7 @@ def id_peca(nome: str, cor: bool) -> str:
 def todos_ids() -> list:
     """Retorna uma lista com todos os identificadores de peças"""
     nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
-    return [id_peca(i, True) for i in nome_pecas] + [id_peca(i, False) for i in nome_pecas]
+    return [id_peca(i, False) for i in nome_pecas] + [id_peca(i, True) for i in nome_pecas]
 
 
 def caminho_asset(identificador: str) -> str:
@@ -27,10 +27,10 @@ def caminho_asset(identificador: str) -> str:
 
 class Recursos:
     def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60):
-        self.config = Config(config)
         self.size = size
         self.framerate = framerate
 
+        self.config = Config(config)
         self.assets = dict()
 
     def set_config(self, config: str) -> None:
