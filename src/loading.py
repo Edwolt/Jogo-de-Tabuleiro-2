@@ -6,10 +6,10 @@ from recursos import Recursos
 
 
 class Loading():
-    def __init__(self, recursos: Recursos, janela):
+    def __init__(self, recursos: Recursos, carregamento, janela):
         self.janela = janela
         self.pronto = False
-        self.carregamento = self.janela.carregar()
+        self.carregamento = carregamento
 
     def event(self, event: Event) -> None:
         pass

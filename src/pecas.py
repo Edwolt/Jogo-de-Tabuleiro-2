@@ -3,6 +3,7 @@ from pygame import draw, transform, image
 from pygame import Surface
 
 from util import tabuleiro_false
+from recursos import Recursos
 
 # TODO proteger rei
 """
@@ -26,7 +27,7 @@ def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
 class MovimentoEspecial():
     """Classe abstrata para os movimentos especiais"""
 
-    def executar(self, tabuleiro: list, flags: list, criador_pecas) -> None:
+    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro
@@ -71,8 +72,9 @@ class Peca():
 
     def draw(self, canva) -> None:
         """Desenha o sprite na surface"""
-        sprite_escala = transform.scale(self.sprite, canva.get_size())
-        canva.blit(sprite_escala, (0, 0))
+        sprite = self.recursos.get_asset(self.nome, self.cor)
+        sprite = transform.scale(sprite, canva.get_size())
+        canva.blit(sprite, (0, 0))
 
     def notifica_movimento(self) -> None:
         return
@@ -102,15 +104,15 @@ class Roque(MovimentoEspecial):
         self.torre = torre
         self.nova_torre = nova_torre
 
-    def executar(self, tabuleiro: list, flags: list, criador_pecas) -> None:
+    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
         mover_peca(tabuleiro, self.rei, self.nova_rei)
         mover_peca(tabuleiro, self.torre, self.nova_torre)
 
 
 class Rei(Peca):
-    def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
+    def __init__(self, recursos: Recursos, cor: bool, movimentou: bool = False):
         self.nome = 'rei'
-        self.sprite = sprite
+        self.recursos = recursos
         self.cor = cor
 
         self.movimentou = movimentou
@@ -176,9 +178,9 @@ class Rei(Peca):
 
 ##### Rainha #####
 class Rainha(Peca):
-    def __init__(self, sprite: Surface, cor: bool):
+    def __init__(self, recursos: Recursos, cor: bool):
         self.nome = 'rainha'
-        self.sprite = sprite
+        self.recursos = recursos
         self.cor = cor
 
     def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
@@ -199,9 +201,9 @@ class Rainha(Peca):
 
 ##### Bispo #####
 class Bispo(Peca):
-    def __init__(self, sprite: Surface, cor: bool):
+    def __init__(self, recursos: Recursos, cor: bool):
         self.nome = 'bispo'
-        self.sprite = sprite
+        self.recursos = recursos
         self.cor = cor
 
     def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
@@ -218,9 +220,9 @@ class Bispo(Peca):
 
 ##### Cavalo #####
 class Cavalo(Peca):
-    def __init__(self, sprite: Surface, cor: bool):
+    def __init__(self, recursos: Recursos, cor: bool):
         self.nome = 'cavalo'
-        self.sprite = sprite
+        self.recursos = recursos
         self.cor = cor
 
     def valida_posicao(self, tabuleiro: list, pos: tuple) -> bool:
@@ -260,9 +262,9 @@ class Cavalo(Peca):
 
 ##### Torre #####
 class Torre(Peca):
-    def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
+    def __init__(self,  recursos: Recursos, cor: bool, movimentou: bool = False):
         self.nome = 'torre'
-        self.sprite = sprite
+        self.recursos = recursos
         self.cor = cor
 
         self.movimentou = movimentou
@@ -295,13 +297,13 @@ class Promocao(MovimentoEspecial):
         self.promocao = promocao
         pass
 
-    def executar(self, tabuleiro: list, flags: list, criador_pecas) -> None:
+    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
         i, j = self.pos
         cor = tabuleiro[i][j].cor
         tabuleiro[i][j] = None
 
         i, j = self.promocao
-        tabuleiro[i][j] = criador_pecas.Rainha(cor)
+        tabuleiro[i][j] = Rainha(recursos, cor)
 
 
 class AvancoDuplo(MovimentoEspecial):
@@ -318,7 +320,7 @@ class AvancoDuplo(MovimentoEspecial):
         self.meio = meio
         self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: list, flags: list, criador_pecas) -> None:
+    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
         mover_peca(tabuleiro, self.pos, self.nova_pos)
 
     def update_flags(self, flags: list) -> None:
@@ -338,16 +340,16 @@ class EnPassant(MovimentoEspecial):
         self.capturado_pos = capturado_pos
         self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: list, flags: list, criador_pecas) -> None:
+    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
         mover_peca(tabuleiro, self.pos, self.nova_pos)
         i, j = self.capturado_pos
         tabuleiro[i][j] = None
 
 
 class Peao(Peca):
-    def __init__(self, sprite: Surface, cor: bool, movimentou: bool = False):
+    def __init__(self, recursos: Recursos, cor: bool, movimentou: bool = False):
         self.nome = 'peao'
-        self.sprite = sprite
+        self.recursos = recursos
         self.cor = cor
         self.movimentou = movimentou
 
@@ -403,61 +405,3 @@ class Peao(Peca):
             res[i][j+1] = self.criar_captura(tabuleiro, flags, pos, (i, j+1))
 
         return res
-
-
-##### Criador de Peças #####
-# TODO id e identificador não são bons nomes de variáveis
-def id_peca(nome: str, cor: bool) -> str:
-    """Retorna o identificador do tipo de peca"""
-    identificador = nome
-    identificador += '1' if cor else '0'
-    return identificador
-
-
-def todos_ids() -> list:
-    nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
-    return [id_peca(i, True) for i in nome_pecas] + [id_peca(i, False) for i in nome_pecas]
-
-
-def caminho_asset(identificador: str) -> str:
-    """Retorna o caminho para o asset da peca com o identificador passado"""
-    return f'assets/{identificador}.png'
-
-
-class CriadorPecas():
-    """Ajuda na criação de objetos pecas"""
-
-    def __init__(self):
-        self.assets = dict()
-
-    def carregar(self):
-        """Carrega os assets das peças em RAM"""
-        identificadores = todos_ids()
-        n = len(identificadores)
-
-        yield [(n, 0)]
-        for k, i in enumerate(identificadores):
-            self.assets[i] = image.load(caminho_asset(i))
-            yield [(n, k)]
-
-    def get_asset(self, nome: str, cor: bool) -> Surface:
-        """Retorna o asset da peca com o nome e a cor dada"""
-        return self.assets[id_peca(nome, cor)]
-
-    def Rei(self, cor: bool, movimentou: bool = False) -> Rei:
-        return Rei(self.get_asset('rei', cor), cor, movimentou=movimentou)
-
-    def Rainha(self, cor: bool) -> Rainha:
-        return Rainha(self.get_asset('rainha', cor), cor)
-
-    def Bispo(self, cor: bool) -> Bispo:
-        return Bispo(self.get_asset('bispo', cor), cor)
-
-    def Cavalo(self, cor: bool) -> Cavalo:
-        return Cavalo(self.get_asset('cavalo', cor), cor)
-
-    def Torre(self, cor: bool, movimentou: bool = False) -> Torre:
-        return Torre(self.get_asset('torre', cor), cor, movimentou=movimentou)
-
-    def Peao(self, cor: bool, movimentou: bool = False) -> Peao:
-        return Peao(self.get_asset('peao', cor), cor, movimentou=movimentou)

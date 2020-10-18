@@ -5,7 +5,7 @@ from pygame.event import Event
 
 from util import tabuleiro_none, tabuleiro_false, tabuleiro_novo
 from recursos import Recursos
-from pecas import MovimentoEspecial, CriadorPecas
+from pecas import MovimentoEspecial
 from menu import Menu
 from loading import Loading
 
@@ -17,11 +17,10 @@ class Xadrez:
         self.recursos = recursos
 
         self.atualizacao = True
-        self.tabuleiro = tabuleiro_none()
+        self.tabuleiro = tabuleiro_novo(self.recursos)
         self.escape = False
         self.flags = list()
 
-        self.criador_pecas = CriadorPecas()
         self.click = None
         self.movimento = None
         self.qsize = 0, 0
@@ -50,7 +49,7 @@ class Xadrez:
             return True
 
         elif isinstance(movimento, MovimentoEspecial):
-            movimento.executar(self.tabuleiro, self.flags, self.criador_pecas)
+            movimento.executar(self.tabuleiro, self.flags, self.recursos)
 
             self.flags.clear()
             movimento.update_flags(self.flags)
@@ -73,15 +72,6 @@ class Xadrez:
             self.movimento = None
 
     ##### Interface #####
-    def carregar(self):
-        yield [(2, 0)]
-        for i in self.criador_pecas.carregar():
-            yield [(2, 0)] + i
-
-        yield [(2, 1)]
-        self.tabuleiro = tabuleiro_novo(self.criador_pecas)
-        yield [(2, 2)]
-
     def event(self, event: Event) -> None:
         """
         Recebe um evento e executa uma operação com ele

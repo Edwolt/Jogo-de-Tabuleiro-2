@@ -3,7 +3,7 @@ from pygame import display
 from pygame.time import Clock
 from pygame.locals import *
 
-from xadrez import iniciar_xadrez
+from xadrez import Xadrez
 from menu import Menu
 from loading import Loading
 from recursos import Recursos
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     screen = display.set_mode(recursos.size)
     clock = Clock()
 
-    janela = iniciar_xadrez(recursos)
+    janela = Loading(recursos, recursos.carregar(), Xadrez(recursos))
 
     while True:
         for event in pygame.event.get():
