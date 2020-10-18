@@ -10,13 +10,12 @@ def Config(nome: str):
 
 # TODO id e identificador não são bons nomes de variáveis
 def id_peca(nome: str, cor: bool) -> str:
-    """Retorna o identificador do tipo de peca"""
-    identificador = nome
-    identificador += '1' if cor else '0'
-    return identificador
+    """Retorna o identificador do tipo de peça"""
+    return nome + ('1' if cor else '0')
 
 
 def todos_ids() -> list:
+    """Retorna uma lista com todos os identificadores de peças"""
     nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
     return [id_peca(i, True) for i in nome_pecas] + [id_peca(i, False) for i in nome_pecas]
 
