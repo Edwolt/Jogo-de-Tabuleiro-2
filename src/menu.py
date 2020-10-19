@@ -19,6 +19,18 @@ class Opcoes:
         self.recursos = recursos
         self.sel = 0
 
+    def event(self, event: Event) -> None:
+        if event.key == K_UP:
+            if self.sel > 0:
+                self.sel -= 1
+            else:
+                self.sel = self.tamanho - 1
+        elif event.key == K_DOWN:
+            if self.sel < self.tamanho - 1:
+                self.sel += 1
+            else:
+                self.sel = 0
+
     @property
     def tamanho(self) -> int:
         """:return: Número de opções"""
@@ -31,20 +43,6 @@ class Opcoes:
     def executar(self, key):
         """Executa a opção de número key"""
         self.funcoes[key]()
-
-    def subir(self):
-        """Muda o seletor para a opção de cima"""
-        if self.sel > 0:
-            self.sel -= 1
-        else:
-            self.sel = self.tamanho - 1
-
-    def descer(self):
-        """Muda o seletor para a opção de baixo"""
-        if self.sel < self.tamanho - 1:
-            self.sel += 1
-        else:
-            self.sel = 0
 
     def listar(self):
         """	
@@ -136,14 +134,12 @@ class Menu:
     ##### Interface #####
     def event(self, event: Event) -> None:
         if event.type == KEYDOWN:
-            if event.key == K_UP:
-                self.opcoes.subir()
-            elif event.key == K_DOWN:
-                self.opcoes.descer()
-            elif event.key == K_RETURN:
+            if event.key == K_RETURN:
                 self.opcoes = self.opcoes.executar(self.opcoes.sel)
             elif event.key == K_ESCAPE:
                 self.opcoes = self.opcoes.voltar()
+            else:
+                self.opcoes.event(event)
             self.atualizacao = True
 
     def draw(self, canva: Surface) -> None:
