@@ -6,13 +6,13 @@ class Config:
         self.vazio = Color(214, 165, 132), Color(124, 49, 0)
         self.click = Color(153, 0, 0)
         self.movimento = Color(229, 126, 0)
-        # 'menu': (214, 165, 132),
-        # 'cor_fonte': (124, 49, 0)
+        self.background = Color(214, 165, 132)
+        self.foreground = Color(124, 49, 0)
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         i, j = pos
 
-        cor = 0, 0, 0
+        cor = Color(0, 0, 0)
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2]
         elif tipo == 'click':
@@ -25,13 +25,10 @@ class Config:
         canva.fill(cor)
 
     def menu_fundo(self, canva: Surface) -> None:
-        canva.fill(Color(0, 0, 0))
+        canva.fill(self.background)
 
     def menu_cor(self, texto: str, selecionado: bool) -> Color:
-        return Color(255, 255, 255)
+        return self.foreground
 
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
-
-    # 'menu': lambda cores, menu: self.cores['menu'],
-    # 'cor_fonte': lambda cores, menu: self.cores['cor_fonte']

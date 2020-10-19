@@ -70,8 +70,11 @@ class Peca():
         """
         pass
 
-    def draw(self, canva) -> None:
-        """Desenha o sprite na surface"""
+    def draw(self, canva: Surface) -> None:
+        """
+        Desenha o sprite em canva
+        :param canva: Surface onde o jogo sera desenhado
+        """
         sprite = self.recursos.get_asset(self.nome, self.cor)
         sprite = transform.scale(sprite, canva.get_size())
         canva.blit(sprite, (0, 0))

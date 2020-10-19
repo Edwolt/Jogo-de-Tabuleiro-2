@@ -18,8 +18,8 @@ class Config:
         self.vazio = randcor(), randcor()
         self.click = randcor()
         self.movimento = randcor()
-        self.background = randcor()
-        self.foreground = randcor()
+        self.background = Color(0, 0, 0)
+        self.foreground = Color(255, 255, 255)
 
         self.vez = True
         self.titulo_anterior = '.'

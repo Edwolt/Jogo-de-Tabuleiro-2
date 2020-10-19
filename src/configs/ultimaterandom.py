@@ -15,35 +15,17 @@ class Config:
             ('Chess Game', 'Player 1', 'Player 2'),
         )
 
-        self.vazio = randcor(), randcor()
-        self.click = randcor()
-        self.movimento = randcor()
-        self.background = randcor()
-        self.foreground = randcor()
-
         self.vez = True
         self.titulo_anterior = '.'
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
-        i, j = pos
-
-        cor = Color(0, 0, 0)
-        if tipo == 'vazio':
-            cor = self.vazio[(i+j) % 2]
-        elif tipo == 'click':
-            cor = self.click
-        elif tipo == 'movimento':
-            cor = self.movimento
-        elif tipo == 'captura':
-            cor = self.movimento
-
-        canva.fill(cor)
+        canva.fill(randcor())
 
     def menu_fundo(self, canva: Surface) -> None:
-        canva.fill(self.background)
+        canva.fill(randcor())
 
     def menu_cor(self, texto: str, selecionado: bool) -> Color:
-        return self.background
+        return randcor()
 
     def titulo(self, vez: bool) -> str:
         if self.vez != vez:
