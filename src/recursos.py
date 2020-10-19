@@ -42,16 +42,17 @@ class Recursos:
 
         w, h = res.get_size()
 
+        from random import randint
+
         for i in range(w):
             for j in range(h):
                 cor_atual = res.get_at((i, j))
-                nova_cor = Color(
-                    int(cor1.r + (cor2.r - cor1.r) * (cor_atual.r / 255)),
-                    int(cor1.g + (cor2.g - cor1.g) * (cor_atual.g / 255)),
-                    int(cor1.b + (cor2.b - cor1.b) * (cor_atual.b / 255)),
-                    cor_atual.a
-                )
-                print(cor1, cor2, cor_atual, nova_cor)
+                nova_cor = Color(0, 0, 0, 0)
+
+                for k in range(len(nova_cor)):
+                    novo = cor1[k] + (cor2[k] - cor1[k]) * (cor_atual[k] / 255)
+                    nova_cor[k] = int(novo)
+
                 res.set_at((i, j), nova_cor)
 
         return res
@@ -65,10 +66,9 @@ class Recursos:
         for k, (nome, i) in enumerate(identificadores):
             self.assets[i] = self.gerar_imagem(
                 image.load(caminho_asset(nome)),
-                (Color(0, 0, 0), Color(100, 100, 100))
+                (Color(0, 0, 0, 0), Color(100, 0, 0, 255))
             )
-            yield [(n, k)]
-        yield [(n, n)]
+            yield [(n, k+1)]
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""
