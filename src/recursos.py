@@ -46,11 +46,12 @@ class Recursos:
             for j in range(h):
                 cor_atual = res.get_at((i, j))
                 nova_cor = Color(
-                    cor1.r + (cor1.r + cor2.r) * (cor_atual.r // 255),
-                    cor1.g + (cor1.g + cor2.g) * (cor_atual.g // 255),
-                    cor1.b + (cor1.b + cor2.b) * (cor_atual.b // 255),
+                    int(cor1.r + (cor2.r - cor1.r) * (cor_atual.r / 255)),
+                    int(cor1.g + (cor2.g - cor1.g) * (cor_atual.g / 255)),
+                    int(cor1.b + (cor2.b - cor1.b) * (cor_atual.b / 255)),
                     cor_atual.a
                 )
+                print(cor1, cor2, cor_atual, nova_cor)
                 res.set_at((i, j), nova_cor)
 
         return res
