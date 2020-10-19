@@ -38,26 +38,20 @@ class Loading():
             self.pronto = True
             return
 
-        for i in barras:
-            tam, val = i
-
+        for tam, val in barras:
             draw.rect(
                 canvas,
                 cor_falta,
                 Rect(x, y, w, h)
             )
-
             draw.rect(
                 canvas,
                 cor_carregado,
                 Rect(x, y, w * (val/tam), h)
             )
-
-            display.flip()
             y += 20
 
+        display.flip()
+
     def new(self):
-        if self.pronto:
-            return self.janela
-        else:
-            return self
+        return self.janela if self.pronto else self

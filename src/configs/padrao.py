@@ -12,7 +12,7 @@ class Config:
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None):
+    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
         i, j = pos
 
         cor = Color(0, 0, 0)

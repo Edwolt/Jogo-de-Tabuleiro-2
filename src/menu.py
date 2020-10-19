@@ -63,17 +63,13 @@ class MenuConfigs(Opcoes):
     def __init__(self, recursos: Recursos, anterior):
         super().__init__(recursos)
         self.anterior = anterior
-        self.configs = list(self.listar_configs())
+        self.configs = self.listar_configs()
 
-    def listar_configs(self):
-        """	
-        :yield: [description]	
-        :rtype: Iterator[list]	
-        """
+    def listar_configs(self) -> list:
+        """Lista todas as configs na pasta Configs"""
         # 8 por causa do nome da pasta
         # -3 por causa da extensao
-        for i in glob('configs/*py'):
-            yield i[8:-3]
+        return [i[8:-3] for i in glob('configs/*py')]
 
     ##### Interface #####
     @property
@@ -175,7 +171,4 @@ class Menu:
         display.flip()
 
     def new(self):
-        if self.opcoes is None:
-            return self.xadrez
-        else:
-            return self
+        return self.xadrez if self.opcoes is None else self

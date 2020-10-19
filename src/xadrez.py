@@ -144,7 +144,3 @@ class Xadrez:
             return Menu(self.recursos, self)
         else:
             return self
-
-
-def iniciar_xadrez(recursos: Recursos = Recursos('padrao')):
-    return Loading(recursos, Xadrez(recursos))
