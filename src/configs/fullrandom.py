@@ -43,7 +43,7 @@ class Config:
         canva.fill(self.background)
 
     def menu_cor(self, texto: str, selecionado: bool) -> Color:
-        return self.background
+        return self.foreground
 
     def titulo(self, vez: bool) -> str:
         if self.vez != vez:
