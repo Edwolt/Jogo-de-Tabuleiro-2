@@ -45,6 +45,7 @@ class Recursos:
         for k, i in enumerate(identificadores):
             self.assets[i] = image.load(caminho_asset(i))
             yield [(n, k)]
+        yield [(n, n)]
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""
