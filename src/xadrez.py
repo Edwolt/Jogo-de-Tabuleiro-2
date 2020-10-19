@@ -10,20 +10,13 @@ from menu import Menu
 from loading import Loading
 
 
-def tabuleiro_none() -> list:
-    """
-    :return: list 8x8 com todos os campos sendo None
-    """
-    return [[None] * 8 for _ in range(8)]
-
-
 def tabuleiro_novo(recursos: Recursos) -> list:
     """
     :param pecas: objeto da classe Peca
     :return: list 8x8 onde os espacos vazios valem None
     e os espacos com pecas são objetos
     """
-    tabuleiro = tabuleiro_none()
+    tabuleiro = [[None] * 8 for _ in range(8)]  # list 8x8 com None
 
     # Brancas
     tabuleiro[0][0] = Torre(recursos, False)
