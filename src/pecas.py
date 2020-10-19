@@ -2,7 +2,6 @@ import pygame
 from pygame import draw, transform, image
 from pygame import Surface
 
-from util import tabuleiro_false
 from recursos import Recursos
 
 # TODO proteger rei
@@ -13,6 +12,13 @@ Ideia para fazer o movimento:
 [x] Calcula onde a peça em questão pode ir
 [ ] Desconta do resultado onde as peças nao pode ir
 """
+
+
+def tabuleiro_false() -> list:
+    """
+    :return: list 8x8 com todos os campos sendo False
+    """
+    return [[False] * 8 for _ in range(8)]
 
 
 ##### Classes Abstratas #####
