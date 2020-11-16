@@ -24,26 +24,23 @@ class Recursos:
     def set_config(self, config: str) -> None:
         self.config = Config(config)
 
+    def gerar_cor(self, grad: tuple, c: Color) -> Color:
+        res = Color(0, 0, 0)
+        a, b = grad
+        for k in range(len(res)):
+            res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))
+        return res
+
     def gerar_imagem(self, sprite: Surface, grad_preto: tuple, grad_branco: tuple) -> tuple:
         preto = sprite.copy()
-        p1, p2 = grad_preto
         branco = sprite.copy()
-        b1, b2 = grad_branco
-
         w, h = sprite.get_size()
 
         for i in range(w):
             for j in range(h):
-                atual = sprite.get_at((i, j))
-                np = Color(0, 0, 0, 0)
-                nb = Color(0, 0, 0, 0)
-
-                for k in range(len(atual)):
-                    np[k] = int(p1[k] + (p2[k] - p1[k]) * (atual[k] / 255))
-                    nb[k] = int(b1[k] + (b2[k] - b1[k]) * (atual[k] / 255))
-
-                preto.set_at((i, j), np)
-                branco.set_at((i, j), nb)
+                cor = sprite.get_at((i, j))
+                preto.set_at((i, j), self.gerar_cor(grad_preto, cor))
+                branco.set_at((i, j), self.gerar_cor(grad_branco, cor))
 
         return preto, branco
 
