@@ -7,7 +7,6 @@ from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
 from recursos import Recursos
 from pecas import MovimentoEspecial
 from menu import Menu
-from loading import Loading
 
 
 def tabuleiro_novo(recursos: Recursos) -> list:

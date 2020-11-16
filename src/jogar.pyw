@@ -4,7 +4,6 @@ from pygame.time import Clock
 from pygame.locals import *
 
 from xadrez import Xadrez
-from menu import Menu
 from loading import Loading
 from recursos import Recursos
 
