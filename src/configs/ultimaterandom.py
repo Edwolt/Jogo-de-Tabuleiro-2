@@ -29,6 +29,9 @@ class Config:
     def menu_cor(self, selecionado: bool) -> Color:
         return randcor()
 
+    def loading_cores(self) -> tuple:
+        return randcor(), randcor()
+
     def titulo(self, vez: bool) -> str:
         if self.vez is None or self.vez != vez:
             self.vez = vez

@@ -22,6 +22,7 @@ class Config:
         self.movimento = randcor()
         self.background = randcor()
         self.foreground = randcor()
+        self.loading = randcor(), randcor()
 
         self.vez = True
         self.titulo_anterior = '.'
@@ -56,6 +57,9 @@ class Config:
             return f'{x} : {p}'
         else:
             return self.titulo_anterior
+
+    def loading_cores(self) -> tuple:
+        return self.loading
 
     def fonte(self, tam) -> Font:
         return Font(

@@ -51,6 +51,14 @@ class Config:
         """
         return self.foreground
 
+    def loading_cores(self) -> tuple:
+        """[summary]
+        :returns: Retorna uma tupla de cores para desenhar as barras de loading
+        A primeira cor é usada para mostrar o que já foi carregado
+        e a segunda o quanto falta
+        """
+        return Color(0, 255, 0), Color(255, 0, 0)
+
     def titulo(self, vez: bool) -> str:
         """
         :param vez: Qual turno o jogo está

@@ -41,6 +41,9 @@ class Config:
     def menu_cor(self, selecionado: bool) -> Color:
         return self.foreground
 
+    def loading_cores(self) -> tuple:
+        return Color(0, 255, 0), Color(255, 0, 0)
+
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
 

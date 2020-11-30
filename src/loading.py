@@ -8,9 +8,12 @@ from recursos import Recursos
 class Loading():
     def __init__(self, recursos: Recursos, carregamento, janela):
         self.janela = janela
+        self.recursos = recursos
+
         self.pronto = False
         self.carregamento = carregamento
-        self.fonte = recursos.config.fonte(25)
+
+        self.fonte = self.recursos.config.fonte(25)
         self.fonte_loading = recursos.config.fonte(50)
 
     def event(self, event: Event) -> None:
@@ -19,8 +22,7 @@ class Loading():
     def draw(self, canvas: Surface) -> None:
         canvas.fill(Color(0, 0, 0))
 
-        cor_falta = Color(255, 0, 0)
-        cor_carregado = Color(0, 255, 0)
+        
 
         try:
             barras = next(self.carregamento)
@@ -30,8 +32,8 @@ class Loading():
 
         x, y = 10, 10
         espaco = 10
-        w, h = self.fonte.size('')
-        barra_w, barra_h = w - 2 * x, h
+        w = canvas.get_size()[0]
+        barra_w, barra_h = w - 2 * x, 30
 
         texto = 'Loading'
         tam_x, tam_y = self.fonte_loading.size(texto)
@@ -42,6 +44,7 @@ class Loading():
         y += tam_y + 2 * espaco
 
         for tam, val in barras:
+            cor_carregado, cor_falta = self.recursos.config.loading_cores()
             draw.rect(
                 canvas,
                 cor_falta,
@@ -59,7 +62,7 @@ class Loading():
             meio = w/2 - tam_x/2
             canvas.blit(texto, (meio, y))
 
-            y += tam_y + espaco
+            y += barra_h + espaco
 
         display.flip()
 
