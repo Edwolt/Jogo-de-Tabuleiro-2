@@ -13,8 +13,12 @@ def caminho_asset(nome: str) -> str:
     return f'assets/{nome}.png'
 
 
+def caminho_asset_min(nome: str) -> str:
+    return f'assets/{nome}.png.min'
+
+
 class Recursos:
-    def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60):
+    def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60, min=False):
         self.size = size
         self.framerate = framerate
 
@@ -50,7 +54,7 @@ class Recursos:
         yield [(len(nome_pecas), 0)]
         for k, i in enumerate(nome_pecas):
             self.assets[i] = self.gerar_imagem(
-                image.load(caminho_asset(i)),
+                image.load(caminho_asset_min(i) if min else caminho_asset(i)),
                 (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
                 (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
             )
