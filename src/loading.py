@@ -29,7 +29,7 @@ class Loading():
 
         x = 10
         y = 10
-        h = 15
+        h = 30
         w = canvas.get_height() - 2 * x
 
         try:
