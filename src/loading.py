@@ -14,13 +14,6 @@ class Loading():
     def event(self, event: Event) -> None:
         pass
 
-    def carregar(self) -> None:
-        for barras in self.janela.carregar():
-            self.barras = barras
-
-        self.barras = [(1, 1)]
-        self.pronto = True
-
     def draw(self, canvas: Surface) -> None:
         canvas.fill(Color(0, 0, 0))
 
