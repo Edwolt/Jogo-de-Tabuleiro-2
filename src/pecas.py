@@ -120,7 +120,7 @@ class Peca():
 ##### Rei #####
 class Roque(MovimentoEspecial):
     def __init__(self, rei: tuple, nova_rei: tuple, torre: tuple, nova_torre):
-        """[summary]
+        """
         :param rei: posição atual do rei
         :param nova_rei: posiçãol para a qual o rei será movido
         :param torre: posição atual da torre
