@@ -1,6 +1,7 @@
-import pygame
-from pygame import draw, transform, image
+from pygame import transform
 from pygame import Surface
+
+from copy import copy
 
 from recursos import Recursos
 
@@ -19,6 +20,25 @@ def tabuleiro_false() -> list:
     :return: list 8x8 com todos os campos sendo False
     """
     return [[False] * 8 for _ in range(8)]
+
+
+def tabuleiro_copia(tabuleiro) -> list:
+    copia = [[None] * 8 for _ in range(8)]  # list 8x8 com None
+    for i, linha in enumerate(tabuleiro):
+        for j, peca in enumerate(linha):
+            if peca is not None:
+                copia[i][j] = copy(peca)
+
+
+def verifica_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
+    ri, rj = pos_rei
+    rei = tabuleiro[ri][rj]
+    for pi, linha in enumerate(tabuleiro):
+        for pj, peca in enumerate(linha):
+            if peca and peca.cor != rei.cor:
+                if peca.get_movimentos(tabuleiro, flags, (pi, pj))[ri][rj] is True:
+                    print('Xeque')
+                    return True
 
 
 ##### Classes Abstratas #####

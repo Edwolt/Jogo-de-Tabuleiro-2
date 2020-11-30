@@ -4,6 +4,7 @@ from pygame import Surface
 from pygame.event import Event
 
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
+from pecas import verifica_xeque
 from recursos import Recursos
 from pecas import MovimentoEspecial
 from menu import Menu
@@ -130,6 +131,11 @@ class Xadrez:
                 self.atualiza_movimentos(self.click)
             else:
                 self.vez = not self.vez
+                for i, linha in enumerate(self.tabuleiro):
+                    for j, peca in enumerate(linha):
+                        if peca is not None and peca.cor == self.vez and peca.nome == 'rei':
+                            print(f'verificando rei {peca.cor} em {i} {j}')
+                            verifica_xeque(self.tabuleiro, self.flags, (i, j))
 
             self.atualizacao = True
 
