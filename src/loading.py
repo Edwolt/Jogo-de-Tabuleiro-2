@@ -28,39 +28,38 @@ class Loading():
             self.pronto = True
             return
 
-        x = 10
-        y = 10
+        x, y = 10, 10
         espaco = 10
-        h = self.fonte.size('')[1]
-        w = canvas.get_width() - 2 * x
+        w, h = self.fonte.size('')
+        barra_w, barra_h = w - 2 * x, h
 
         texto = 'Loading'
-        xx, yy = self.fonte_loading.size(texto)
-        meio = canvas.get_width()/2 - xx/2
+        tam_x, tam_y = self.fonte_loading.size(texto)
         texto = self.fonte_loading.render(texto, 0, Color(255, 255, 255))
+        meio = w/2 - tam_x/2
         canvas.blit(texto, (meio, y))
 
-        y += yy + 2 * espaco
+        y += tam_y + 2 * espaco
 
         for tam, val in barras:
             draw.rect(
                 canvas,
                 cor_falta,
-                Rect(x, y, w, h)
+                Rect(x, y, barra_w, barra_h)
             )
             draw.rect(
                 canvas,
                 cor_carregado,
-                Rect(x, y, w * (val/tam), h)
+                Rect(x, y, barra_w * (val/tam), barra_h)
             )
 
             texto = f'{val} / {tam}'
-            xx, yy = self.fonte.size(texto)
-            meio = canvas.get_width()/2 - xx/2
+            tam_x, tam_y = self.fonte.size(texto)
             texto = self.fonte.render(texto, 0, Color(255, 255, 255))
+            meio = w/2 - tam_x/2
             canvas.blit(texto, (meio, y))
 
-            y += yy + espaco
+            y += tam_y + espaco
 
         display.flip()
 
