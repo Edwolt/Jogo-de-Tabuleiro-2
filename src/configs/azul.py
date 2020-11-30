@@ -27,7 +27,7 @@ class Config:
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(self.background)
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> Color:
         return self.foreground
 
     def titulo(self, vez: bool) -> str:

@@ -42,7 +42,7 @@ class Config:
         """Colore o fundo do menu (canva)"""
         canva.fill(self.background)
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> Color:
         """
         :param texto: Texto da opção
         :param selecionado: Se a opção está selecionada

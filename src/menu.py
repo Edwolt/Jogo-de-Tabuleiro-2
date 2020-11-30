@@ -157,7 +157,7 @@ class Menu:
             texto = self.fonte.render(
                 texto_str,
                 0,
-                self.recursos.config.menu_cor(texto_str, selecionado)
+                self.recursos.config.menu_cor(selecionado)
             )
             canva.blit(texto, (0, y))
             y += altura

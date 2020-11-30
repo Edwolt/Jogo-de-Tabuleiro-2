@@ -15,7 +15,7 @@ class Config:
             ('Chess Game', 'Player 1', 'Player 2'),
         )
 
-        self.vez = True
+        self.vez = None
         self.titulo_anterior = '.'
 
     def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
@@ -24,11 +24,11 @@ class Config:
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(randcor())
 
-    def menu_cor(self, texto: str, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> Color:
         return randcor()
 
     def titulo(self, vez: bool) -> str:
-        if self.vez != vez:
+        if self.vez is None or self.vez != vez:
             self.vez = vez
             x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]
             p = p1 if vez else p2
