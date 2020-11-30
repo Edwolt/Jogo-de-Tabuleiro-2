@@ -10,6 +10,7 @@ class Loading():
         self.janela = janela
         self.pronto = False
         self.carregamento = carregamento
+        self.fonte = recursos.config.fonte(25)
 
     def event(self, event: Event) -> None:
         pass
@@ -22,8 +23,9 @@ class Loading():
 
         x = 10
         y = 10
-        h = 30
-        w = canvas.get_height() - 2 * x
+        espaco = 10
+        h = self.fonte.size('')[1]
+        w = canvas.get_width() - 2 * x
 
         try:
             barras = next(self.carregamento)
@@ -42,7 +44,15 @@ class Loading():
                 cor_carregado,
                 Rect(x, y, w * (val/tam), h)
             )
-            y += 20
+
+            texto = f'{val} / {tam}'
+            xx, yy = self.fonte.size(texto)
+            meio = canvas.get_width() / 2 - xx
+            texto = self.fonte.render(texto, 0, Color(255, 255, 255))
+            canvas.blit(texto, (meio, y))
+
+
+            y += yy + espaco
 
         display.flip()
 
