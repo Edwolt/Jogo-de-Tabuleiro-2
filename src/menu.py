@@ -121,10 +121,7 @@ class Menu:
         self.xadrez = xadrez
 
         self.atualizacao = True
-        self.fonte = Font(
-            'assets/inconsolata/static/Inconsolata-Medium.ttf',
-            50
-        )
+        self.fonte = self.recursos.config.fonte(50)
 
         if opcoes is None:
             self.opcoes = MenuPrincipal(self.recursos)

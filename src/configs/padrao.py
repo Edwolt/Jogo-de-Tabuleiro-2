@@ -1,4 +1,5 @@
 from pygame import Color, Surface
+from pygame.font import Font
 
 
 class Config:
@@ -56,3 +57,13 @@ class Config:
         :return: O título que será usado para a janela
         """
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
+
+    def fonte(self, tam) -> Font:
+        """
+        :param tam: Tamanho da fonte
+        :return: Objeto fonte
+        """
+        return Font(
+            'assets/inconsolata/static/Inconsolata-Medium.ttf',
+            tam
+        )

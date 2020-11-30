@@ -1,4 +1,6 @@
 from pygame import Color, Surface
+from pygame.font import Font
+
 from random import randint
 
 
@@ -36,3 +38,9 @@ class Config:
             return f'{x} : {p}'
         else:
             return self.titulo_anterior
+
+    def fonte(self, tam) -> Font:
+        return Font(
+            'assets/inconsolata/static/Inconsolata-Medium.ttf',
+            tam
+        )

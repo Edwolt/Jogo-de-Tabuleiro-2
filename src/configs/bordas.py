@@ -1,4 +1,5 @@
 from pygame import Color, Surface, Rect
+from pygame.font import Font
 from pygame import draw
 
 
@@ -42,3 +43,9 @@ class Config:
 
     def titulo(self, vez: bool) -> str:
         return 'Xadrez : ' + ('Branco' if vez else 'Preto')
+
+    def fonte(self, tam) -> Font:
+        return Font(
+            'assets/inconsolata/static/Inconsolata-Medium.ttf',
+            tam
+        )
