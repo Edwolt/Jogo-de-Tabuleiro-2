@@ -27,8 +27,8 @@ class Loading():
         cor_falta = Color(255, 0, 0)
         cor_carregado = Color(0, 255, 0)
 
-        y = 10
         x = 10
+        y = 10
         h = 15
         w = canvas.get_height() - 2 * x
 
