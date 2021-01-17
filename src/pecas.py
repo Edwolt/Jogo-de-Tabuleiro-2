@@ -8,7 +8,7 @@ from recursos import Recursos
 # TODO proteger rei
 """
 Ideia para fazer o movimento:
-[ ] Encontra onde está o rei da mesma cor
+[x] Encontra onde está o rei da mesma cor
 [ ] Descobre quais pecas não podem sair do lugar por que criam xeque
 [x] Calcula onde a peça em questão pode ir
 [ ] Desconta do resultado onde as peças nao pode ir
@@ -41,7 +41,42 @@ def verifica_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
                     return True
 
 
+# TODO simplificar esse código
+def mesclar_tabuleiro(a: list, b: list) -> list:
+    res = tabuleiro_false()
+    for i in range(8):
+        for j in range(8):
+            aa = False
+            if isinstance(a[i][j], bool):
+                aa = a[i][j]
+            elif isinstance(a[i][j], MovimentoEspecial):
+                aa = not a[i][j].avanco
+
+            bb = False
+            if isinstance(b[i][j], bool):
+                bb = b[i][j]
+            elif isinstance(b[i][j], MovimentoEspecial):
+                bb = not b[i][j].avanco
+
+            res[i][j] = aa or bb
+    return res
+
+
+def tabuleiro_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
+    res = tabuleiro_false()
+    ri, rj = pos_rei
+    rei = tabuleiro[ri][rj]
+    for pi, linha in enumerate(tabuleiro):
+        for pj, peca in enumerate(linha):
+            if peca is not None and peca.cor != rei.cor:
+                movimentos = peca.get_movimentos(tabuleiro, flags, (pi, pj))
+                res = mesclar_tabuleiro(res, movimentos)
+    return res
+
+
 ##### Classes Abstratas #####
+
+
 def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
     i, j = pos
     m, n = nova_pos
@@ -335,6 +370,20 @@ class Promocao(MovimentoEspecial):
         tabuleiro[i][j] = Rainha(recursos, cor)
 
 
+class Avanco(MovimentoEspecial):
+    def __init__(self, cor: bool, pos: tuple):
+        self.nome = 'avanco'
+        self.avanco = True
+
+        self.cor = cor
+        self.pos = pos
+
+    def executar(self, tabuleiro: list, flags: list, recursos: Recursos):
+        i, j = self.pos
+        i += -1 if self.cor else 1
+        mover_peca(tabuleiro, self.pos, (i, j))
+
+
 class AvancoDuplo(MovimentoEspecial):
     def __init__(self, cor: bool, pos: tuple, meio: tuple, nova_pos: tuple):
         """
@@ -343,6 +392,9 @@ class AvancoDuplo(MovimentoEspecial):
         :param meio: posição pela qual o peão passará
         :param nova_pos: posição final do peão
         """
+
+        self.nome = 'avanco duplo'
+        self.avanco = True
 
         self.cor = cor
         self.pos = pos
@@ -394,7 +446,6 @@ class Peao(Peca):
         return None
 
     def criar_captura(self, tabuleiro: list, flags: list, pos: tuple, nova_pos: tuple):
-        m, n = pos
         i, j = nova_pos
         promocao = 0 if self.cor else 7
 
@@ -418,7 +469,11 @@ class Peao(Peca):
         i, j = pos
         i += -1 if self.cor else 1
         if valida_coordenadas(i) and tabuleiro[i][j] is None:
-            res[i][j] = Promocao(pos, (i, j)) if i == promocao else True
+            if i == promocao:
+                res[i][j] = Promocao(pos, (i, j))
+            else:
+                res[i][j] = Avanco(self.cor, pos)
+
             ii = i-1 if self.cor else i+1
             if not self.movimentou and valida_coordenadas(ii) and tabuleiro[ii][j] is None:
                 if i == promocao:

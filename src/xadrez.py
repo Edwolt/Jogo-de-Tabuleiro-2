@@ -1,10 +1,10 @@
 from pygame.locals import *
-from pygame import display
+from pygame import display, draw
 from pygame import Surface
 from pygame.event import Event
 
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
-from pecas import verifica_xeque
+from pecas import verifica_xeque, tabuleiro_xeque
 from recursos import Recursos
 from pecas import MovimentoEspecial
 from menu import Menu
@@ -18,7 +18,7 @@ def tabuleiro_novo(recursos: Recursos) -> list:
     """
     tabuleiro = [[None] * 8 for _ in range(8)]  # list 8x8 com None
 
-    # Brancas
+    # Pretas
     tabuleiro[0][0] = Torre(recursos, False)
     tabuleiro[0][1] = Cavalo(recursos, False)
     tabuleiro[0][2] = Bispo(recursos, False)
@@ -30,7 +30,7 @@ def tabuleiro_novo(recursos: Recursos) -> list:
     for i in range(8):  # Peões
         tabuleiro[1][i] = Peao(recursos, False)
 
-    # Pretas
+    # Brancas
     tabuleiro[7][0] = Torre(recursos, True)
     tabuleiro[7][1] = Cavalo(recursos, True)
     tabuleiro[7][2] = Bispo(recursos, True)
@@ -53,6 +53,7 @@ class Xadrez:
 
         self.atualizacao = True
         self.tabuleiro = tabuleiro_novo(self.recursos)
+        self.rei = {'branco': (7, 4), 'preto': (0, 4)}
         self.escape = False
         self.flags = list()
 
@@ -71,20 +72,29 @@ class Xadrez:
         :return: Se a peça foi movimentada
         """
 
-        l, c = pos
+        i, j = pos
         m, n = nova_pos
-        movimento = self.movimento[l][c]
+        movimento = self.movimento[i][j]
 
         if isinstance(movimento, bool) and movimento:
-            self.tabuleiro[l][c] = self.tabuleiro[m][n]
+            self.tabuleiro[i][j] = self.tabuleiro[m][n]
             self.tabuleiro[m][n] = None
-            self.tabuleiro[l][c].notifica_movimento()
+            self.tabuleiro[i][j].notifica_movimento()
+
+            if self.tabuleiro[i][j].nome == 'rei':
+                cor = 'branco' if self.tabuleiro[i][j].cor else 'preto'
+                self.rei[cor] = (i, j)
 
             self.flags.clear()
             return True
 
         elif isinstance(movimento, MovimentoEspecial):
             movimento.executar(self.tabuleiro, self.flags, self.recursos)
+
+            if movimento.nome == 'roque':
+                ri, rj = movimento.nova_rei
+                cor = 'branco' if self.tabuleiro[ri][rj].cor else 'preto'
+                self.rei[cor] = movimento.nova_rei
 
             self.flags.clear()
             movimento.update_flags(self.flags)
@@ -151,6 +161,18 @@ class Xadrez:
         if not self.atualizacao:
             return
 
+        # TODO limpar esse trecho do código
+        xeque_branco = tabuleiro_xeque(
+            self.tabuleiro,
+            self.flags,
+            self.rei['branco']
+        )
+        xeque_preto = tabuleiro_xeque(
+            self.tabuleiro,
+            self.flags,
+            self.rei['preto']
+        )
+
         size = canva.get_size()
         self.qsize = size[0] // 8, size[1] // 8
 
@@ -166,6 +188,38 @@ class Xadrez:
 
                 surf = Surface(self.qsize)
                 self.recursos.config.quadrado(surf, (x, y), tipo)
+
+                # TODO limpar esse trecho do código
+                if xeque_branco[y][x]:
+                    if self.tabuleiro[y][x] is not None and self.tabuleiro[y][x].nome == 'rei':
+                        draw.circle(
+                            surf,
+                            (255, 100, 100),
+                            (self.qsize[0]/2, self.qsize[1]/2),
+                            self.qsize[0]/3
+                        )
+                    else:
+                        draw.circle(
+                            surf,
+                            (255, 255, 255),
+                            (self.qsize[0]/2, self.qsize[1]/2),
+                            self.qsize[0]/3
+                        )
+                if xeque_preto[y][x]:
+                    if self.tabuleiro[y][x] is not None and self.tabuleiro[y][x].nome == 'rei':
+                        draw.circle(
+                            surf,
+                            (100, 0, 0),
+                            (self.qsize[0]/2, self.qsize[1]/2),
+                            self.qsize[0]/4
+                        )
+                    else:
+                        draw.circle(
+                            surf,
+                            (0, 0, 0),
+                            (self.qsize[0]/2, self.qsize[1]/2),
+                            self.qsize[0]/4
+                        )
 
                 if peca:
                     peca.draw(surf)
