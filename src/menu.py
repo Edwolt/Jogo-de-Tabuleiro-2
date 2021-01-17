@@ -10,11 +10,12 @@ from recursos import Recursos
 
 
 class Opcoes:
-    def __init__(self, recursos: Recursos):
+    def __init__(self, menu, recursos: Recursos):
         """	
         Classe abstrata para criar menus de opções	
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la	
         """
+        self.menu = menu
         self.recursos = recursos
         self.sel = 0
 
@@ -36,7 +37,7 @@ class Opcoes:
         return len(self.opcoes)
 
     def nome(self, key) -> str:
-        """Retorna o neme da opção de numero"""
+        """:return: o nome da opção de numero"""
         return self.opcoes[key]
 
     def executar(self, key):
@@ -57,8 +58,8 @@ class Opcoes:
 
 
 class MenuConfigs(Opcoes):
-    def __init__(self, recursos: Recursos, anterior):
-        super().__init__(recursos)
+    def __init__(self, menu, recursos: Recursos, anterior):
+        super().__init__(menu, recursos)
         self.anterior = anterior
         self.configs = self.listar_configs()
 
@@ -87,13 +88,14 @@ class MenuConfigs(Opcoes):
 
 
 class MenuPrincipal(Opcoes):
-    def __init__(self, recursos: Recursos):
-        super().__init__(recursos)
+    def __init__(self, menu, recursos: Recursos):
+        super().__init__(menu, recursos)
         self.opcoes = (
             'Config',
             'Imagens',
             'Fonte',
             'Desfazer',
+            'Novo Jogo',
             'Voltar',
             'Sair'
         )
@@ -104,6 +106,8 @@ class MenuPrincipal(Opcoes):
         opcao = self.nome(i).lower()
         if opcao == 'config':
             return MenuConfigs(self.recursos, self)
+        elif opcao == 'novo jogo':
+            self.menu.xadrez.__init__(self.recursos)
         elif opcao == 'sair':
             pygame.quit()
             quit(0)
@@ -123,7 +127,7 @@ class Menu:
         self.fonte = self.recursos.config.fonte(50)
 
         if opcoes is None:
-            self.opcoes = MenuPrincipal(self.recursos)
+            self.opcoes = MenuPrincipal(self, self.recursos)
         else:
             self.opcoes = opcoes
 
