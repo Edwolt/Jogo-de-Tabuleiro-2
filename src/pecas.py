@@ -41,24 +41,19 @@ def verifica_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
                     return True
 
 
-# TODO simplificar esse código
 def mesclar_tabuleiro(a: list, b: list) -> list:
     res = tabuleiro_false()
     for i in range(8):
         for j in range(8):
-            aa = False
             if isinstance(a[i][j], bool):
-                aa = a[i][j]
+                res[i][j] = res[i][j] or a[i][j]
             elif isinstance(a[i][j], MovimentoEspecial):
-                aa = not a[i][j].avanco
+                res[i][j] = res[i][j] or not a[i][j].avanco
 
-            bb = False
             if isinstance(b[i][j], bool):
-                bb = b[i][j]
+                res[i][j] = res[i][j] or b[i][j]
             elif isinstance(b[i][j], MovimentoEspecial):
-                bb = not b[i][j].avanco
-
-            res[i][j] = aa or bb
+                res[i][j] = res[i][j] or not b[i][j].avanco
     return res
 
 
