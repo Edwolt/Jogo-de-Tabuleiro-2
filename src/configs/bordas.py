@@ -8,6 +8,7 @@ class Config:
         self.vazio = Color(214, 165, 132), Color(124, 49, 0)
         self.click = Color(153, 0, 0)
         self.movimento = Color(229, 126, 0)
+        self.xeque = Color(100, 0, 0)
         self.borda = Color(100, 100, 100)
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
@@ -32,6 +33,15 @@ class Config:
             cor = self.movimento
         elif tipo == 'captura':
             cor = self.movimento
+        elif tipo == 'xeque':
+            draw.rect(canva, self.vazio[(i+j) % 2], quad)
+            draw.circle(
+                canva,
+                self.xeque,
+                (canva.get_size()[0] / 2, canva.get_size()[0]/2),
+                min(*canva.get_size())/3
+            )
+            return
 
         draw.rect(canva, cor, quad)
 

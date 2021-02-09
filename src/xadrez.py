@@ -4,7 +4,7 @@ from pygame import Surface
 from pygame.event import Event
 
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
-from pecas import verifica_xeque, tabuleiro_xeque
+from pecas import testar_xeque
 from recursos import Recursos
 from pecas import MovimentoEspecial
 from menu import Menu
@@ -141,11 +141,6 @@ class Xadrez:
                 self.atualiza_movimentos(self.click)
             else:
                 self.vez = not self.vez
-                for i, linha in enumerate(self.tabuleiro):
-                    for j, peca in enumerate(linha):
-                        if peca is not None and peca.cor == self.vez and peca.nome == 'rei':
-                            print(f'verificando rei {peca.cor} em {i} {j}')
-                            verifica_xeque(self.tabuleiro, self.flags, (i, j))
 
             self.atualizacao = True
 
@@ -173,6 +168,10 @@ class Xadrez:
                     tipo = 'click'
                 elif self.movimento and self.movimento[y][x]:
                     tipo = 'movimento'
+                if (y, x) == self.rei['branco'] and testar_xeque(self.tabuleiro, self.flags, (y, x)):
+                    tipo = 'xeque'
+                if (y, x) == self.rei['preto'] and testar_xeque(self.tabuleiro, self.flags,  (y, x)):
+                    tipo = 'xeque'
 
                 surf = Surface(self.qsize)
                 self.recursos.config.quadrado(surf, (x, y), tipo)
@@ -184,8 +183,8 @@ class Xadrez:
                 canva.blit(surf, pos)
 
         self.atualizacao = False
-        display.flip()
         display.set_caption(self.recursos.config.titulo(self.vez))
+        display.flip()
 
     def new(self):
         if self.escape:

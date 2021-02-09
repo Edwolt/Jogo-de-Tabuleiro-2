@@ -30,50 +30,21 @@ def tabuleiro_copia(tabuleiro) -> list:
                 copia[i][j] = copy(peca)
 
 
-def verifica_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
-    ri, rj = pos_rei
-    rei = tabuleiro[ri][rj]
-    for pi, linha in enumerate(tabuleiro):
-        for pj, peca in enumerate(linha):
-            if peca and peca.cor != rei.cor:
-                if peca.get_movimentos(tabuleiro, flags, (pi, pj))[ri][rj] is True:
-                    return True
-
-
-def mesclar_tabuleiro(a: list, b: list) -> list:
-    res = tabuleiro_false()
-    for i in range(8):
-        for j in range(8):
-            if isinstance(a[i][j], bool):
-                res[i][j] = res[i][j] or a[i][j]
-            elif isinstance(a[i][j], MovimentoEspecial):
-                res[i][j] = res[i][j] or not a[i][j].avanco
-
-            if isinstance(b[i][j], bool):
-                res[i][j] = res[i][j] or b[i][j]
-            elif isinstance(b[i][j], MovimentoEspecial):
-                res[i][j] = res[i][j] or not b[i][j].avanco
-    return res
-
-
-def tabuleiro_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
-    res = tabuleiro_false()
+def testar_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
     ri, rj = pos_rei
     rei = tabuleiro[ri][rj]
     for pi, linha in enumerate(tabuleiro):
         for pj, peca in enumerate(linha):
             if peca is not None and peca.cor != rei.cor:
                 movimentos = peca.get_movimentos(tabuleiro, flags, (pi, pj))
-                if isinstance(movimentos[pi][pj], bool) and movimentos[pi][pj]:
+                if isinstance(movimentos[ri][rj], bool) and movimentos[ri][rj]:
                     return True
-                elif isinstance(movimentos[pi][pj], MovimentoEspecial) and movimentos[pi][pj].avanco:
+                elif isinstance(movimentos[ri][rj], MovimentoEspecial) and not movimentos[ri][rj].avanco:
                     return True
     return False
 
 
 ##### Classes Abstratas #####
-
-
 def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
     i, j = pos
     m, n = nova_pos
