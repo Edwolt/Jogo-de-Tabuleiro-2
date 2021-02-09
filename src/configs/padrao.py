@@ -8,12 +8,13 @@ class Config:
             Color(255, 255, 255),  # Branco
             Color(0, 0, 0)  # Preto
         )
-        self.click = Color(255, 0, 0)
+        self.click = Color(255, 255, 0)
         self.movimento = Color(0, 255, 255)
+        self.xeque = Color(255, 0, 0)
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str, complemento=None) -> None:
         """
         Colore o quadrado que será usado em baixo da peça
         :param pos: Posição da peça
@@ -36,6 +37,8 @@ class Config:
             cor = self.movimento
         elif tipo == 'captura':
             cor = self.movimento
+        elif tipo == 'xeque':
+            cor = self.xeque
 
         canva.fill(cor)
 
@@ -51,7 +54,7 @@ class Config:
         """
         return self.foreground
 
-    def loading_cores(self) -> tuple:
+    def loading_cores(self) -> tuple[Color, Color]:
         """[summary]
         :returns: Retorna uma tupla de cores para desenhar as barras de loading
         A primeira cor é usada para mostrar o que já foi carregado

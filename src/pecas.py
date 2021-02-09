@@ -15,14 +15,14 @@ Ideia para fazer o movimento:
 """
 
 
-def tabuleiro_false() -> list:
+def tabuleiro_false() -> list[list[bool]]:
     """
     :return: list 8x8 com todos os campos sendo False
     """
     return [[False] * 8 for _ in range(8)]
 
 
-def tabuleiro_copia(tabuleiro) -> list:
+def tabuleiro_copia(tabuleiro) -> list[list]:
     copia = [[None] * 8 for _ in range(8)]  # list 8x8 com None
     for i, linha in enumerate(tabuleiro):
         for j, peca in enumerate(linha):
@@ -30,7 +30,7 @@ def tabuleiro_copia(tabuleiro) -> list:
                 copia[i][j] = copy(peca)
 
 
-def testar_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
+def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -> bool:
     ri, rj = pos_rei
     rei = tabuleiro[ri][rj]
     for pi, linha in enumerate(tabuleiro):
@@ -45,7 +45,7 @@ def testar_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
 
 
 ##### Classes Abstratas #####
-def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
+def mover_peca(tabuleiro: list[list], pos: tuple[int, int], nova_pos: tuple[int, int]) -> None:
     i, j = pos
     m, n = nova_pos
     tabuleiro[m][n] = tabuleiro[i][j]
@@ -56,7 +56,7 @@ def mover_peca(tabuleiro: list, pos: tuple, nova_pos: tuple) -> None:
 class MovimentoEspecial():
     """Classe abstrata para os movimentos especiais"""
 
-    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro
@@ -76,7 +76,7 @@ def valida_coordenadas(a: int, b: int = 0) -> bool:
     return 0 <= a < 8 and 0 <= b < 8
 
 
-def calcula_direcao(res: list, tabuleiro: list, pos: tuple, direcoes: tuple, cor: bool) -> None:
+def calcula_direcao(res: list[list], tabuleiro: list[list], pos: tuple[int, int], direcoes: tuple[tuple[int, int], ...], cor: bool) -> None:
     for (di, dj) in direcoes:
         i, j = pos
         i, j = i + di, j + dj
@@ -111,7 +111,7 @@ class Peca():
     def notifica_movimento(self) -> None:
         return
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         """
         :param flags: flags do tabuleiro
         :return: list 8x8 dizendo se é possivel movimentar ou não
@@ -122,7 +122,7 @@ class Peca():
 
 ##### Rei #####
 class Roque(MovimentoEspecial):
-    def __init__(self, rei: tuple, nova_rei: tuple, torre: tuple, nova_torre):
+    def __init__(self, rei: tuple[int, int], nova_rei: tuple[int, int], torre: tuple[int, int], nova_torre: tuple[int, int]):
         """
         :param rei: posição atual do rei
         :param nova_rei: posiçãol para a qual o rei será movido
@@ -136,7 +136,7 @@ class Roque(MovimentoEspecial):
         self.torre = torre
         self.nova_torre = nova_torre
 
-    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         mover_peca(tabuleiro, self.rei, self.nova_rei)
         mover_peca(tabuleiro, self.torre, self.nova_torre)
 
@@ -152,11 +152,11 @@ class Rei(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def valida_posicao(self, tabuleiro: list, pos: tuple) -> bool:
+    def valida_posicao(self, tabuleiro: list[list], pos: tuple[int, int]) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         # TODO Cuidado com cheque
         res = tabuleiro_false()
         i, j = pos
@@ -215,7 +215,7 @@ class Rainha(Peca):
         self.recursos = recursos
         self.cor = cor
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),   # Cima
@@ -238,7 +238,7 @@ class Bispo(Peca):
         self.recursos = recursos
         self.cor = cor
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         direcoes = (
             (-1, 1),   # Cima Direita
@@ -257,11 +257,11 @@ class Cavalo(Peca):
         self.recursos = recursos
         self.cor = cor
 
-    def valida_posicao(self, tabuleiro: list, pos: tuple) -> bool:
+    def valida_posicao(self, tabuleiro: list[list], pos: tuple[int, int]) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         i, j = pos
 
@@ -304,7 +304,7 @@ class Torre(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),  # Cima
@@ -318,7 +318,7 @@ class Torre(Peca):
 
 ##### Peão #####
 class Promocao(MovimentoEspecial):
-    def __init__(self, pos: tuple, promocao: tuple):
+    def __init__(self, pos: tuple[int, int], promocao: tuple[int, int]):
         """
         :param pos: posição atual do peão
         :param promocao: posição para o qual o peão será movido causando a promoção
@@ -329,7 +329,7 @@ class Promocao(MovimentoEspecial):
         self.promocao = promocao
         pass
 
-    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         i, j = self.pos
         cor = tabuleiro[i][j].cor
         tabuleiro[i][j] = None
@@ -339,21 +339,21 @@ class Promocao(MovimentoEspecial):
 
 
 class Avanco(MovimentoEspecial):
-    def __init__(self, cor: bool, pos: tuple):
+    def __init__(self, cor: bool, pos: tuple[int, int]):
         self.nome = 'avanco'
         self.avanco = True
 
         self.cor = cor
         self.pos = pos
 
-    def executar(self, tabuleiro: list, flags: list, recursos: Recursos):
+    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos):
         i, j = self.pos
         i += -1 if self.cor else 1
         mover_peca(tabuleiro, self.pos, (i, j))
 
 
 class AvancoDuplo(MovimentoEspecial):
-    def __init__(self, cor: bool, pos: tuple, meio: tuple, nova_pos: tuple):
+    def __init__(self, cor: bool, pos: tuple[int, int], meio: tuple[int, int], nova_pos: tuple[int, int]):
         """
         :param cor: cor da peça (True: 'branco'; False: 'preto')
         :param pos: posicão do peão
@@ -369,7 +369,7 @@ class AvancoDuplo(MovimentoEspecial):
         self.meio = meio
         self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         mover_peca(tabuleiro, self.pos, self.nova_pos)
 
     def update_flags(self, flags: list) -> None:
@@ -377,7 +377,7 @@ class AvancoDuplo(MovimentoEspecial):
 
 
 class EnPassant(MovimentoEspecial):
-    def __init__(self, pos: tuple, capturado_pos: tuple, nova_pos: tuple):
+    def __init__(self, pos: tuple[int, int], capturado_pos: tuple[int, int], nova_pos: tuple[int, int]):
         """
         :param pos: posição do peão aliado
         :param capturado_pos: posição do peão inimigo a ser capturado
@@ -389,7 +389,7 @@ class EnPassant(MovimentoEspecial):
         self.capturado_pos = capturado_pos
         self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: list, flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         mover_peca(tabuleiro, self.pos, self.nova_pos)
         i, j = self.capturado_pos
         tabuleiro[i][j] = None
@@ -413,7 +413,7 @@ class Peao(Peca):
                     return meio, final
         return None
 
-    def criar_captura(self, tabuleiro: list, flags: list, pos: tuple, nova_pos: tuple):
+    def criar_captura(self, tabuleiro: list[list], flags: list, pos: tuple[int, int], nova_pos: tuple[int, int]):
         i, j = nova_pos
         promocao = 0 if self.cor else 7
 
@@ -430,7 +430,7 @@ class Peao(Peca):
             else:
                 return False
 
-    def get_movimentos(self, tabuleiro: list, flags: list, pos: tuple) -> list:
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         promocao = 0 if self.cor else 7
 

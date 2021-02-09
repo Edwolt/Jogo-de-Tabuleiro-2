@@ -20,7 +20,7 @@ class Config:
         self.vez = None
         self.titulo_anterior = '.'
 
-    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str, complemento=None) -> None:
         canva.fill(randcor())
 
     def menu_fundo(self, canva: Surface) -> None:
@@ -29,7 +29,7 @@ class Config:
     def menu_cor(self, selecionado: bool) -> Color:
         return randcor()
 
-    def loading_cores(self) -> tuple:
+    def loading_cores(self) -> tuple[Color, Color]:
         return randcor(), randcor()
 
     def titulo(self, vez: bool) -> str:

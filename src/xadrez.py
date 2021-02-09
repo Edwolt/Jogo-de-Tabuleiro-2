@@ -1,5 +1,5 @@
 from pygame.locals import *
-from pygame import display, draw
+from pygame import display
 from pygame import Surface
 from pygame.event import Event
 
@@ -10,7 +10,7 @@ from pecas import MovimentoEspecial
 from menu import Menu
 
 
-def tabuleiro_novo(recursos: Recursos) -> list:
+def tabuleiro_novo(recursos: Recursos) -> list[list[None]]:
     """
     :param pecas: objeto da classe Peca
     :return: list 8x8 onde os espacos vazios valem None
@@ -62,7 +62,7 @@ class Xadrez:
         self.qsize = 0, 0
         self.vez = True
 
-    def movimenta_peca(self, pos: tuple, nova_pos: tuple) -> bool:
+    def movimenta_peca(self, pos: tuple[int, int], nova_pos: tuple[int, int]) -> bool:
         """
         Movimenta a peça se o movimento for validao
         retornando se foi possível ou não
@@ -102,7 +102,7 @@ class Xadrez:
 
         return False
 
-    def atualiza_movimentos(self, pos: tuple) -> None:
+    def atualiza_movimentos(self, pos: tuple[int, int]) -> None:
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:

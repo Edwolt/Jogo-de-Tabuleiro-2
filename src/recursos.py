@@ -14,7 +14,7 @@ def caminho_asset(nome: str, png_min: bool = False) -> str:
 
 
 class Recursos:
-    def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60, png_min=False):
+    def __init__(self, config: str, size: tuple[int, int] = (800, 800), framerate: int = 60, png_min: bool = False):
         self.size = size
         self.framerate = framerate
         self.png_min = png_min
@@ -25,14 +25,14 @@ class Recursos:
     def set_config(self, config: str) -> None:
         self.config = Config(config)
 
-    def gerar_cor(self, grad: tuple, c: Color) -> Color:
+    def gerar_cor(self, grad: tuple[Color, Color], c: Color) -> Color:
         res = Color(0, 0, 0)
         a, b = grad
         for k in range(len(res)):
             res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))
         return res
 
-    def gerar_imagem(self, sprite: Surface, grad_preto: tuple, grad_branco: tuple) -> tuple:
+    def gerar_imagem(self, sprite: Surface, grad_preto: tuple[Color,Color], grad_branco: tuple[Color, Color]) -> tuple[Surface, Surface]:
         preto = sprite.copy()
         branco = sprite.copy()
         w, h = sprite.get_size()

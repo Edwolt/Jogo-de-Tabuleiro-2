@@ -27,7 +27,7 @@ class Config:
         self.vez = True
         self.titulo_anterior = '.'
 
-    def quadrado(self, canva: Surface, pos: tuple, tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str, complemento=None) -> None:
         i, j = pos
 
         cor = Color(0, 0, 0)
@@ -58,7 +58,7 @@ class Config:
         else:
             return self.titulo_anterior
 
-    def loading_cores(self) -> tuple:
+    def loading_cores(self) -> tuple[Color, Color]:
         return self.loading
 
     def fonte(self, tam) -> Font:

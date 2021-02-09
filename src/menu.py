@@ -63,7 +63,7 @@ class MenuConfigs(Opcoes):
         self.anterior = anterior
         self.configs = self.listar_configs()
 
-    def listar_configs(self) -> list:
+    def listar_configs(self) -> list[str]:
         """Lista todas as configs na pasta Configs"""
         # 8 por causa do nome da pasta
         # -3 por causa da extensao
