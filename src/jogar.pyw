@@ -10,7 +10,7 @@ from recursos import Recursos
 
 if __name__ == '__main__':
     pygame.init()
-    recursos = Recursos('bordas', size=(800, 800), framerate=60, min=True)
+    recursos = Recursos('bordas', size=(800, 800), framerate=60, png_min=True)
 
     screen = display.set_mode(recursos.size)
     clock = Clock()

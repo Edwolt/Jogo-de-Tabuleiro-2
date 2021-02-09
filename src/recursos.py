@@ -8,19 +8,16 @@ def Config(nome: str):
     return importlib.import_module(f'configs.{nome}').Config()
 
 
-def caminho_asset(nome: str) -> str:
+def caminho_asset(nome: str, png_min: bool = False) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
-    return f'assets/{nome}.png'
-
-
-def caminho_asset_min(nome: str) -> str:
-    return f'assets/{nome}.png.min'
+    return f'assets/{nome}.png' + ('.min' if png_min else '')
 
 
 class Recursos:
-    def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60, min=False):
+    def __init__(self, config: str, size: tuple = (800, 800), framerate: int = 60, png_min=False):
         self.size = size
         self.framerate = framerate
+        self.png_min = png_min
 
         self.config = Config(config)
         self.assets = dict()
@@ -53,8 +50,13 @@ class Recursos:
         nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
         yield [(len(nome_pecas), 0)]
         for k, i in enumerate(nome_pecas):
+            try:
+                img = image.load(caminho_asset(i, self.png_min))
+            except:
+                img = image.load(caminho_asset(i))
+
             self.assets[i] = self.gerar_imagem(
-                image.load(caminho_asset_min(i) if min else caminho_asset(i)),
+                img,
                 (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
                 (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
             )
