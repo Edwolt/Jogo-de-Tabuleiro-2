@@ -37,7 +37,6 @@ def verifica_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
         for pj, peca in enumerate(linha):
             if peca and peca.cor != rei.cor:
                 if peca.get_movimentos(tabuleiro, flags, (pi, pj))[ri][rj] is True:
-                    print('Xeque')
                     return True
 
 
@@ -65,8 +64,11 @@ def tabuleiro_xeque(tabuleiro: list, flags: list, pos_rei: tuple) -> bool:
         for pj, peca in enumerate(linha):
             if peca is not None and peca.cor != rei.cor:
                 movimentos = peca.get_movimentos(tabuleiro, flags, (pi, pj))
-                res = mesclar_tabuleiro(res, movimentos)
-    return res
+                if isinstance(movimentos[pi][pj], bool) and movimentos[pi][pj]:
+                    return True
+                elif isinstance(movimentos[pi][pj], MovimentoEspecial) and movimentos[pi][pj].avanco:
+                    return True
+    return False
 
 
 ##### Classes Abstratas #####

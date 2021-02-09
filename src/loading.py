@@ -22,8 +22,6 @@ class Loading():
     def draw(self, canvas: Surface) -> None:
         canvas.fill(Color(0, 0, 0))
 
-        
-
         try:
             barras = next(self.carregamento)
         except StopIteration:

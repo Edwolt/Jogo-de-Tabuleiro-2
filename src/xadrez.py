@@ -161,18 +161,6 @@ class Xadrez:
         if not self.atualizacao:
             return
 
-        # TODO limpar esse trecho do código
-        xeque_branco = tabuleiro_xeque(
-            self.tabuleiro,
-            self.flags,
-            self.rei['branco']
-        )
-        xeque_preto = tabuleiro_xeque(
-            self.tabuleiro,
-            self.flags,
-            self.rei['preto']
-        )
-
         size = canva.get_size()
         self.qsize = size[0] // 8, size[1] // 8
 
@@ -188,38 +176,6 @@ class Xadrez:
 
                 surf = Surface(self.qsize)
                 self.recursos.config.quadrado(surf, (x, y), tipo)
-
-                # TODO limpar esse trecho do código
-                if xeque_branco[y][x]:
-                    if self.tabuleiro[y][x] is not None and self.tabuleiro[y][x].nome == 'rei':
-                        draw.circle(
-                            surf,
-                            (255, 100, 100),
-                            (self.qsize[0]/2, self.qsize[1]/2),
-                            self.qsize[0]/3
-                        )
-                    else:
-                        draw.circle(
-                            surf,
-                            (255, 255, 255),
-                            (self.qsize[0]/2, self.qsize[1]/2),
-                            self.qsize[0]/3
-                        )
-                if xeque_preto[y][x]:
-                    if self.tabuleiro[y][x] is not None and self.tabuleiro[y][x].nome == 'rei':
-                        draw.circle(
-                            surf,
-                            (100, 0, 0),
-                            (self.qsize[0]/2, self.qsize[1]/2),
-                            self.qsize[0]/4
-                        )
-                    else:
-                        draw.circle(
-                            surf,
-                            (0, 0, 0),
-                            (self.qsize[0]/2, self.qsize[1]/2),
-                            self.qsize[0]/4
-                        )
 
                 if peca:
                     peca.draw(surf)
