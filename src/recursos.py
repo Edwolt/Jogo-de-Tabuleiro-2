@@ -32,7 +32,7 @@ class Recursos:
             res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))
         return res
 
-    def gerar_imagem(self, sprite: Surface, grad_preto: tuple[Color,Color], grad_branco: tuple[Color, Color]) -> tuple[Surface, Surface]:
+    def gerar_imagem(self, sprite: Surface, grad_preto: tuple[Color, Color], grad_branco: tuple[Color, Color]) -> tuple[Surface, Surface]:
         preto = sprite.copy()
         branco = sprite.copy()
         w, h = sprite.get_size()

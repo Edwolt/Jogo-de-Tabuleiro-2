@@ -74,16 +74,17 @@ class Xadrez:
 
         i, j = pos
         m, n = nova_pos
-        movimento = self.movimento[i][j]
+        movimento = self.movimento[m][n]
 
         if isinstance(movimento, bool) and movimento:
-            self.tabuleiro[i][j] = self.tabuleiro[m][n]
-            self.tabuleiro[m][n] = None
-            self.tabuleiro[i][j].notifica_movimento()
+            self.tabuleiro[m][n] = self.tabuleiro[i][j]
+            self.tabuleiro[i][j] = None
+            self.tabuleiro[m][n].notifica_movimento()
 
-            if self.tabuleiro[i][j].nome == 'rei':
-                cor = 'branco' if self.tabuleiro[i][j].cor else 'preto'
-                self.rei[cor] = (i, j)
+            if self.rei['branco'] == pos:
+                self.rei['branco'] = nova_pos
+            elif self.rei['preto'] == pos:
+                self.rei['preto'] = nova_pos
 
             self.flags.clear()
             return True
@@ -92,9 +93,10 @@ class Xadrez:
             movimento.executar(self.tabuleiro, self.flags, self.recursos)
 
             if movimento.nome == 'roque':
-                ri, rj = movimento.nova_rei
-                cor = 'branco' if self.tabuleiro[ri][rj].cor else 'preto'
-                self.rei[cor] = movimento.nova_rei
+                if self.pos_rei['branco'] == movimento.rei:
+                    self.pos_rei['branco'] = movimento.nova_rei
+                elif self.pos_rei['preto'] == movimento.rei:
+                    self.pos_rei['preto'] = movimento.nova_rei
 
             self.flags.clear()
             movimento.update_flags(self.flags)
@@ -133,7 +135,7 @@ class Xadrez:
 
             movimentado = False
             if self.movimento and click_antigo:
-                if self.movimenta_peca(self.click, click_antigo):
+                if self.movimenta_peca(click_antigo, self.click):
                     self.movimento = None
                     movimentado = True
 

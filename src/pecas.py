@@ -31,6 +31,10 @@ def tabuleiro_copia(tabuleiro) -> list[list]:
 
 
 def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -> bool:
+    """
+    Testa se o rei está em xeque
+    :param pos_rei: posição do rei
+    """
     ri, rj = pos_rei
     rei = tabuleiro[ri][rj]
     for pi, linha in enumerate(tabuleiro):
@@ -42,6 +46,39 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
                 elif isinstance(movimentos[ri][rj], MovimentoEspecial) and not movimentos[ri][rj].avanco:
                     return True
     return False
+
+
+def testar_movimento(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]], recursos: Recursos) -> bool:
+    tab = tabuleiro_copia(tabuleiro)
+    pos, nova_pos = acao
+    i, j = pos
+    m, n = nova_pos
+    movimento = tab[i][j].get_movimentos(tab, flags, pos)[i][j]
+
+    # Movimenta peca
+    if isinstance(movimento, bool) and movimento:
+        tab[m][n] = tabuleiro[i][j]
+        tab[i][j] = None
+        tab[m][n].notifica_movimento()
+
+        if pos_rei == pos:
+            pos_rei = nova_pos
+
+        flags.clear()
+
+    elif isinstance(movimento, MovimentoEspecial):
+        movimento.executar(tab, flags, recursos)
+
+        if movimento.nome == 'roque' and pos_rei == movimento.rei:
+            pos_rei = movimento.nova_rei
+
+        flags.clear()
+        movimento.update_flags(flags)
+    else:
+        return False
+
+    # Testa Xeque
+    return not testar_xeque(tab, flags, pos_rei)
 
 
 ##### Classes Abstratas #####
@@ -109,11 +146,13 @@ class Peca():
         canva.blit(sprite, (0, 0))
 
     def notifica_movimento(self) -> None:
+        """Notifica a peça que ela foi movimentada"""
         return
 
     def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         """
         :param flags: flags do tabuleiro
+        :param pos: posição da peça, cujos movimentos estam sendo calculados
         :return: list 8x8 dizendo se é possivel movimentar ou não
         Caso o movimento seja especial é retornado um objeto de uma subclasse de M
         """
