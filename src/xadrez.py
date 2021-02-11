@@ -113,6 +113,7 @@ class Xadrez:
             self.movimento = peca.get_movimentos(
                 self.tabuleiro,
                 self.flags,
+                self.rei['branco' if self.vez else 'preto'],
                 (i, j)
             )
         else:

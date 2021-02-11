@@ -5,16 +5,6 @@ from copy import copy
 
 from recursos import Recursos
 
-# TODO proteger rei
-"""
-Ideia para fazer o movimento:
-[x] Encontra onde está o rei da mesma cor
-[ ] Descobre quais pecas não podem sair do lugar por que criam xeque
-[x] Calcula onde a peça em questão pode ir
-[ ] Desconta do resultado onde as peças nao pode ir
-"""
-
-
 def tabuleiro_false() -> list[list[bool]]:
     """
     :return: list 8x8 com todos os campos sendo False
@@ -28,6 +18,7 @@ def tabuleiro_copia(tabuleiro) -> list[list]:
         for j, peca in enumerate(linha):
             if peca is not None:
                 copia[i][j] = copy(peca)
+    return copia
 
 
 def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -> bool:
@@ -40,7 +31,11 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
     for pi, linha in enumerate(tabuleiro):
         for pj, peca in enumerate(linha):
             if peca is not None and peca.cor != rei.cor:
-                movimentos = peca.get_movimentos(tabuleiro, flags, (pi, pj))
+                movimentos = peca.get_movimentos_simples(
+                    tabuleiro,
+                    flags,
+                    (pi, pj)
+                )
                 if isinstance(movimentos[ri][rj], bool) and movimentos[ri][rj]:
                     return True
                 elif isinstance(movimentos[ri][rj], MovimentoEspecial) and not movimentos[ri][rj].avanco:
@@ -48,12 +43,13 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
     return False
 
 
+# TODO pode ser muito otimizado
 def testar_movimento(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]], recursos: Recursos) -> bool:
     tab = tabuleiro_copia(tabuleiro)
     pos, nova_pos = acao
     i, j = pos
     m, n = nova_pos
-    movimento = tab[i][j].get_movimentos(tab, flags, pos)[i][j]
+    movimento = tab[i][j].get_movimentos_simples(tab, flags, pos)[m][n]
 
     # Movimenta peca
     if isinstance(movimento, bool) and movimento:
@@ -149,14 +145,32 @@ class Peca():
         """Notifica a peça que ela foi movimentada"""
         return
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estam sendo calculados
         :return: list 8x8 dizendo se é possivel movimentar ou não
-        Caso o movimento seja especial é retornado um objeto de uma subclasse de M
+        Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
         """
         pass
+
+    def get_movimentos(self, tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], pos: tuple[int, int]) -> list[list]:
+        """
+        :param flags: flags do tabuleiro
+        :param pos: posição da peça, cujos movimentos estam sendo calculados
+        :return: list 8x8 dizendo se é possivel movimentar ou não
+        Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
+        """
+        res = tabuleiro_false()
+        movimentos = self.get_movimentos_simples(tabuleiro, flags, pos)
+        for i, linha in enumerate(movimentos):
+            for j, _ in enumerate(linha):
+                res[i][j] = testar_movimento(
+                    tabuleiro, flags, pos_rei,
+                    (pos, (i, j)),
+                    self.recursos
+                )
+        return res
 
 
 ##### Rei #####
@@ -195,7 +209,7 @@ class Rei(Peca):
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         # TODO Cuidado com cheque
         res = tabuleiro_false()
         i, j = pos
@@ -254,7 +268,7 @@ class Rainha(Peca):
         self.recursos = recursos
         self.cor = cor
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),   # Cima
@@ -277,7 +291,7 @@ class Bispo(Peca):
         self.recursos = recursos
         self.cor = cor
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         direcoes = (
             (-1, 1),   # Cima Direita
@@ -300,7 +314,7 @@ class Cavalo(Peca):
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         i, j = pos
 
@@ -343,7 +357,7 @@ class Torre(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),  # Cima
@@ -469,7 +483,7 @@ class Peao(Peca):
             else:
                 return False
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()
         promocao = 0 if self.cor else 7
 
