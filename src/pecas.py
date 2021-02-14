@@ -5,6 +5,7 @@ from copy import copy
 
 from recursos import Recursos
 
+
 def tabuleiro_false() -> list[list[bool]]:
     """
     :return: list 8x8 com todos os campos sendo False
@@ -44,7 +45,7 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
 
 
 # TODO pode ser muito otimizado
-def testar_movimento(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]], recursos: Recursos) -> bool:
+def testar_movimento(tabuleiro: list[list], flags: list, recursos: Recursos, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]]) -> bool:
     tab = tabuleiro_copia(tabuleiro)
     pos, nova_pos = acao
     i, j = pos
@@ -166,9 +167,10 @@ class Peca():
         for i, linha in enumerate(movimentos):
             for j, _ in enumerate(linha):
                 res[i][j] = testar_movimento(
-                    tabuleiro, flags, pos_rei,
-                    (pos, (i, j)),
-                    self.recursos
+                    tabuleiro, flags,
+                    self.recursos,
+                    pos_rei, (pos, (i, j)),
+
                 )
         return res
 
