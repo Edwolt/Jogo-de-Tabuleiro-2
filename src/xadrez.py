@@ -5,8 +5,9 @@ from pygame.event import Event
 
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
 from pecas import testar_xeque
-from recursos import Recursos
 from pecas import MovimentoEspecial
+from recursos import Recursos
+from escolha import Escolha
 from menu import Menu
 
 
@@ -55,6 +56,7 @@ class Xadrez:
         self.tabuleiro = tabuleiro_novo(self.recursos)
         self.rei = {'branco': (7, 4), 'preto': (0, 4)}
         self.escape = False
+        self.promocao = None
         self.flags = list()
 
         self.click = None
@@ -97,6 +99,8 @@ class Xadrez:
                     self.pos_rei['branco'] = movimento.nova_rei
                 elif self.pos_rei['preto'] == movimento.rei:
                     self.pos_rei['preto'] = movimento.nova_rei
+            elif movimento.nome == 'promocao':
+                self.promocao = movimento
 
             self.flags.clear()
             movimento.update_flags(self.flags)
@@ -150,7 +154,7 @@ class Xadrez:
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             self.escape = True
 
-    def draw(self, canva) -> None:
+    def draw(self, canva: Surface) -> None:
         """
         :param canva: Surface onde o jogo sera desenhado
         :return: Retorna se a tela precisa ser atualizada
@@ -164,16 +168,17 @@ class Xadrez:
 
         for y, linha in enumerate(self.tabuleiro):
             for x, peca in enumerate(linha):
-                # j, i = x, y
+                # i, j = y, x
 
                 tipo = 'vazio'
-                if self.click and y == self.click[0] and x == self.click[1]:
+                if self.click and (y, x) == self.click:
                     tipo = 'click'
                 elif self.movimento and self.movimento[y][x]:
-                    tipo = 'movimento'
-                if (y, x) == self.rei['branco'] and testar_xeque(self.tabuleiro, self.flags, (y, x)):
-                    tipo = 'xeque'
-                if (y, x) == self.rei['preto'] and testar_xeque(self.tabuleiro, self.flags,  (y, x)):
+                    if isinstance(self.movimento[y][x], MovimentoEspecial):
+                        tipo = 'especial'
+                    else:
+                        tipo = 'movimento'
+                elif ((y, x) == self.rei['branco'] or (y, x) == self.rei['preto']) and testar_xeque(self.tabuleiro, self.flags, (y, x)):
                     tipo = 'xeque'
 
                 surf = Surface(self.qsize)
@@ -194,5 +199,10 @@ class Xadrez:
             self.atualizacao = True
             self.escape = False
             return Menu(self.recursos, self)
+        elif self.promocao is not None:
+            self.atualizacao = True
+            promocao = self.promocao
+            self.promocao = None
+            return Escolha(self.recursos, self, promocao)
         else:
             return self

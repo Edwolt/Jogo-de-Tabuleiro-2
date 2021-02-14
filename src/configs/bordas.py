@@ -28,6 +28,8 @@ class Config:
             cor = self.click
         elif tipo == 'movimento':
             cor = self.movimento
+        elif tipo == 'especial':
+            cor = self.movimento
         elif tipo == 'captura':
             cor = self.movimento
         elif tipo == 'xeque':

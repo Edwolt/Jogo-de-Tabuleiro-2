@@ -90,6 +90,9 @@ def mover_peca(tabuleiro: list[list], pos: tuple[int, int], nova_pos: tuple[int,
 class MovimentoEspecial():
     """Classe abstrata para os movimentos especiais"""
 
+    def __init__(self):
+        self.avanco = False
+
     def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         """
         Executa o movimento no tabuleiro
@@ -165,13 +168,14 @@ class Peca():
         res = tabuleiro_false()
         movimentos = self.get_movimentos_simples(tabuleiro, flags, pos)
         for i, linha in enumerate(movimentos):
-            for j, _ in enumerate(linha):
-                res[i][j] = testar_movimento(
+            for j, mov in enumerate(linha):
+                teste = testar_movimento(
                     tabuleiro, flags,
                     self.recursos,
                     pos_rei, (pos, (i, j)),
 
                 )
+                res[i][j] = mov if teste else False
         return res
 
 
@@ -184,6 +188,8 @@ class Roque(MovimentoEspecial):
         :param torre: posição atual da torre
         :param nova_torre: posição para o qual a torre será movida
         """
+
+        super().__init__()
 
         self.nome = 'roque'
         self.rei = rei
@@ -373,14 +379,17 @@ class Torre(Peca):
 
 ##### Peão #####
 class Promocao(MovimentoEspecial):
-    def __init__(self, pos: tuple[int, int], promocao: tuple[int, int]):
+    def __init__(self, pos: tuple[int, int], promocao: tuple[int, int], cor: bool):
         """
         :param pos: posição atual do peão
         :param promocao: posição para o qual o peão será movido causando a promoção
         """
 
+        super().__init__()
+
         self.nome = 'promocao'
         self.pos = pos
+        self.cor = cor
         self.promocao = promocao
         pass
 
@@ -395,6 +404,8 @@ class Promocao(MovimentoEspecial):
 
 class Avanco(MovimentoEspecial):
     def __init__(self, cor: bool, pos: tuple[int, int]):
+        super().__init__()
+
         self.nome = 'avanco'
         self.avanco = True
 
@@ -415,6 +426,8 @@ class AvancoDuplo(MovimentoEspecial):
         :param meio: posição pela qual o peão passará
         :param nova_pos: posição final do peão
         """
+
+        super().__init__()
 
         self.nome = 'avanco duplo'
         self.avanco = True
@@ -438,6 +451,8 @@ class EnPassant(MovimentoEspecial):
         :param capturado_pos: posição do peão inimigo a ser capturado
         :param nova_pos: posição para o qual o peão aliado será movido
         """
+
+        super().__init__()
 
         self.nome = 'enpassant'
         self.pos = pos
@@ -474,7 +489,7 @@ class Peao(Peca):
 
         if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
             if i == promocao:
-                return Promocao(pos, nova_pos)
+                return Promocao(pos, nova_pos, self.cor)
             else:
                 return True
         else:
@@ -493,14 +508,14 @@ class Peao(Peca):
         i += -1 if self.cor else 1
         if valida_coordenadas(i) and tabuleiro[i][j] is None:
             if i == promocao:
-                res[i][j] = Promocao(pos, (i, j))
+                res[i][j] = Promocao(pos, (i, j), self.cor)
             else:
                 res[i][j] = Avanco(self.cor, pos)
 
             ii = i-1 if self.cor else i+1
             if not self.movimentou and valida_coordenadas(ii) and tabuleiro[ii][j] is None:
                 if i == promocao:
-                    res[ii][j] = Promocao(pos, (ii, j))
+                    res[ii][j] = Promocao(pos, (ii, j), self.cor)
                 else:
                     res[ii][j] = AvancoDuplo(self.cor, pos, (i, j), (ii, j))
 
