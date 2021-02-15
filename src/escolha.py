@@ -30,14 +30,14 @@ class Escolha():
         self.click = None
         self.qsize = 0, 0
 
-        self.cavalo = Cavalo(self.recursos, self.cor)
-        self.cavalo.notifica_movimento()
-        self.bispo = Bispo(self.recursos, self.cor)
-        self.bispo.notifica_movimento()
-        self.torre = Torre(self.recursos, self.cor)
-        self.torre.notifica_movimento()
-        self.rainha = Rainha(self.recursos, self.cor)
-        self.rainha.notifica_movimento()
+        self.pecas = [
+            Cavalo(self.recursos, self.cor),
+            Bispo(self.recursos, self.cor),
+            Torre(self.recursos, self.cor),
+            Rainha(self.recursos, self.cor)
+        ]
+        for i in self.pecas:
+            i.notifica_movimento()
 
     ##### Interface #####
     def event(self, event: Event) -> None:
@@ -58,34 +58,16 @@ class Escolha():
         self.xadrez.draw(tabuleiro)
         canva.blit(tabuleiro, (self.qsize[0], 2 * self.qsize[1]))
 
-        # i, j = y, x
-        i, j = 0, 2
-        surf = Surface(self.qsize)
-        self.recursos.config.quadrado(surf, (j, i), 'vazio')
-        self.cavalo.draw(surf)
-        pos = j * self.qsize[0], i * self.qsize[1]
-        canva.blit(surf, pos)
+        offset_i, offset_j = 0, 2
+        for jj, peca in enumerate(self.pecas):
+            # i, j = y, x
+            i, j = offset_i, offset_j + jj
 
-        i, j = 0, 3
-        surf = Surface(self.qsize)
-        self.recursos.config.quadrado(surf, (j, i), 'vazio')
-        self.bispo.draw(surf)
-        pos = j * self.qsize[0], i * self.qsize[1]
-        canva.blit(surf, pos)
-
-        i, j = 0, 4
-        surf = Surface(self.qsize)
-        self.recursos.config.quadrado(surf, (j, i), 'vazio')
-        self.torre.draw(surf)
-        pos = j * self.qsize[0], i * self.qsize[1]
-        canva.blit(surf, pos)
-
-        i, j = 0, 5
-        surf = Surface(self.qsize)
-        self.recursos.config.quadrado(surf, (j, i), 'vazio')
-        self.rainha.draw(surf)
-        pos = j * self.qsize[0], i * self.qsize[1]
-        canva.blit(surf, pos)
+            surf = Surface(self.qsize)
+            self.recursos.config.quadrado(surf, (j, i), 'vazio')
+            peca.draw(surf)
+            pos = j * self.qsize[0], i * self.qsize[1]
+            canva.blit(surf, pos)
 
         self.atualizacao = False
         display.set_caption(self.recursos.config.titulo(self.cor))
