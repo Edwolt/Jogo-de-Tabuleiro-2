@@ -4,6 +4,7 @@ from pygame import Surface
 from pygame.event import Event
 
 from recursos import Recursos
+from pecas import Cavalo, Bispo, Torre, Rainha
 from pecas import MovimentoEspecial
 from menu import Menu
 
@@ -20,6 +21,7 @@ class Escolha():
         self.recursos = recursos
         self.xadrez = xadrez
         self.promocao = promocao
+        self.cor = self.promocao.cor
 
         self.atualizacao = True
         self.escolhido = None
@@ -27,6 +29,15 @@ class Escolha():
 
         self.click = None
         self.qsize = 0, 0
+
+        self.cavalo = Cavalo(self.recursos, self.cor)
+        self.cavalo.notifica_movimento()
+        self.bispo = Bispo(self.recursos, self.cor)
+        self.bispo.notifica_movimento()
+        self.torre = Torre(self.recursos, self.cor)
+        self.torre.notifica_movimento()
+        self.rainha = Rainha(self.recursos, self.cor)
+        self.rainha.notifica_movimento()
 
     ##### Interface #####
     def event(self, event: Event) -> None:
@@ -39,14 +50,45 @@ class Escolha():
         if not self.atualizacao:
             return
 
-        canva.fill(Color(0, 0, 0))
         size = canva.get_size()
-        surf = Surface((size[0], size[1]//8 * 6))
-        self.xadrez.draw(surf)
-        canva.blit(surf, (0, size[1]//8 * 2))
+        self.qsize = size[0] // 8, size[1] // 8
+
+        canva.fill(Color(0, 0, 0))
+        tabuleiro = Surface((6 * self.qsize[0], 6 * self.qsize[1]))
+        self.xadrez.draw(tabuleiro)
+        canva.blit(tabuleiro, (self.qsize[0], 2 * self.qsize[1]))
+
+        # i, j = y, x
+        i, j = 0, 2
+        surf = Surface(self.qsize)
+        self.recursos.config.quadrado(surf, (j, i), 'vazio')
+        self.cavalo.draw(surf)
+        pos = j * self.qsize[0], i * self.qsize[1]
+        canva.blit(surf, pos)
+
+        i, j = 0, 3
+        surf = Surface(self.qsize)
+        self.recursos.config.quadrado(surf, (j, i), 'vazio')
+        self.bispo.draw(surf)
+        pos = j * self.qsize[0], i * self.qsize[1]
+        canva.blit(surf, pos)
+
+        i, j = 0, 4
+        surf = Surface(self.qsize)
+        self.recursos.config.quadrado(surf, (j, i), 'vazio')
+        self.torre.draw(surf)
+        pos = j * self.qsize[0], i * self.qsize[1]
+        canva.blit(surf, pos)
+
+        i, j = 0, 5
+        surf = Surface(self.qsize)
+        self.recursos.config.quadrado(surf, (j, i), 'vazio')
+        self.rainha.draw(surf)
+        pos = j * self.qsize[0], i * self.qsize[1]
+        canva.blit(surf, pos)
 
         self.atualizacao = False
-        display.set_caption(self.recursos.config.titulo(self.promocao.cor))
+        display.set_caption(self.recursos.config.titulo(self.cor))
         display.flip()
 
     def new(self):

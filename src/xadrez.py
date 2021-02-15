@@ -3,12 +3,12 @@ from pygame import display
 from pygame import Surface
 from pygame.event import Event
 
+from recursos import Recursos
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
 from pecas import testar_xeque
 from pecas import MovimentoEspecial
-from recursos import Recursos
-from escolha import Escolha
 from menu import Menu
+from escolha import Escolha
 
 
 def tabuleiro_novo(recursos: Recursos) -> list[list[None]]:

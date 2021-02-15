@@ -395,11 +395,10 @@ class Promocao(MovimentoEspecial):
 
     def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
         i, j = self.pos
-        cor = tabuleiro[i][j].cor
+        m, n = self.promocao
+        tabuleiro[m][n] = tabuleiro[i][j]
         tabuleiro[i][j] = None
-
-        i, j = self.promocao
-        tabuleiro[i][j] = Rainha(recursos, cor)
+        tabuleiro[m][n].notifica_movimento()
 
 
 class Avanco(MovimentoEspecial):
