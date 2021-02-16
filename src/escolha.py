@@ -27,7 +27,6 @@ class Escolha():
         self.escolhido = None
         self.escape = False
 
-        self.click = None
         self.qsize = 0, 0
 
         self.pecas = [
@@ -42,7 +41,14 @@ class Escolha():
     ##### Interface #####
     def event(self, event: Event) -> None:
         if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
-            return
+            i = int(event.pos[1] // self.qsize[1])
+            j = int(event.pos[0] // self.qsize[0])
+            print(i, j)
+
+            if i == 0 and 0 <= j - 2 < 4:
+                self.escolhido = self.pecas[j - 2]
+                print(self.escolhido)
+
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             self.escape = True
 
@@ -70,6 +76,7 @@ class Escolha():
             canva.blit(surf, pos)
 
         self.atualizacao = False
+        self.xadrez.atualizacao = True
         display.set_caption(self.recursos.config.titulo(self.cor))
         display.flip()
 
@@ -82,7 +89,6 @@ class Escolha():
         elif self.escape:
             self.escape = False
             self.atualizacao = True
-            self.xadrez.atualizacao = True
             return Menu(self.recursos, self)
         else:
             return self
