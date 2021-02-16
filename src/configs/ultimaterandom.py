@@ -20,8 +20,17 @@ class Config:
         self.vez = None
         self.titulo_anterior = '.'
 
-    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str) -> None:
         canva.fill(randcor())
+
+    def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
+        res = (randcor(), randcor()), (randcor(), randcor())
+        res[0][0].a = 0
+        res[0][1].a = 255
+        res[1][0].a = 0
+        res[1][1].a = 255
+
+        return res
 
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(randcor())

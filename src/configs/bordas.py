@@ -13,7 +13,7 @@ class Config:
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str) -> None:
         size = canva.get_size()
         quad = Rect(1, 1, size[0] - 2, size[1] - 2)
 
@@ -43,6 +43,12 @@ class Config:
             return
 
         draw.rect(canva, cor, quad)
+
+    def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
+        return (
+            (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+        )
 
     def menu_fundo(self, canva: Surface) -> None:
         canva.fill(self.background)

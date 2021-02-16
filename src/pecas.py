@@ -428,7 +428,7 @@ class AvancoDuplo(MovimentoEspecial):
 
         super().__init__()
 
-        self.nome = 'avanco duplo'
+        self.nome = 'avancoduplo'
         self.avanco = True
 
         self.cor = cor

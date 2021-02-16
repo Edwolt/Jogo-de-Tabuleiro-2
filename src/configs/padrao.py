@@ -14,16 +14,17 @@ class Config:
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str, complemento=None) -> None:
+    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str) -> None:
         """
         Colore o quadrado que será usado em baixo da peça
         :param pos: Posição da peça
         :param tipo: Se tem algo especial no quadrado
-        * vazio: Um quadrado comun, pode estar ou não vazio
+        * vazio: Quadrado comun (pode estar ou não vazio)
         * click: Último quadrado que foi clicado
         * movimento: Quadrado disponível para movimentar
+        * especial: Quadrado onde o movimento é especial
         * captura: Quadrado disponível para movimentar que reultará em um captura
-        :param complemento: (ainda não tem nenhuma função, mas a ideia é usar para salvar mais detalhes sobre o quadrado)
+        * xeque: Quadrado onde o rei está em xeque
         """
 
         i, j = pos
@@ -35,12 +36,24 @@ class Config:
             cor = self.click
         elif tipo == 'movimento':
             cor = self.movimento
+        elif tipo == 'especial':
+            cor = self.movimento
         elif tipo == 'captura':
             cor = self.movimento
         elif tipo == 'xeque':
             cor = self.xeque
 
         canva.fill(cor)
+
+    def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
+        """
+        :return: (gradiente_branco, gradiente_preto)
+        Retorna dois gradientes, um para colorir as peças brancas outro para as peças pretas
+        """
+        return (
+            (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+        )
 
     def menu_fundo(self, canva: Surface) -> None:
         """Colore o fundo do menu (canva)"""

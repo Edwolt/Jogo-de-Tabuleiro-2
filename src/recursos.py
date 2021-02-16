@@ -48,6 +48,7 @@ class Recursos:
     def carregar(self):
         """Carrega os assets das peças na memória"""
         nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
+        cores = self.config.pecas_cor()
         yield [(len(nome_pecas), 0)]
         for k, i in enumerate(nome_pecas):
             try:
@@ -55,11 +56,7 @@ class Recursos:
             except:
                 img = image.load(caminho_asset(i))
 
-            self.assets[i] = self.gerar_imagem(
-                img,
-                (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-                (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
-            )
+            self.assets[i] = self.gerar_imagem(img, *cores)
             yield [(len(nome_pecas), k+1)]
 
     def get_asset(self, nome: str, cor: bool) -> Surface:

@@ -174,7 +174,7 @@ class Xadrez:
                 if self.click and (y, x) == self.click:
                     tipo = 'click'
                 elif self.movimento and self.movimento[y][x]:
-                    if isinstance(self.movimento[y][x], MovimentoEspecial):
+                    if isinstance(self.movimento[y][x], MovimentoEspecial) and self.movimento[y][x].nome in ('roque', 'enpassant', 'avancoduplo'):
                         tipo = 'especial'
                     else:
                         tipo = 'movimento'

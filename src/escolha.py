@@ -81,7 +81,7 @@ class Escolha():
         display.flip()
 
     def new(self):
-        if self.escolhido:
+        if self.escolhido is not None:
             i, j = self.promocao.promocao
             self.xadrez.tabuleiro[i][j] = self.escolhido
             print(self.escolhido)

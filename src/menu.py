@@ -7,15 +7,19 @@ from pygame.locals import *
 from glob import glob
 
 from recursos import Recursos
+from loading import Loading
 
 
 class Opcoes:
-    def __init__(self, menu, recursos: Recursos):
+    def __init__(self, menu, recursos: Recursos, anterior):
         """	
         Classe abstrata para criar menus de opções	
-        A objeto armazena qual opção está armazenado nela e é capaz de executá-la	
+        A objeto armazena qual opção está armazenado nela e é capaz de executá-la
+        :param menu: Objeto da classe Menu
+        :param anterior: Opcoes anteriores
         """
         self.menu = menu
+        self.anterior = anterior
         self.recursos = recursos
         self.sel = 0
 
@@ -41,8 +45,15 @@ class Opcoes:
         return self.opcoes[key]
 
     def executar(self, key):
-        """Executa a opção de número key"""
-        self.funcoes[key]()
+        """
+        Executa a opção de número key
+        :return: Pode ser
+        * None: Sair do menu
+        * Opcoes: Qual novo menu de opções deve entrar
+        * Generator: Cria uma tela de Loading e sai do menu
+        """
+
+        return self.voltar()
 
     def listar(self):
         """	
@@ -57,10 +68,9 @@ class Opcoes:
         return self.anterior
 
 
-class MenuConfigs(Opcoes):
-    def __init__(self, menu, recursos: Recursos, anterior):
-        super().__init__(menu, recursos)
-        self.anterior = anterior
+class OpcoesConfigs(Opcoes):
+    def __init__(self, menu, recursos: Recursos, anterior: Opcoes):
+        super().__init__(menu, recursos, anterior)
         self.configs = self.listar_configs()
 
     def listar_configs(self) -> list[str]:
@@ -83,13 +93,14 @@ class MenuConfigs(Opcoes):
     def executar(self, i):
         if 0 <= i < len(self.configs):
             self.recursos.set_config(self.configs[self.sel])
+            return self.recursos.carregar()
         else:
             return self.voltar()
 
 
-class MenuPrincipal(Opcoes):
-    def __init__(self, menu, recursos: Recursos):
-        super().__init__(menu, recursos)
+class OpcoesPrincipal(Opcoes):
+    def __init__(self, menu,  recursos: Recursos, anterior: Opcoes = None):
+        super().__init__(menu, recursos, anterior)
         self.opcoes = (
             'Config',
             'Imagens',
@@ -105,7 +116,7 @@ class MenuPrincipal(Opcoes):
         i = self.sel if i is None else i
         opcao = self.nome(i).lower()
         if opcao == 'config':
-            return MenuConfigs(self.recursos, self)
+            return OpcoesConfigs(self.menu, self.recursos, self)
         elif opcao == 'novo jogo':
             self.menu.xadrez.__init__(self.recursos)
         elif opcao == 'sair':
@@ -114,20 +125,18 @@ class MenuPrincipal(Opcoes):
         else:
             print(f'{opcao} não implementado')
 
-    def voltar(self):
-        return None
-
 
 class Menu:
     def __init__(self, recursos: Recursos, xadrez, opcoes: Opcoes = None):
         self.recursos = recursos
         self.xadrez = xadrez
 
+        self.loading = None
         self.atualizacao = True
         self.fonte = self.recursos.config.fonte(50)
 
         if opcoes is None:
-            self.opcoes = MenuPrincipal(self, self.recursos)
+            self.opcoes = OpcoesPrincipal(self, self.recursos)
         else:
             self.opcoes = opcoes
 
@@ -135,7 +144,11 @@ class Menu:
     def event(self, event: Event) -> None:
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
-                self.opcoes = self.opcoes.executar(self.opcoes.sel)
+                ret = self.opcoes.executar(self.opcoes.sel)
+                if isinstance(ret, Opcoes) or ret is None:
+                    self.opcoes = ret
+                else:
+                    self.loading = ret
             elif event.key == K_ESCAPE:
                 self.opcoes = self.opcoes.voltar()
             else:
@@ -167,4 +180,9 @@ class Menu:
         display.flip()
 
     def new(self):
-        return self.xadrez if self.opcoes is None else self
+        if self.opcoes is None:
+            return self.xadrez
+        elif self.loading is not None:
+            return Loading(self.recursos, self.loading, self.xadrez)
+        else:
+            return self
