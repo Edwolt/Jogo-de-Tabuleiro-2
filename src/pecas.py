@@ -254,7 +254,18 @@ class Rei(Peca):
                 for jj in range(1, j):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
-                if not pecas_entre:
+                tab = tabuleiro_copia(tabuleiro)
+                tab[i][3] = Rei(self.recursos, self.cor)
+                tab[i][4] = None
+                xeque = testar_xeque(tab, flags, (i, 3))
+
+                if not xeque:
+                    tab = tabuleiro_copia(tabuleiro)
+                    tab[i][2] = Rei(self.recursos, self.cor)
+                    tab[i][4] = None
+                    xeque = testar_xeque(tab, flags, (i, 2))
+
+                if not pecas_entre and not xeque:
                     res[i][j-2] = Roque((i, j), (i, j-2), (i, 0), (i, j-1))
 
             torre = tabuleiro[i][7]
