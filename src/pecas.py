@@ -136,14 +136,14 @@ class Peca():
         """
         pass
 
-    def draw(self, canva: Surface) -> None:
+    def draw(self, canvas: Surface) -> None:
         """
-        Desenha o sprite em canva
-        :param canva: Surface onde o jogo sera desenhado
+        Desenha o sprite em canvas
+        :param canvas: Surface onde o jogo sera desenhado
         """
         sprite = self.recursos.get_asset(self.nome, self.cor)
-        sprite = transform.scale(sprite, canva.get_size())
-        canva.blit(sprite, (0, 0))
+        sprite = transform.scale(sprite, canvas.get_size())
+        canvas.blit(sprite, (0, 0))
 
     def notifica_movimento(self) -> None:
         """Notifica a peça que ela foi movimentada"""
@@ -152,7 +152,7 @@ class Peca():
     def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         """
         :param flags: flags do tabuleiro
-        :param pos: posição da peça, cujos movimentos estam sendo calculados
+        :param pos: posição da peça, cujos movimentos estão sendo calculados
         :return: list 8x8 dizendo se é possivel movimentar ou não
         Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
         """
@@ -161,7 +161,7 @@ class Peca():
     def get_movimentos(self, tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], pos: tuple[int, int]) -> list[list]:
         """
         :param flags: flags do tabuleiro
-        :param pos: posição da peça, cujos movimentos estam sendo calculados
+        :param pos: posição da peça, cujos movimentos estão sendo calculados
         :return: list 8x8 dizendo se é possivel movimentar ou não
         Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
         """
@@ -184,7 +184,7 @@ class Roque(MovimentoEspecial):
     def __init__(self, rei: tuple[int, int], nova_rei: tuple[int, int], torre: tuple[int, int], nova_torre: tuple[int, int]):
         """
         :param rei: posição atual do rei
-        :param nova_rei: posiçãol para a qual o rei será movido
+        :param nova_rei: posição para a qual o rei será movido
         :param torre: posição atual da torre
         :param nova_torre: posição para o qual a torre será movida
         """
@@ -432,7 +432,7 @@ class AvancoDuplo(MovimentoEspecial):
     def __init__(self, cor: bool, pos: tuple[int, int], meio: tuple[int, int], nova_pos: tuple[int, int]):
         """
         :param cor: cor da peça (True: 'branco'; False: 'preto')
-        :param pos: posicão do peão
+        :param pos: posição do peão
         :param meio: posição pela qual o peão passará
         :param nova_pos: posição final do peão
         """

@@ -13,11 +13,11 @@ class Config:
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str) -> None:
-        size = canva.get_size()
+    def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
+        size = canvas.get_size()
         quad = Rect(1, 1, size[0] - 2, size[1] - 2)
 
-        canva.fill(self.borda)
+        canvas.fill(self.borda)
 
         i, j = pos
 
@@ -33,16 +33,16 @@ class Config:
         elif tipo == 'captura':
             cor = self.movimento
         elif tipo == 'xeque':
-            draw.rect(canva, self.vazio[(i+j) % 2], quad)
+            draw.rect(canvas, self.vazio[(i+j) % 2], quad)
             draw.circle(
-                canva,
+                canvas,
                 self.xeque,
-                (canva.get_size()[0] / 2, canva.get_size()[0]/2),
-                min(*canva.get_size())/3
+                (canvas.get_size()[0] / 2, canvas.get_size()[0]/2),
+                min(*canvas.get_size())/3
             )
             return
 
-        draw.rect(canva, cor, quad)
+        draw.rect(canvas, cor, quad)
 
     def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
         return (
@@ -50,8 +50,8 @@ class Config:
             (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
         )
 
-    def menu_fundo(self, canva: Surface) -> None:
-        canva.fill(self.background)
+    def menu_fundo(self, canvas: Surface) -> None:
+        canvas.fill(self.background)
 
     def menu_cor(self, selecionado: bool) -> Color:
         return self.foreground

@@ -7,8 +7,7 @@ from xadrez import Xadrez
 from loading import Loading
 from recursos import Recursos
 
-
-if __name__ == '__main__':
+def main():
     pygame.init()
     recursos = Recursos('bordas', size=(800, 800), framerate=60, png_min=True)
 
@@ -30,3 +29,7 @@ if __name__ == '__main__':
 
         if not isinstance(janela, Loading):
             clock.tick(recursos.framerate)
+
+
+if __name__ == '__main__':
+    main()

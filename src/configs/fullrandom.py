@@ -27,7 +27,7 @@ class Config:
         self.vez = True
         self.titulo_anterior = '.'
 
-    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
         i, j = pos
 
         cor = Color(0, 0, 0)
@@ -40,7 +40,7 @@ class Config:
         elif tipo == 'captura':
             cor = self.movimento
 
-        canva.fill(cor)
+        canvas.fill(cor)
 
     def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
         res = (randcor(), randcor()), (randcor(), randcor())
@@ -51,8 +51,8 @@ class Config:
 
         return res
 
-    def menu_fundo(self, canva: Surface) -> None:
-        canva.fill(self.background)
+    def menu_fundo(self, canvas: Surface) -> None:
+        canvas.fill(self.background)
 
     def menu_cor(self, selecionado: bool) -> Color:
         return self.foreground

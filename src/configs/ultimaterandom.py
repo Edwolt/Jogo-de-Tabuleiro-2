@@ -20,8 +20,8 @@ class Config:
         self.vez = None
         self.titulo_anterior = '.'
 
-    def quadrado(self, canva: Surface, pos: tuple[int, int], tipo: str) -> None:
-        canva.fill(randcor())
+    def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
+        canvas.fill(randcor())
 
     def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
         res = (randcor(), randcor()), (randcor(), randcor())
@@ -32,8 +32,8 @@ class Config:
 
         return res
 
-    def menu_fundo(self, canva: Surface) -> None:
-        canva.fill(randcor())
+    def menu_fundo(self, canvas: Surface) -> None:
+        canvas.fill(randcor())
 
     def menu_cor(self, selecionado: bool) -> Color:
         return randcor()

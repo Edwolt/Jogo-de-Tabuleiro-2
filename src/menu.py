@@ -12,8 +12,8 @@ from loading import Loading
 
 class Opcoes:
     def __init__(self, menu, recursos: Recursos, anterior):
-        """	
-        Classe abstrata para criar menus de opções	
+        """
+        Classe abstrata para criar menus de opções
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la
         :param menu: Objeto da classe Menu
         :param anterior: Opcoes anteriores
@@ -56,13 +56,13 @@ class Opcoes:
         return self.voltar()
 
     def listar(self):
-        """	
-        :yield: (selecionado, nome)	
-        selecionado: se é aquela opção que está selecionada	
-        nome: nome da opção selecionada	
         """
-        for i in range(self.tamanho):
-            yield self.sel == i, self.nome(i)
+        :yield: (selecionado, nome)
+        selecionado: se é aquela opção que está selecionada
+        nome: nome da opção selecionada
+        """
+
+        yield from ((self.sel == i, self.nome(i)) for i in range(self.tamanho))
 
     def voltar(self):
         return self.anterior
@@ -155,13 +155,13 @@ class Menu:
                 self.opcoes.event(event)
             self.atualizacao = True
 
-    def draw(self, canva: Surface) -> None:
+    def draw(self, canvas: Surface) -> None:
         if not self.atualizacao:
             return
         if self.opcoes is None:
             return
 
-        self.recursos.config.menu_fundo(canva)
+        self.recursos.config.menu_fundo(canvas)
 
         altura = self.fonte.size('')[1]
         y = 0
@@ -172,7 +172,7 @@ class Menu:
                 0,
                 self.recursos.config.menu_cor(selecionado)
             )
-            canva.blit(texto, (0, y))
+            canvas.blit(texto, (0, y))
             y += altura
 
         self.atualizacao = False

@@ -154,16 +154,16 @@ class Xadrez:
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             self.escape = True
 
-    def draw(self, canva: Surface) -> None:
+    def draw(self, canvas: Surface) -> None:
         """
-        :param canva: Surface onde o jogo sera desenhado
+        :param canvas: Surface onde o jogo sera desenhado
         :return: Retorna se a tela precisa ser atualizada
         """
 
         if not self.atualizacao:
             return
 
-        size = canva.get_size()
+        size = canvas.get_size()
         self.qsize = size[0] // 8, size[1] // 8
 
         for y, linha in enumerate(self.tabuleiro):
@@ -188,7 +188,7 @@ class Xadrez:
                     peca.draw(surf)
 
                 pos = x * self.qsize[0], y * self.qsize[1]
-                canva.blit(surf, pos)
+                canvas.blit(surf, pos)
 
         self.atualizacao = False
         display.set_caption(self.recursos.config.titulo(self.vez))

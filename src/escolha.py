@@ -52,17 +52,17 @@ class Escolha():
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             self.escape = True
 
-    def draw(self, canva: Surface) -> None:
+    def draw(self, canvas: Surface) -> None:
         if not self.atualizacao:
             return
 
-        size = canva.get_size()
+        size = canvas.get_size()
         self.qsize = size[0] // 8, size[1] // 8
 
-        canva.fill(Color(0, 0, 0))
+        canvas.fill(Color(0, 0, 0))
         tabuleiro = Surface((6 * self.qsize[0], 6 * self.qsize[1]))
         self.xadrez.draw(tabuleiro)
-        canva.blit(tabuleiro, (self.qsize[0], 2 * self.qsize[1]))
+        canvas.blit(tabuleiro, (self.qsize[0], 2 * self.qsize[1]))
 
         offset_i, offset_j = 0, 2
         for jj, peca in enumerate(self.pecas):
@@ -73,7 +73,7 @@ class Escolha():
             self.recursos.config.quadrado(surf, (j, i), 'vazio')
             peca.draw(surf)
             pos = j * self.qsize[0], i * self.qsize[1]
-            canva.blit(surf, pos)
+            canvas.blit(surf, pos)
 
         self.atualizacao = False
         self.xadrez.atualizacao = True
