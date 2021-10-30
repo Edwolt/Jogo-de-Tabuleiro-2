@@ -3,7 +3,7 @@ from pygame import Color, Surface, Rect
 from pygame import display, draw
 
 from recursos import Recursos
-from janela.janela import Janela
+from janelas.abc_janela import Janela
 
 
 

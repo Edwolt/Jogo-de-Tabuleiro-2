@@ -7,8 +7,8 @@ from pygame.locals import *
 from glob import glob
 
 from recursos import Recursos
-from janela.loading import Loading
-from janela.janela import Janela
+from janelas.loading import Loading
+from janelas.abc_janela import Janela
 
 
 class Opcoes(Janela):

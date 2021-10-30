@@ -3,8 +3,8 @@ from pygame import display
 from pygame.time import Clock
 from pygame.locals import *
 
-from xadrez import Xadrez
-from loading import Loading
+from janelas.xadrez import Xadrez
+from janelas.loading import Loading
 from recursos import Recursos
 
 
