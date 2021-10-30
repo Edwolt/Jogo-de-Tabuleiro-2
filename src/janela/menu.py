@@ -7,10 +7,11 @@ from pygame.locals import *
 from glob import glob
 
 from recursos import Recursos
-from loading import Loading
+from janela.loading import Loading
+from janela.janela import Janela
 
 
-class Opcoes:
+class Opcoes(Janela):
     def __init__(self, menu, recursos: Recursos, anterior):
         """
         Classe abstrata para criar menus de opções

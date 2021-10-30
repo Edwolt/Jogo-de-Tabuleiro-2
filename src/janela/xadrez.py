@@ -4,12 +4,13 @@ from pygame import Surface
 from pygame.event import Event
 
 from recursos import Recursos
-from menu import Menu
-from escolha import Escolha
 from tabuleiro import Tabuleiro
+from janela.menu import Menu
+from janela.escolha import Escolha
+from janela.janela import Janela
 
 
-class Xadrez:
+class Xadrez(Janela):
     """Toda a lógica do jogo"""
 
     def __init__(self, recursos: Recursos):

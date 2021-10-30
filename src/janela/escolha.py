@@ -6,10 +6,11 @@ from pygame.event import Event
 from recursos import Recursos
 from pecas import Cavalo, Bispo, Torre, Rainha
 from pecas import MovimentoEspecial
-from menu import Menu
+from janela.janela import Janela
+from janela.menu import Menu
 
 
-class Escolha():
+class Escolha(Janela):
     def __init__(self, recursos: Recursos, xadrez, promocao: MovimentoEspecial):
         """
         Permite o usuário Escolher um peça entre:

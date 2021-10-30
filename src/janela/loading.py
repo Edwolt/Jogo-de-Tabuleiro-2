@@ -3,9 +3,11 @@ from pygame import Color, Surface, Rect
 from pygame import display, draw
 
 from recursos import Recursos
+from janela.janela import Janela
 
 
-class Loading():
+
+class Loading(Janela):
     def __init__(self, recursos: Recursos, carregamento, janela):
         self.janela = janela
         self.recursos = recursos
