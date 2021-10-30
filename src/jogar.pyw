@@ -7,6 +7,7 @@ from xadrez import Xadrez
 from loading import Loading
 from recursos import Recursos
 
+
 def main():
     pygame.init()
     recursos = Recursos('bordas', size=(800, 800), framerate=60, png_min=True)
