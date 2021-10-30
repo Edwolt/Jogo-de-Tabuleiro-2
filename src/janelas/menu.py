@@ -2,15 +2,17 @@ import pygame
 from pygame import display
 from pygame import Surface
 from pygame.event import Event
-from pygame.locals import *
+from pygame.locals import KEYDOWN, K_UP, K_DOWN, K_RETURN, K_ESCAPE
 
 from glob import glob
+from abc import ABC
+from typing import Optional
 
 from recursos import Recursos
-from loading import Loading
+from janelas import Janela, Loading
 
 
-class Opcoes:
+class Opcoes(ABC):
     def __init__(self, menu, recursos: Recursos, anterior):
         """
         Classe abstrata para criar menus de opções
@@ -22,6 +24,7 @@ class Opcoes:
         self.anterior = anterior
         self.recursos = recursos
         self.sel = 0
+        self.opcoes = []
 
     def event(self, event: Event) -> None:
         if event.key == K_UP:
@@ -44,7 +47,7 @@ class Opcoes:
         """:return: o nome da opção de numero"""
         return self.opcoes[key]
 
-    def executar(self, key):
+    def executar(self, key) -> 'Optional[Opcoes]':
         """
         Executa a opção de número key
         :return: Pode ser
@@ -99,7 +102,7 @@ class OpcoesConfigs(Opcoes):
 
 
 class OpcoesPrincipal(Opcoes):
-    def __init__(self, menu,  recursos: Recursos, anterior: Opcoes = None):
+    def __init__(self, menu,  recursos: Recursos, anterior: Optional[Opcoes] = None):
         super().__init__(menu, recursos, anterior)
         self.opcoes = (
             'Config',
@@ -126,17 +129,18 @@ class OpcoesPrincipal(Opcoes):
             print(f'{opcao} não implementado')
 
 
-class Menu:
-    def __init__(self, recursos: Recursos, xadrez, opcoes: Opcoes = None):
+class Menu(Janela):
+    def __init__(self, recursos: Recursos, xadrez, opcoes: Optional[Opcoes] = None):
         self.recursos = recursos
         self.xadrez = xadrez
 
         self.loading = None
         self.atualizacao = True
+        self.finalizado = False
         self.fonte = self.recursos.config.fonte(50)
 
         if opcoes is None:
-            self.opcoes = OpcoesPrincipal(self, self.recursos)
+            self.opcoes: Opcoes = OpcoesPrincipal(self, self.recursos)
         else:
             self.opcoes = opcoes
 
@@ -145,8 +149,11 @@ class Menu:
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
                 ret = self.opcoes.executar(self.opcoes.sel)
-                if isinstance(ret, Opcoes) or ret is None:
+
+                if isinstance(ret, Opcoes):
                     self.opcoes = ret
+                elif ret is None:
+                    self.finalizado = True
                 else:
                     self.loading = ret
             elif event.key == K_ESCAPE:
@@ -169,7 +176,7 @@ class Menu:
             texto_str = ('> ' if selecionado else '  ') + nome
             texto = self.fonte.render(
                 texto_str,
-                0,
+                False,
                 self.recursos.config.menu_cor(selecionado)
             )
             canvas.blit(texto, (0, y))
@@ -180,7 +187,7 @@ class Menu:
         display.flip()
 
     def new(self):
-        if self.opcoes is None:
+        if self.finalizado:
             return self.xadrez
         elif self.loading is not None:
             return Loading(self.recursos, self.loading, self.xadrez)

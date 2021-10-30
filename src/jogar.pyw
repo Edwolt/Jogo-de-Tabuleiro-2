@@ -1,11 +1,11 @@
 import pygame
 from pygame import display
 from pygame.time import Clock
-from pygame.locals import *
+from pygame.locals import QUIT
 
-from xadrez import Xadrez
-from loading import Loading
+from janelas import Loading, Xadrez
 from recursos import Recursos
+
 
 def main():
     pygame.init()

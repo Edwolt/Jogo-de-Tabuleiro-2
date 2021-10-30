@@ -1,15 +1,15 @@
-from pygame.locals import *
+from pygame.locals import MOUSEBUTTONDOWN, KEYDOWN, K_ESCAPE
 from pygame import display
-from pygame import Surface
+from pygame import Surface, Color
 from pygame.event import Event
 
 from recursos import Recursos
 from pecas import Cavalo, Bispo, Torre, Rainha
 from pecas import MovimentoEspecial
-from menu import Menu
+from janelas import Janela, Menu
 
 
-class Escolha():
+class Escolha(Janela):
     def __init__(self, recursos: Recursos, xadrez, promocao: MovimentoEspecial):
         """
         Permite o usuário Escolher um peça entre:

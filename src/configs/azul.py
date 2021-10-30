@@ -1,8 +1,10 @@
 from pygame import Color, Surface
 from pygame.font import Font
 
+from abc_config import Config
 
-class Config:
+
+class ConfigAzul(Config):
     def __init__(self):
         self.vazio = Color(94, 255, 91), Color(0, 14, 173)
         self.click = Color(255, 0, 0)
@@ -48,3 +50,6 @@ class Config:
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )
+
+
+export = ConfigAzul
