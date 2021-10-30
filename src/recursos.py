@@ -3,9 +3,12 @@ from pygame import Color, Surface
 
 import importlib
 
+from config_abc import Config
 
-def Config(nome: str):
-    return importlib.import_module(f'configs.{nome}').Config()
+
+def get_config(nome: str) -> Config:
+    module = importlib.import_module(f'configs.{nome.lower()}')
+    return getattr(module, 'export')
 
 
 def caminho_asset(nome: str, png_min: bool = False) -> str:
@@ -19,11 +22,11 @@ class Recursos:
         self.framerate = framerate
         self.png_min = png_min
 
-        self.config = Config(config)
+        self.config = get_config(config)
         self.assets = dict()
 
     def set_config(self, config: str) -> None:
-        self.config = Config(config)
+        self.config = get_config(config)
 
     def gerar_cor(self, grad: tuple[Color, Color], c: Color) -> Color:
         res = Color(0, 0, 0)

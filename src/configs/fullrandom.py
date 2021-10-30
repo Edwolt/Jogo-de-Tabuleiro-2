@@ -8,7 +8,7 @@ def randcor() -> Color:
     return Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
-class Config:
+class ConfigFullRandom:
     def __init__(self):
         self.nomes = (
             ('Xadrez', 'Branco', 'Preto'),
@@ -75,3 +75,6 @@ class Config:
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )
+
+
+export = ConfigFullRandom

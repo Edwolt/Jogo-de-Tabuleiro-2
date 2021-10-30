@@ -3,7 +3,7 @@ from pygame.font import Font
 from pygame import draw
 
 
-class Config:
+class ConfigBordas:
     def __init__(self):
         self.vazio = Color(214, 165, 132), Color(124, 49, 0)
         self.click = Color(153, 0, 0)
@@ -67,3 +67,6 @@ class Config:
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )
+
+
+export = ConfigBordas
