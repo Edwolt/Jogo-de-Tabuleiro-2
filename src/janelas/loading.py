@@ -3,12 +3,11 @@ from pygame import Color, Surface, Rect
 from pygame import display, draw
 
 from recursos import Recursos
-from janelas.abc_janela import Janela
-
+from janelas import Janela
 
 
 class Loading(Janela):
-    def __init__(self, recursos: Recursos, carregamento, janela):
+    def __init__(self, recursos: Recursos, carregamento, janela: Janela):
         self.janela = janela
         self.recursos = recursos
 
@@ -37,7 +36,7 @@ class Loading(Janela):
 
         texto = 'Loading'
         tam_x, tam_y = self.fonte_loading.size(texto)
-        texto = self.fonte_loading.render(texto, 0, Color(255, 255, 255))
+        texto = self.fonte_loading.render(texto, False, Color(255, 255, 255))
         meio = w/2 - tam_x/2
         canvas.blit(texto, (meio, y))
 
@@ -58,7 +57,7 @@ class Loading(Janela):
 
             texto = f'{val} / {tam}'
             tam_x, tam_y = self.fonte.size(texto)
-            texto = self.fonte.render(texto, 0, Color(255, 255, 255))
+            texto = self.fonte.render(texto, False, Color(255, 255, 255))
             meio = w/2 - tam_x/2
             canvas.blit(texto, (meio, y))
 

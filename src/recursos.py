@@ -3,7 +3,7 @@ from pygame import Color, Surface
 
 import importlib
 
-from config_abc import Config
+from abc_config import Config
 
 
 def get_config(nome: str) -> Config:

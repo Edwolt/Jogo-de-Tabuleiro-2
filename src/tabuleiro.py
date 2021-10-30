@@ -1,6 +1,7 @@
 from pygame import Surface
 
 from types import SimpleNamespace
+from typing import Optional
 
 from recursos import Recursos
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
@@ -47,7 +48,7 @@ class Tabuleiro:
     def __init__(self, recursos: Recursos):
         self.recursos = recursos  # TODO tranformar recursos em um Singleton
 
-        self.tabuleiro = novo_tabuleiro()
+        self.tabuleiro = novo_tabuleiro(recursos)
         self.vez = True
         self.flags = list()
         self.rei = SimpleNamespace(branco=(7, 4), preto=(0, 4))
@@ -95,7 +96,7 @@ class Tabuleiro:
 
         return False
 
-    def get_movimentos(self, pos: tuple[int, int]) -> 'list[list] | None':
+    def get_movimentos(self, pos: tuple[int, int]) -> Optional[list[list]]:
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:
@@ -110,7 +111,7 @@ class Tabuleiro:
         else:
             return None
 
-    def draw(self, canvas: Surface, click: 'tuple[int, int] | None', movimento: list[list]) -> None:
+    def draw(self, canvas: Surface, click: Optional[tuple[int, int]], movimento: list[list]) -> None:
         size = canvas.get_size()
         size = size[0] // 8, size[1] // 8
 
