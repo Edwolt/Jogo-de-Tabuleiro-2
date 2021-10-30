@@ -9,7 +9,9 @@ from abc import ABC
 from typing import Optional
 
 from recursos import Recursos
-from janelas import Janela, Loading
+
+from .abc_janela import Janela
+from .loading import Loading
 
 
 class Opcoes(ABC):

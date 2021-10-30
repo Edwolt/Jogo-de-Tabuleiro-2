@@ -6,7 +6,9 @@ from pygame.event import Event
 from recursos import Recursos
 from pecas import Cavalo, Bispo, Torre, Rainha
 from pecas import MovimentoEspecial
-from janelas import Janela, Menu
+
+from .abc_janela import Janela
+from .menu import Menu
 
 
 class Escolha(Janela):

@@ -4,8 +4,9 @@ from pygame import Surface
 from abc import ABC, abstractmethod
 
 from recursos import Recursos
-from pecas import MovimentoEspecial
-from pecas import testar_xeque
+
+from .abc_movimento import MovimentoEspecial
+from .xeque import testar_xeque
 from .util import tabuleiro_copia
 
 

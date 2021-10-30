@@ -1,5 +1,6 @@
 from recursos import Recursos
-from pecas import Peca
+
+from .abc_peca import Peca
 from .util import tabuleiro_false, calcula_direcao
 
 

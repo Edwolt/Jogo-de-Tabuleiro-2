@@ -1,5 +1,7 @@
 from recursos import Recursos
-from pecas import Peca, MovimentoEspecial
+
+from .abc_peca import Peca
+from .abc_movimento import MovimentoEspecial
 from .util import mover_peca, tabuleiro_false, valida_coordenadas
 
 

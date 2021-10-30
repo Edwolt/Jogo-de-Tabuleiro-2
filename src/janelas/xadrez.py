@@ -5,7 +5,10 @@ from pygame.event import Event
 
 from recursos import Recursos
 from tabuleiro import Tabuleiro
-from janelas import Janela, Menu, Escolha
+
+from .abc_janela import Janela
+from .menu import Menu
+from .escolha import Escolha
 
 
 class Xadrez(Janela):
