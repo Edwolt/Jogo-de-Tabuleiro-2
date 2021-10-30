@@ -2,8 +2,10 @@ from pygame import Color, Surface, Rect
 from pygame.font import Font
 from pygame import draw
 
+from abc_config import Config
 
-class ConfigBordas:
+
+class ConfigBordas(Config):
     def __init__(self):
         self.vazio = Color(214, 165, 132), Color(124, 49, 0)
         self.click = Color(153, 0, 0)

@@ -1,8 +1,10 @@
 from pygame import Color, Surface
 from pygame.font import Font
 
+from abc_config import Config
 
-class ConfigPadrao:
+
+class ConfigPadrao(Config):
     def __init__(self):
         self.vazio = (
             Color(255, 255, 255),  # Branco
