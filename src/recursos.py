@@ -8,7 +8,8 @@ from abc_config import Config
 
 def get_config(nome: str) -> Config:
     module = importlib.import_module(f'configs.{nome.lower()}')
-    return getattr(module, 'export')
+    cls = getattr(module, 'export')
+    return cls()
 
 
 def caminho_asset(nome: str, png_min: bool = False) -> str:
