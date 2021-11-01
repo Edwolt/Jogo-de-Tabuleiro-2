@@ -7,9 +7,6 @@ from .util import tabuleiro_false, calcula_direcao
 class Rainha(Peca):
     def __init__(self, recursos: Recursos, cor: bool):
         super().__init__(recursos, cor, nome='rainha')
-        self.nome = 'rainha'
-        self.recursos = recursos
-        self.cor = cor
 
     def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()

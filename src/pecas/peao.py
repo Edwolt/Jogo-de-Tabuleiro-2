@@ -13,8 +13,6 @@ class Promocao(MovimentoEspecial):
         """
 
         super().__init__(nome='promocao')
-
-        self.nome = 'promocao'
         self.pos = pos
         self.cor = cor
         self.promocao = promocao

@@ -3,22 +3,7 @@ from recursos import Recursos
 from .abc_peca import Peca
 from .abc_movimento import MovimentoEspecial
 from .xeque import testar_xeque
-from .util import tabuleiro_copia, mover_peca
-
-
-def valida_coordenadas(a: int, b: int = 0) -> bool:
-    """
-    valida_coordenada(a):    Verifica se a é um valor válido para componente de uma coordenada
-    valida_coordenada(a, b): Verifica se (a, b) é uma coordenada válida
-    """
-    return 0 <= a < 8 and 0 <= b < 8
-
-
-def tabuleiro_false() -> list[list[bool]]:
-    """
-    :return: list 8x8 com todos os campos sendo False
-    """
-    return [[False] * 8 for _ in range(8)]
+from .util import tabuleiro_false, tabuleiro_copia, valida_coordenadas, mover_peca
 
 
 class Roque(MovimentoEspecial):

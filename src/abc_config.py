@@ -6,10 +6,6 @@ from abc import ABC, abstractmethod
 
 class Config(ABC):
     @abstractmethod
-    def __init__(self):
-        pass
-
-    @abstractmethod
     def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
         """
         Colore o quadrado que será usado em baixo da peça
@@ -58,7 +54,7 @@ class Config(ABC):
         """
 
     @abstractmethod
-    def fonte(self, tam) -> Font:
+    def fonte(self, tam: int) -> Font:
         """
         :param tam: Tamanho da fonte
         :return: Objeto Font
