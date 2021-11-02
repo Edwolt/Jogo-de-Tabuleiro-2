@@ -49,6 +49,7 @@ class Peca(ABC):
         :return: list 8x8 dizendo se é possivel movimentar ou não
         Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
         """
+
         res = tabuleiro_false()
         movimentos = self.get_movimentos_simples(tabuleiro, flags, pos)
         for i, linha in enumerate(movimentos):

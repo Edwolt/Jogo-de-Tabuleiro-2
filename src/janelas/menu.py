@@ -22,6 +22,7 @@ class Opcoes(ABC):
         :param menu: Objeto da classe Menu
         :param anterior: Opcoes anteriores
         """
+
         self.menu = menu
         self.anterior = anterior
         self.recursos = recursos

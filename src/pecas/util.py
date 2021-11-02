@@ -3,9 +3,7 @@ from copy import copy
 
 ##### Tabuleiro #####
 def tabuleiro_false() -> list[list[bool]]:
-    """
-    :return: list 8x8 com todos os campos sendo False
-    """
+    """:return: list 8x8 com todos os campos sendo False"""
     return [[False] * 8 for _ in range(8)]
 
 
@@ -32,6 +30,7 @@ def valida_coordenadas(a: int, b: int = 0) -> bool:
     valida_coordenada(a):    Verifica se a é um valor válido para componente de uma coordenada
     valida_coordenada(a, b): Verifica se (a, b) é uma coordenada válida
     """
+
     return 0 <= a < 8 and 0 <= b < 8
 
 
