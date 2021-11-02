@@ -8,20 +8,21 @@ from .abc_janela import Janela
 
 
 class Loading(Janela):
-    def __init__(self, recursos: Recursos, carregamento, janela: Janela):
+    def __init__(self, carregamento, janela: Janela):
         self.janela = janela
-        self.recursos = recursos
 
         self.pronto = False
         self.carregamento = carregamento
 
-        self.fonte = self.recursos.config.fonte(25)
+        recursos = Recursos()
+        self.fonte = recursos.config.fonte(25)
         self.fonte_loading = recursos.config.fonte(50)
 
     def event(self, event: Event) -> None:
         pass
 
     def draw(self, canvas: Surface) -> None:
+        recursos = Recursos()
         canvas.fill(Color(0, 0, 0))
 
         try:
@@ -44,7 +45,7 @@ class Loading(Janela):
         y += tam_y + 2 * espaco
 
         for tam, val in barras:
-            cor_carregado, cor_falta = self.recursos.config.loading_cores()
+            cor_carregado, cor_falta = recursos.config.loading_cores()
             draw.rect(
                 canvas,
                 cor_falta,

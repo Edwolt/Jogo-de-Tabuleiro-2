@@ -9,46 +9,45 @@ from pecas import testar_xeque
 from pecas import MovimentoEspecial
 
 
-def novo_tabuleiro(recursos: Recursos) -> list[list[None]]:
+def novo_tabuleiro() -> list[list[None]]:
     """
     :param pecas: objeto da classe Peca
     :return: list 8x8 onde os espacos vazios valem None
     e os espacos com pecas são objetos
     """
+
     tabuleiro = [[None] * 8 for _ in range(8)]  # list 8x8 com None
 
     # Pretas
-    tabuleiro[0][0] = Torre(recursos, False)
-    tabuleiro[0][1] = Cavalo(recursos, False)
-    tabuleiro[0][2] = Bispo(recursos, False)
-    tabuleiro[0][3] = Rainha(recursos, False)
-    tabuleiro[0][4] = Rei(recursos, False)
-    tabuleiro[0][5] = Bispo(recursos, False)
-    tabuleiro[0][6] = Cavalo(recursos, False)
-    tabuleiro[0][7] = Torre(recursos, False)
+    tabuleiro[0][0] = Torre(False)
+    tabuleiro[0][1] = Cavalo(False)
+    tabuleiro[0][2] = Bispo(False)
+    tabuleiro[0][3] = Rainha(False)
+    tabuleiro[0][4] = Rei(False)
+    tabuleiro[0][5] = Bispo(False)
+    tabuleiro[0][6] = Cavalo(False)
+    tabuleiro[0][7] = Torre(False)
     for i in range(8):  # Peões
-        tabuleiro[1][i] = Peao(recursos, False)
+        tabuleiro[1][i] = Peao(False)
 
     # Brancas
-    tabuleiro[7][0] = Torre(recursos, True)
-    tabuleiro[7][1] = Cavalo(recursos, True)
-    tabuleiro[7][2] = Bispo(recursos, True)
-    tabuleiro[7][3] = Rainha(recursos, True)
-    tabuleiro[7][4] = Rei(recursos, True)
-    tabuleiro[7][5] = Bispo(recursos, True)
-    tabuleiro[7][6] = Cavalo(recursos, True)
-    tabuleiro[7][7] = Torre(recursos, True)
+    tabuleiro[7][0] = Torre(True)
+    tabuleiro[7][1] = Cavalo(True)
+    tabuleiro[7][2] = Bispo(True)
+    tabuleiro[7][3] = Rainha(True)
+    tabuleiro[7][4] = Rei(True)
+    tabuleiro[7][5] = Bispo(True)
+    tabuleiro[7][6] = Cavalo(True)
+    tabuleiro[7][7] = Torre(True)
     for i in range(8):  # Peões
-        tabuleiro[6][i] = Peao(recursos, True)
+        tabuleiro[6][i] = Peao(True)
 
     return tabuleiro
 
 
 class Tabuleiro:
-    def __init__(self, recursos: Recursos):
-        self.recursos = recursos  # TODO tranformar recursos em um Singleton
-
-        self.tabuleiro = novo_tabuleiro(recursos)
+    def __init__(self):
+        self.tabuleiro = novo_tabuleiro()
         self.vez = True
         self.flags = list()
         self.rei = SimpleNamespace(branco=(7, 4), preto=(0, 4))
@@ -80,7 +79,7 @@ class Tabuleiro:
             return True
 
         elif isinstance(movimento, MovimentoEspecial):
-            movimento.executar(self.tabuleiro, self.flags, self.recursos)
+            movimento.executar(self.tabuleiro, self.flags)
 
             if movimento.nome == 'roque':
                 if self.rei.branco == movimento.rei:
@@ -112,6 +111,8 @@ class Tabuleiro:
             return None
 
     def draw(self, canvas: Surface, click: Optional[tuple[int, int]], movimento: list[list]) -> None:
+        recursos = Recursos()
+
         size = canvas.get_size()
         size = size[0] // 8, size[1] // 8
 
@@ -131,7 +132,7 @@ class Tabuleiro:
                     tipo = 'xeque'
 
                 surf = Surface(size)
-                self.recursos.config.quadrado(surf, (x, y), tipo)
+                recursos.config.quadrado(surf, (x, y), tipo)
 
                 if peca:
                     peca.draw(surf)

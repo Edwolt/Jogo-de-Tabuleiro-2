@@ -1,5 +1,3 @@
-from recursos import Recursos
-
 from .abc_peca import Peca
 from .abc_movimento import MovimentoEspecial
 from .util import mover_peca, tabuleiro_false, valida_coordenadas
@@ -18,7 +16,7 @@ class Promocao(MovimentoEspecial):
         self.promocao = promocao
         pass
 
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list) -> None:
         i, j = self.pos
         m, n = self.promocao
         tabuleiro[m][n] = tabuleiro[i][j]
@@ -32,7 +30,7 @@ class Avanco(MovimentoEspecial):
         self.cor = cor
         self.pos = pos
 
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos):
+    def executar(self, tabuleiro: list[list], flags: list):
         i, j = self.pos
         i += -1 if self.cor else 1
         mover_peca(tabuleiro, self.pos, (i, j))
@@ -53,7 +51,7 @@ class AvancoDuplo(MovimentoEspecial):
         self.meio = meio
         self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list) -> None:
         mover_peca(tabuleiro, self.pos, self.nova_pos)
 
     def update_flags(self, flags: list) -> None:
@@ -73,15 +71,15 @@ class EnPassant(MovimentoEspecial):
         self.capturado_pos = capturado_pos
         self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list) -> None:
         mover_peca(tabuleiro, self.pos, self.nova_pos)
         i, j = self.capturado_pos
         tabuleiro[i][j] = None
 
 
 class Peao(Peca):
-    def __init__(self, recursos: Recursos, cor: bool, movimentou: bool = False):
-        super().__init__(recursos, cor, nome='peao')
+    def __init__(self, cor: bool, movimentou: bool = False):
+        super().__init__(cor, nome='peao')
         self.movimentou = movimentou
 
     def notifica_movimento(self) -> None:

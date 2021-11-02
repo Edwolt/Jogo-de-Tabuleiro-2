@@ -1,12 +1,10 @@
-from recursos import Recursos
-
 from .abc_peca import Peca
 from .util import tabuleiro_false, valida_coordenadas
 
 
 class Cavalo(Peca):
-    def __init__(self, recursos: Recursos, cor: bool):
-        super().__init__(recursos, cor, nome='cavalo')
+    def __init__(self, cor: bool):
+        super().__init__(cor, nome='cavalo')
 
     def valida_posicao(self, tabuleiro: list[list], pos: tuple[int, int]) -> bool:
         i, j = pos

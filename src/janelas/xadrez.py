@@ -14,11 +14,9 @@ from .escolha import Escolha
 class Xadrez(Janela):
     """Toda a lógica do jogo"""
 
-    def __init__(self, recursos: Recursos):
-        self.recursos = recursos
-
+    def __init__(self):
         self.atualizacao = True
-        self.tabuleiro = Tabuleiro(self.recursos)
+        self.tabuleiro = Tabuleiro()
         self.escape = False
         self.promocao = None
         self.flags = list()
@@ -76,18 +74,18 @@ class Xadrez(Janela):
         self.tabuleiro.draw(canvas, self.click, self.movimento)
 
         self.atualizacao = False
-        display.set_caption(self.recursos.config.titulo(self.vez))
+        display.set_caption(Recursos().config.titulo(self.vez))
         display.flip()
 
     def new(self):
         if self.escape:
             self.atualizacao = True
             self.escape = False
-            return Menu(self.recursos, self)
+            return Menu(self)
         elif self.promocao is not None:
             self.atualizacao = True
             promocao = self.promocao
             self.promocao = None
-            return Escolha(self.recursos, self, promocao)
+            return Escolha(self, promocao)
         else:
             return self

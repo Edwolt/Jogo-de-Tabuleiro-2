@@ -1,12 +1,10 @@
-from recursos import Recursos
-
 from .abc_peca import Peca
 from .util import tabuleiro_false, calcula_direcao
 
 
 class Rainha(Peca):
-    def __init__(self, recursos: Recursos, cor: bool):
-        super().__init__(recursos, cor, nome='rainha')
+    def __init__(self, cor: bool):
+        super().__init__(cor, nome='rainha')
 
     def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
         res = tabuleiro_false()

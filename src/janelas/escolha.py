@@ -12,7 +12,7 @@ from .menu import Menu
 
 
 class Escolha(Janela):
-    def __init__(self, recursos: Recursos, xadrez, promocao: MovimentoEspecial):
+    def __init__(self, xadrez, promocao: MovimentoEspecial):
         """
         Permite o usuário Escolher um peça entre:
         * Cavalo
@@ -20,7 +20,7 @@ class Escolha(Janela):
         * Torre
         * Rainha
         """
-        self.recursos = recursos
+
         self.xadrez = xadrez
         self.promocao = promocao
         self.cor = self.promocao.cor
@@ -32,10 +32,10 @@ class Escolha(Janela):
         self.qsize = 0, 0
 
         self.pecas = [
-            Cavalo(self.recursos, self.cor),
-            Bispo(self.recursos, self.cor),
-            Torre(self.recursos, self.cor),
-            Rainha(self.recursos, self.cor)
+            Cavalo(self.cor),
+            Bispo(self.cor),
+            Torre(self.cor),
+            Rainha(self.cor)
         ]
         for i in self.pecas:
             i.notifica_movimento()
@@ -58,6 +58,8 @@ class Escolha(Janela):
         if not self.atualizacao:
             return
 
+        recursos = Recursos()
+
         size = canvas.get_size()
         self.qsize = size[0] // 8, size[1] // 8
 
@@ -72,14 +74,14 @@ class Escolha(Janela):
             i, j = offset_i, offset_j + jj
 
             surf = Surface(self.qsize)
-            self.recursos.config.quadrado(surf, (j, i), 'vazio')
+            recursos.config.quadrado(surf, (j, i), 'vazio')
             peca.draw(surf)
             pos = j * self.qsize[0], i * self.qsize[1]
             canvas.blit(surf, pos)
 
         self.atualizacao = False
         self.xadrez.atualizacao = True
-        display.set_caption(self.recursos.config.titulo(self.cor))
+        display.set_caption(recursos.config.titulo(self.cor))
         display.flip()
 
     def new(self):
@@ -91,6 +93,6 @@ class Escolha(Janela):
         elif self.escape:
             self.escape = False
             self.atualizacao = True
-            return Menu(self.recursos, self)
+            return Menu(Recursos(), self)
         else:
             return self

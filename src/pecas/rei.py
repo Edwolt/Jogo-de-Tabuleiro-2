@@ -21,14 +21,14 @@ class Roque(MovimentoEspecial):
         self.torre = torre
         self.nova_torre = nova_torre
 
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list) -> None:
         mover_peca(tabuleiro, self.rei, self.nova_rei)
         mover_peca(tabuleiro, self.torre, self.nova_torre)
 
 
 class Rei(Peca):
-    def __init__(self, recursos: Recursos, cor: bool, movimentou: bool = False):
-        super().__init__(recursos, cor, nome='rei')
+    def __init__(self,  cor: bool, movimentou: bool = False):
+        super().__init__(cor, nome='rei')
         self.movimentou = movimentou
 
     def notifica_movimento(self) -> None:
@@ -76,13 +76,13 @@ class Rei(Peca):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 tab = tabuleiro_copia(tabuleiro)
-                tab[i][3] = Rei(self.recursos, self.cor)
+                tab[i][3] = Rei(self.cor)
                 tab[i][4] = None
                 xeque = testar_xeque(tab, flags, (i, 3))
 
                 if not xeque:
                     tab = tabuleiro_copia(tabuleiro)
-                    tab[i][2] = Rei(self.recursos, self.cor)
+                    tab[i][2] = Rei(self.cor)
                     tab[i][4] = None
                     xeque = testar_xeque(tab, flags, (i, 2))
 

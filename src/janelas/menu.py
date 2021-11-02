@@ -15,7 +15,7 @@ from .loading import Loading
 
 
 class Opcoes(ABC):
-    def __init__(self, menu, recursos: Recursos, anterior):
+    def __init__(self, menu, anterior):
         """
         Classe abstrata para criar menus de opções
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la
@@ -25,7 +25,6 @@ class Opcoes(ABC):
 
         self.menu = menu
         self.anterior = anterior
-        self.recursos = recursos
         self.sel = 0
         self.opcoes = []
 
@@ -75,8 +74,8 @@ class Opcoes(ABC):
 
 
 class OpcoesConfigs(Opcoes):
-    def __init__(self, menu, recursos: Recursos, anterior: Opcoes):
-        super().__init__(menu, recursos, anterior)
+    def __init__(self, menu, anterior: Opcoes):
+        super().__init__(menu, anterior)
         self.configs = self.listar_configs()
 
     def listar_configs(self) -> list[str]:
@@ -98,15 +97,16 @@ class OpcoesConfigs(Opcoes):
 
     def executar(self, i):
         if 0 <= i < len(self.configs):
-            self.recursos.set_config(self.configs[self.sel])
-            return self.recursos.carregar()
+            recursos = Recursos()
+            recursos.set_config(self.configs[self.sel])
+            return recursos.carregar()
         else:
             return self.voltar()
 
 
 class OpcoesPrincipal(Opcoes):
-    def __init__(self, menu,  recursos: Recursos, anterior: Optional[Opcoes] = None):
-        super().__init__(menu, recursos, anterior)
+    def __init__(self, menu, anterior: Optional[Opcoes] = None):
+        super().__init__(menu, anterior)
         self.opcoes = (
             'Config',
             'Imagens',
@@ -122,9 +122,9 @@ class OpcoesPrincipal(Opcoes):
         i = self.sel if i is None else i
         opcao = self.nome(i).lower()
         if opcao == 'config':
-            return OpcoesConfigs(self.menu, self.recursos, self)
+            return OpcoesConfigs(self.menu, self)
         elif opcao == 'novo jogo':
-            self.menu.xadrez.__init__(self.recursos)
+            self.menu.xadrez.__init__()
         elif opcao == 'sair':
             pygame.quit()
             quit(0)
@@ -133,17 +133,17 @@ class OpcoesPrincipal(Opcoes):
 
 
 class Menu(Janela):
-    def __init__(self, recursos: Recursos, xadrez, opcoes: Optional[Opcoes] = None):
-        self.recursos = recursos
+    def __init__(self, xadrez, opcoes: Optional[Opcoes] = None):
+        recursos = Recursos()
         self.xadrez = xadrez
 
         self.loading = None
         self.atualizacao = True
         self.finalizado = False
-        self.fonte = self.recursos.config.fonte(50)
+        self.fonte = recursos.config.fonte(50)
 
         if opcoes is None:
-            self.opcoes: Opcoes = OpcoesPrincipal(self, self.recursos)
+            self.opcoes: Opcoes = OpcoesPrincipal(self)
         else:
             self.opcoes = opcoes
 
@@ -171,7 +171,8 @@ class Menu(Janela):
         if self.opcoes is None:
             return
 
-        self.recursos.config.menu_fundo(canvas)
+        recursos = Recursos()
+        recursos.config.menu_fundo(canvas)
 
         altura = self.fonte.size('')[1]
         y = 0
@@ -180,7 +181,7 @@ class Menu(Janela):
             texto = self.fonte.render(
                 texto_str,
                 False,
-                self.recursos.config.menu_cor(selecionado)
+                recursos.config.menu_cor(selecionado)
             )
             canvas.blit(texto, (0, y))
             y += altura
@@ -193,6 +194,6 @@ class Menu(Janela):
         if self.finalizado:
             return self.xadrez
         elif self.loading is not None:
-            return Loading(self.recursos, self.loading, self.xadrez)
+            return Loading(self.loading, self.xadrez)
         else:
             return self

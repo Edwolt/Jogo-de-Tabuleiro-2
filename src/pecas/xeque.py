@@ -1,6 +1,3 @@
-
-from recursos import Recursos
-
 from .abc_movimento import MovimentoEspecial
 from .util import tabuleiro_copia
 
@@ -10,6 +7,7 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
     Testa se o rei está em xeque
     :param pos_rei: posição do rei
     """
+
     ri, rj = pos_rei
     rei = tabuleiro[ri][rj]
     for pi, linha in enumerate(tabuleiro):
@@ -28,7 +26,7 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
 
 
 # TODO pode ser muito otimizado
-def testar_movimento(tabuleiro: list[list], flags: list, recursos: Recursos, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]]) -> bool:
+def testar_movimento(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]]) -> bool:
     tab = tabuleiro_copia(tabuleiro)
     pos, nova_pos = acao
     i, j = pos
@@ -47,7 +45,7 @@ def testar_movimento(tabuleiro: list[list], flags: list, recursos: Recursos, pos
         flags.clear()
 
     elif isinstance(movimento, MovimentoEspecial):
-        movimento.executar(tab, flags, recursos)
+        movimento.executar(tab, flags)
 
         if movimento.nome == 'roque' and pos_rei == movimento.rei:
             pos_rei = movimento.nova_rei

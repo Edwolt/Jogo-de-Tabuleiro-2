@@ -9,12 +9,13 @@ from recursos import Recursos
 
 def main():
     pygame.init()
-    recursos = Recursos('bordas', size=(800, 800), framerate=60, png_min=True)
+    recursos = Recursos(size=(800, 800), framerate=60, png_min=True)
+    recursos.set_config('bordas')
 
     screen = display.set_mode(recursos.size)
     clock = Clock()
 
-    janela = Loading(recursos, recursos.carregar(), Xadrez(recursos))
+    janela = Loading(recursos.carregar(), Xadrez())
 
     while True:
         for event in pygame.event.get():

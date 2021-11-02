@@ -1,12 +1,10 @@
-from recursos import Recursos
-
 from .abc_peca import Peca
 from .util import tabuleiro_false, calcula_direcao
 
 
 class Torre(Peca):
-    def __init__(self,  recursos: Recursos, cor: bool, movimentou: bool = False):
-        super().__init__(recursos, cor, nome='torre')
+    def __init__(self, cor: bool, movimentou: bool = False):
+        super().__init__(cor, nome='torre')
         self.movimentou = movimentou
 
     def notifica_movimento(self) -> None:

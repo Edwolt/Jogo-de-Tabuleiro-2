@@ -3,6 +3,7 @@ from pygame import Color, Surface
 
 import importlib
 
+from singleton import Singleton
 from abc_config import Config
 
 
@@ -17,17 +18,27 @@ def caminho_asset(nome: str, png_min: bool = False) -> str:
     return f'assets/{nome}.png' + ('.min' if png_min else '')
 
 
-class Recursos:
-    def __init__(self, config: str, size: tuple[int, int] = (800, 800), framerate: int = 60, png_min: bool = False):
+class Recursos(metaclass=Singleton):
+    def __init__(self, size: tuple[int, int] = (800, 800), framerate: int = 60, png_min: bool = False):
         self.size = size
         self.framerate = framerate
         self.png_min = png_min
 
-        self.config = get_config(config)
+        self._config = None
         self.assets = dict()
 
+    @property
+    def config(self) -> Config:
+        if self._config is None:
+            raise Exception('Nenhum config foi carregada')
+        return self._config
+
+    @config.deleter
+    def config(self):
+        self._config = None
+
     def set_config(self, config: str) -> None:
-        self.config = get_config(config)
+        self._config = get_config(config)
 
     def gerar_cor(self, grad: tuple[Color, Color], c: Color) -> Color:
         res = Color(0, 0, 0)

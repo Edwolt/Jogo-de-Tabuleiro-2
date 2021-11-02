@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from recursos import Recursos
-
 
 class Movimento(ABC):
     """Classe abstrata para os movimentos especiais"""
@@ -10,7 +8,7 @@ class Movimento(ABC):
         self.nome = nome
 
     @abstractmethod
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro
@@ -29,7 +27,7 @@ class MovimentoEspecial(ABC):
         self.avanco = avanco
 
     @abstractmethod
-    def executar(self, tabuleiro: list[list], flags: list, recursos: Recursos) -> None:
+    def executar(self, tabuleiro: list[list], flags: list) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro

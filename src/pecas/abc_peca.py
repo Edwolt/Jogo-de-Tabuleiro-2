@@ -10,14 +10,13 @@ from .util import tabuleiro_false
 
 
 class Peca(ABC):
-    def __init__(self, recursos: Recursos, cor: bool, *, nome: str):
+    def __init__(self, cor: bool, *, nome: str):
         """
         :param sprite: Uma Surface com a imagem da peca
         :param cor: True: 'branco'; False: 'preto'
         """
 
         self.nome = nome
-        self.recursos = recursos
         self.cor = cor
 
     def draw(self, canvas: Surface) -> None:
@@ -25,7 +24,10 @@ class Peca(ABC):
         Desenha o sprite em canvas
         :param canvas: Surface onde o jogo sera desenhado
         """
-        sprite = self.recursos.get_asset(self.nome, self.cor)
+
+        recursos = Recursos()
+
+        sprite = recursos.get_asset(self.nome, self.cor)
         sprite = transform.scale(sprite, canvas.get_size())
         canvas.blit(sprite, (0, 0))
 
@@ -56,7 +58,6 @@ class Peca(ABC):
             for j, mov in enumerate(linha):
                 teste = testar_movimento(
                     tabuleiro, flags,
-                    self.recursos,
                     pos_rei, (pos, (i, j)),
 
                 )
