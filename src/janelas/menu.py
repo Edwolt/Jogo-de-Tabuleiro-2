@@ -28,6 +28,7 @@ class Opcoes(ABC):
         self.sel = 0
         self.opcoes = []
 
+    ##### Interface #####
     def event(self, event: Event) -> None:
         if event.key == K_UP:
             if self.sel > 0:

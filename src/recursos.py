@@ -5,6 +5,7 @@ import importlib
 
 from singleton import Singleton
 from abc_config import Config
+from tipos import grad
 
 
 def get_config(nome: str) -> Config:
@@ -40,14 +41,14 @@ class Recursos(metaclass=Singleton):
     def set_config(self, config: str) -> None:
         self._config = get_config(config)
 
-    def gerar_cor(self, grad: tuple[Color, Color], c: Color) -> Color:
+    def gerar_cor(self, gradiente: grad, c: Color) -> Color:
         res = Color(0, 0, 0)
-        a, b = grad
+        a, b = gradiente
         for k in range(len(res)):
             res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))
         return res
 
-    def gerar_imagem(self, sprite: Surface, grad_preto: tuple[Color, Color], grad_branco: tuple[Color, Color]) -> tuple[Surface, Surface]:
+    def gerar_imagem(self, sprite: Surface, grad_preto: grad, grad_branco: grad) -> tuple[Surface, Surface]:
         preto = sprite.copy()
         branco = sprite.copy()
         w, h = sprite.get_size()

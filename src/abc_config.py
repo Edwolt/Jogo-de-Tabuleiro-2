@@ -3,10 +3,12 @@ from pygame.font import Font
 
 from abc import ABC, abstractmethod
 
+from tipos import grad, coord
+
 
 class Config(ABC):
     @abstractmethod
-    def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
         """
         Colore o quadrado que será usado em baixo da peça
         :param pos: Posição da peça
@@ -20,7 +22,7 @@ class Config(ABC):
         """
 
     @abstractmethod
-    def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
+    def pecas_cor(self) -> tuple[grad, grad]:
         """
         :return: (gradiente_branco, gradiente_preto)
         Retorna dois gradientes, um para colorir as peças brancas outro para as peças pretas

@@ -1,3 +1,5 @@
+from tipos import matriz_tabuleiro, matriz_movimento, coord
+
 from .abc_peca import Peca
 from .util import tabuleiro_false, valida_coordenadas
 
@@ -6,11 +8,11 @@ class Cavalo(Peca):
     def __init__(self, cor: bool):
         super().__init__(cor, nome='cavalo')
 
-    def valida_posicao(self, tabuleiro: list[list], pos: tuple[int, int]) -> bool:
+    def valida_posicao(self, tabuleiro: matriz_tabuleiro, pos: coord) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: matriz_tabuleiro, flags: list, pos: coord) -> matriz_movimento:
         res = tabuleiro_false()
         i, j = pos
 

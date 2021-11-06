@@ -8,15 +8,20 @@ from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
 from pecas import testar_xeque
 from pecas import MovimentoEspecial
 
+from tipos import matriz_movimento, matriz_tabuleiro, coord
 
-def novo_tabuleiro() -> list[list[None]]:
+
+def novo_tabuleiro() -> matriz_tabuleiro:
     """
     :param pecas: objeto da classe Peca
     :return: list 8x8 onde os espacos vazios valem None
     e os espacos com pecas são objetos
     """
 
-    tabuleiro = [[None] * 8 for _ in range(8)]  # list 8x8 com None
+    # list 8x8 com None
+    tabuleiro: matriz_tabuleiro = [
+        [None] * 8 for _ in range(8)
+    ]
 
     # Pretas
     tabuleiro[0][0] = Torre(False)
@@ -52,7 +57,7 @@ class Tabuleiro:
         self.flags = list()
         self.rei = SimpleNamespace(branco=(7, 4), preto=(0, 4))
 
-    def movimenta_peca(self, pos: tuple[int, int], nova_pos: tuple[int, int], movimento: list[list]) -> bool:
+    def movimenta_peca(self, pos: coord, nova_pos: coord, movimento: matriz_movimento) -> bool:
         """
         Movimenta a peça se o movimento for validao
         retornando se foi possível ou não
@@ -95,7 +100,7 @@ class Tabuleiro:
 
         return False
 
-    def get_movimentos(self, pos: tuple[int, int]) -> Optional[list[list]]:
+    def get_movimentos(self, pos: coord) -> Optional[matriz_movimento]:
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:
@@ -110,7 +115,7 @@ class Tabuleiro:
         else:
             return None
 
-    def draw(self, canvas: Surface, click: Optional[tuple[int, int]], movimento: list[list]) -> None:
+    def draw(self, canvas: Surface, click: Optional[tuple[int, int]], movimento: matriz_movimento) -> None:
         recursos = Recursos()
 
         size = canvas.get_size()

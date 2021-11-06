@@ -1,13 +1,15 @@
 from copy import copy
 
+from tipos import matriz_tabuleiro, matriz_movimento, direction, coord, mov
+
 
 ##### Tabuleiro #####
-def tabuleiro_false() -> list[list[bool]]:
+def tabuleiro_false() -> matriz_movimento:
     """:return: list 8x8 com todos os campos sendo False"""
     return [[False] * 8 for _ in range(8)]
 
 
-def tabuleiro_copia(tabuleiro) -> list[list]:
+def tabuleiro_copia(tabuleiro: matriz_tabuleiro) -> matriz_tabuleiro:
     copia = [[None] * 8 for _ in range(8)]  # list 8x8 com None
     for i, linha in enumerate(tabuleiro):
         for j, peca in enumerate(linha):
@@ -17,9 +19,8 @@ def tabuleiro_copia(tabuleiro) -> list[list]:
 
 
 ##### Movimento #####
-def mover_peca(tabuleiro: list[list], pos: tuple[int, int], nova_pos: tuple[int, int]) -> None:
-    i, j = pos
-    m, n = nova_pos
+def mover_peca(tabuleiro: matriz_tabuleiro, movimento: mov) -> None:
+    (i, j), (m, n) = movimento
     tabuleiro[m][n] = tabuleiro[i][j]
     tabuleiro[m][n].notifica_movimento()
     tabuleiro[i][j] = None
@@ -34,7 +35,7 @@ def valida_coordenadas(a: int, b: int = 0) -> bool:
     return 0 <= a < 8 and 0 <= b < 8
 
 
-def calcula_direcao(res: list[list], tabuleiro: list[list], pos: tuple[int, int], direcoes: tuple[tuple[int, int], ...], cor: bool) -> None:
+def calcula_direcao(res: matriz_movimento, tabuleiro: matriz_tabuleiro, pos: coord, direcoes: tuple[direction, ...], cor: bool) -> None:
     for (di, dj) in direcoes:
         i, j = pos
         i, j = i + di, j + dj

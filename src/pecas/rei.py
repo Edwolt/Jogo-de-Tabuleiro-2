@@ -1,4 +1,5 @@
 from recursos import Recursos
+from tipos import matriz_tabuleiro, matriz_movimento, coord, mov
 
 from .abc_peca import Peca
 from .abc_movimento import MovimentoEspecial
@@ -7,7 +8,7 @@ from .util import tabuleiro_false, tabuleiro_copia, valida_coordenadas, mover_pe
 
 
 class Roque(MovimentoEspecial):
-    def __init__(self, rei: tuple[int, int], nova_rei: tuple[int, int], torre: tuple[int, int], nova_torre: tuple[int, int]):
+    def __init__(self, mov_rei: mov, mov_torre: mov):
         """
         :param rei: posição atual do rei
         :param nova_rei: posição para a qual o rei será movido
@@ -21,24 +22,24 @@ class Roque(MovimentoEspecial):
         self.torre = torre
         self.nova_torre = nova_torre
 
-    def executar(self, tabuleiro: list[list], flags: list) -> None:
+    def executar(self, tabuleiro: matriz_tabuleiro, flags: list) -> None:
         mover_peca(tabuleiro, self.rei, self.nova_rei)
         mover_peca(tabuleiro, self.torre, self.nova_torre)
 
 
 class Rei(Peca):
-    def __init__(self,  cor: bool, movimentou: bool = False):
+    def __init__(self, cor: bool, movimentou: bool = False):
         super().__init__(cor, nome='rei')
         self.movimentou = movimentou
 
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def valida_posicao(self, tabuleiro: list[list], pos: tuple[int, int]) -> bool:
+    def valida_posicao(self, tabuleiro: matriz_tabuleiro, pos: coord) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: matriz_movimento, flags: list, pos: coord) -> matriz_movimento:
         # TODO Cuidado com cheque
         res = tabuleiro_false()
         i, j = pos

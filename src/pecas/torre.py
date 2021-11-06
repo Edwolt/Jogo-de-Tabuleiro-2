@@ -1,3 +1,5 @@
+from tipos import matriz_tabuleiro, matriz_movimento, coord
+
 from .abc_peca import Peca
 from .util import tabuleiro_false, calcula_direcao
 
@@ -10,7 +12,7 @@ class Torre(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: matriz_tabuleiro, flags: list, pos: coord) -> matriz_movimento:
         res = tabuleiro_false()
         direcoes = (
             (-1, 0),  # Cima

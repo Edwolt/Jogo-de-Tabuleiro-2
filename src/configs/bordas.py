@@ -3,6 +3,7 @@ from pygame.font import Font
 from pygame import draw
 
 from abc_config import Config
+from tipos import coord, grad
 
 
 class ConfigBordas(Config):
@@ -15,7 +16,7 @@ class ConfigBordas(Config):
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
         size = canvas.get_size()
         quad = Rect(1, 1, size[0] - 2, size[1] - 2)
 
@@ -46,7 +47,7 @@ class ConfigBordas(Config):
 
         draw.rect(canvas, cor, quad)
 
-    def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
+    def pecas_cor(self) -> tuple[grad, grad]:
         return (
             (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
             (Color(100, 100, 100, 0), Color(255, 255, 255, 255))

@@ -18,6 +18,7 @@ class Loading(Janela):
         self.fonte = recursos.config.fonte(25)
         self.fonte_loading = recursos.config.fonte(50)
 
+    ##### Interface #####
     def event(self, event: Event) -> None:
         pass
 

@@ -4,6 +4,7 @@ from pygame import Surface
 from abc import ABC, abstractmethod
 
 from recursos import Recursos
+from tipos import matriz_tabuleiro, matriz_movimento, coord
 
 from .xeque import testar_movimento
 from .util import tabuleiro_false
@@ -36,7 +37,7 @@ class Peca(ABC):
         return
 
     @abstractmethod
-    def get_movimentos_simples(self, tabuleiro: list[list], flags: list, pos: tuple[int, int]) -> list[list]:
+    def get_movimentos_simples(self, tabuleiro: matriz_tabuleiro, flags: list, pos: coord) -> matriz_movimento:
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estão sendo calculados
@@ -44,7 +45,7 @@ class Peca(ABC):
         Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
         """
 
-    def get_movimentos(self, tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], pos: tuple[int, int]) -> list[list]:
+    def get_movimentos(self, tabuleiro: matriz_tabuleiro, flags: list, pos_rei: coord, pos: coord) -> matriz_movimento:
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estão sendo calculados

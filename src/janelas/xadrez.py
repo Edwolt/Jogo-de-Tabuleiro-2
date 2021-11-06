@@ -9,6 +9,7 @@ from tabuleiro import Tabuleiro
 from .abc_janela import Janela
 from .menu import Menu
 from .escolha import Escolha
+from tipos import coord
 
 
 class Xadrez(Janela):
@@ -25,7 +26,7 @@ class Xadrez(Janela):
         self.movimento = None
         self.qsize = 0, 0
 
-    def atualiza_movimentos(self, pos: tuple[int, int]) -> None:
+    def atualiza_movimentos(self, pos: coord) -> None:
         self.movimento = self.tabuleiro.get_movimentos(pos)
 
     ##### Interface #####

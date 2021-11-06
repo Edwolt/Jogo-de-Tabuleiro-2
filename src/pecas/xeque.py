@@ -1,8 +1,10 @@
+from tipos import matriz_tabuleiro, coord, mov
+
 from .abc_movimento import MovimentoEspecial
 from .util import tabuleiro_copia
 
 
-def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -> bool:
+def testar_xeque(tabuleiro: matriz_tabuleiro, flags: list, pos_rei: coord) -> bool:
     """
     Testa se o rei está em xeque
     :param pos_rei: posição do rei
@@ -26,7 +28,7 @@ def testar_xeque(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int]) -
 
 
 # TODO pode ser muito otimizado
-def testar_movimento(tabuleiro: list[list], flags: list, pos_rei: tuple[int, int], acao: tuple[tuple[int, int], tuple[int, int]]) -> bool:
+def testar_movimento(tabuleiro: matriz_tabuleiro, flags: list, pos_rei: coord, acao: mov) -> bool:
     tab = tabuleiro_copia(tabuleiro)
     pos, nova_pos = acao
     i, j = pos

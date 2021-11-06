@@ -4,6 +4,7 @@ from pygame.font import Font
 from random import randint
 
 from abc_config import Config
+from tipos import coord, grad
 
 
 def randcor() -> Color:
@@ -28,7 +29,7 @@ class ConfigRandom(Config):
         self.vez = True
         self.titulo_anterior = '.'
 
-    def quadrado(self, canvas: Surface, pos: tuple[int, int], tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
         i, j = pos
 
         cor = Color(0, 0, 0)
@@ -43,7 +44,7 @@ class ConfigRandom(Config):
 
         canvas.fill(cor)
 
-    def pecas_cor(self) -> tuple[tuple[Color, Color], tuple[Color, Color]]:
+    def pecas_cor(self) -> tuple[grad, grad]:
         return (
             (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
             (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
