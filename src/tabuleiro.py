@@ -2,62 +2,24 @@ from __future__ import annotations
 
 import pygame as pg
 from typing import Optional
+from pecas.peao import Promocao
+
 
 import tipos as tp
 from recursos import Recursos
-from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
-from pecas import testar_xeque
-from pecas import MovimentoEspecial
-
-
-def novo_tabuleiro() -> tp.board:
-    """
-    Um tabuleiro com as peças na posição inicial
-    :param pecas: objeto da classe Peca
-    :return: matriz board onde os espacos vazios valem None
-    e os espacos com pecas são objetos
-    """
-
-    # list 8x8 com None
-    tabuleiro: tp.board = [
-        [None] * 8 for _ in range(8)
-    ]
-
-    # Pretas
-    tabuleiro[0][0] = Torre(False)
-    tabuleiro[0][1] = Cavalo(False)
-    tabuleiro[0][2] = Bispo(False)
-    tabuleiro[0][3] = Rainha(False)
-    tabuleiro[0][4] = Rei(False)
-    tabuleiro[0][5] = Bispo(False)
-    tabuleiro[0][6] = Cavalo(False)
-    tabuleiro[0][7] = Torre(False)
-    for i in range(8):  # Peões
-        tabuleiro[1][i] = Peao(False)
-
-    # Brancas
-    tabuleiro[7][0] = Torre(True)
-    tabuleiro[7][1] = Cavalo(True)
-    tabuleiro[7][2] = Bispo(True)
-    tabuleiro[7][3] = Rainha(True)
-    tabuleiro[7][4] = Rei(True)
-    tabuleiro[7][5] = Bispo(True)
-    tabuleiro[7][6] = Cavalo(True)
-    tabuleiro[7][7] = Torre(True)
-    for i in range(8):  # Peões
-        tabuleiro[6][i] = Peao(True)
-
-    return tabuleiro
+from pecas import Movimento, MovimentoComplexo
+from pecas import Roque
+from pecas import board_inicial, testar_xeque
 
 
 class Tabuleiro:
     def __init__(self):
-        self.tabuleiro = novo_tabuleiro()
+        self.tabuleiro = board_inicial()
         self.vez = True
         self.flags = list()
         self.rei = tp.pb(tp.coord(0, 4), tp.coord(7, 4))
 
-    def movimenta_peca(self, acao: tp.action, movimento: tp.movements) -> bool:
+    def movimenta_peca(self, acao: tp.action) -> bool:
         """
         Movimenta a peça se o movimento for validao
         retornando se foi possível ou não
@@ -66,35 +28,43 @@ class Tabuleiro:
         :param nova_pos: Para onde será movimentada
         :return: Se a peça foi movimentada
         """
-
         (i, j), (m, n) = acao
+        peca = self.tabuleiro[i][j]
+        if peca is None:
+            return False
 
-        if isinstance(movimento, bool) and movimento:
-            self.tabuleiro[m][n] = self.tabuleiro[i][j]
-            self.tabuleiro[i][j] = None
-            self.tabuleiro[m][n].notifica_movimento()
+        mov = peca.get_movimentos_simples(
+            self.tabuleiro,
+            self.flags,
+            # self.rei[self.vez],
+            acao.pos
+        )[m][n]
 
-            if self.rei.branco == acao.pos:
-                self.rei.branco = acao.nova_pos
-            elif self.rei.preto == acao.pos:
-                self.rei.preto = acao.nova_pos
+        if mov is None:
+            return False
+
+        elif isinstance(mov, MovimentoComplexo):
+            mov.executar(self.tabuleiro, self.flags)
+
+            if isinstance(mov, Roque):
+                if self.rei.branco == mov.rei:
+                    self.rei.branco = mov.acao_rei.nova_pos
+                elif self.rei.preto == mov.rei:
+                    self.rei.preto = mov.acao_rei.nova_pos
+            elif isinstance(mov, Promocao):
+                self.promocao = mov
 
             self.flags.clear()
+            mov.atualiza_flags(self.flags)
             return True
 
-        elif isinstance(movimento, MovimentoEspecial):
-            movimento.executar(self.tabuleiro, self.flags)
+        elif isinstance(mov, Movimento):
+            mov.executar(self.tabuleiro, self.flags)
 
-            if movimento.nome == 'roque':
-                if self.rei.branco == movimento.rei:
-                    self.rei.branco = movimento.nova_rei
-                elif self.rei.preto == movimento.rei:
-                    self.rei.preto = movimento.nova_rei
-            elif movimento.nome == 'promocao':
-                self.promocao = movimento
+            if mov.rei:
+                self.rei[self.vez] = acao.nova_pos
 
             self.flags.clear()
-            movimento.atualiza_flags(self.flags)
             return True
 
         return False
@@ -113,16 +83,17 @@ class Tabuleiro:
         if peca is None:
             return None
         elif peca.cor == self.vez:
-            return peca.get_movimentos(
+            return peca.get_movimentos_simples(
                 self.tabuleiro,
                 self.flags,
-                self.rei[self.vez],
+                # self.rei[self.vez],
                 pos
             )
         else:
             return None
 
-    def draw(self, canvas: pg.Surface, click: Optional[tp.coord], movimento: tp.movements) -> None:
+    def draw(self, canvas: pg.Surface, click: Optional[tp.coord], movimento: Optional[tp.movements]) -> None:
+
         recursos = Recursos()
 
         size = canvas.get_size()
@@ -135,12 +106,23 @@ class Tabuleiro:
                 tipo = 'vazio'
                 if click and tp.coord(y, x) == click:
                     tipo = 'click'
-                elif movimento and movimento[y][x]:
-                    if isinstance(movimento[y][x], MovimentoEspecial) and movimento[y][x].nome in ('roque', 'enpassant', 'avancoduplo'):
+                elif movimento is not None and movimento[y][x]:
+                    mov = movimento[y][x]
+                    if isinstance(mov, MovimentoComplexo) and mov.especial:
                         tipo = 'especial'
                     else:
                         tipo = 'movimento'
-                elif ((y, x) == self.rei.branco or (y, x) == self.rei.preto) and testar_xeque(self.tabuleiro, self.flags, tp.coord(y, x)):
+                elif (
+                    (
+                        tp.coord(y, x) == self.rei.branco
+                        or tp.coord(y, x) == self.rei.preto
+                    )
+                    and testar_xeque(
+                        self.tabuleiro,
+                        self.flags,
+                        tp.coord(y, x)
+                    )
+                ):
                     tipo = 'xeque'
 
                 surf = pg.Surface(size)

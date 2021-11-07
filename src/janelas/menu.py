@@ -77,7 +77,10 @@ class Opcoes(ABC):
     def listar(self) -> Listagem:
         """:yield: Op(selecionado, nome)"""
 
-        yield from (Op(self.sel == i, self.nome(i)) for i in range(self.tamanho))
+        yield from (
+            Op(self.sel == i, self.nome(i))
+            for i in range(self.tamanho)
+        )
 
     def voltar(self):
         return self.anterior
@@ -95,7 +98,7 @@ class OpcoesConfigs(Opcoes):
         EXT = '.py'
         BUSCA = f'{PASTA}/*{EXT}'  # configs/*.py
 
-        return [i[len(PASTA): -len(EXT)] for i in glob(BUSCA)]
+        return [i[len(PASTA+'/'): -len(EXT)] for i in glob(BUSCA)]
 
     ##### Interface #####
     @property

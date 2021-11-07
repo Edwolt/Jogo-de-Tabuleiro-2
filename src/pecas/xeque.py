@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import tipos as tp
 
-from .abc_movimento import MovimentoEspecial
-from .util import tabuleiro_copia
+from .abc_movimento import Movimento, MovimentoComplexo
+from .util import board_copia
 
 
 def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
@@ -12,8 +12,15 @@ def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
     :param pos_rei: posição do rei
     """
 
+    from .rei import Rei
+
     ri, rj = pos_rei
     rei = tabuleiro[ri][rj]
+    if rei is None or not isinstance(rei, Rei):
+        raise Exception(
+            'testar_xeque não recebeu uma posição válida para o rei'
+        )
+
     for pi, linha in enumerate(tabuleiro):
         for pj, peca in enumerate(linha):
             if peca is not None and peca.cor != rei.cor:
@@ -22,37 +29,52 @@ def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
                     flags,
                     tp.coord(pi, pj)
                 )
-                if isinstance(movimentos[ri][rj], bool) and movimentos[ri][rj]:
+                mov = movimentos[ri][rj]
+                if isinstance(mov, Movimento):
                     return True
-                elif isinstance(movimentos[ri][rj], MovimentoEspecial) and not movimentos[ri][rj].avanco:
+                elif isinstance(mov, MovimentoComplexo) and not mov.avanco:
                     return True
     return False
 
 
 # TODO pode ser muito otimizado
-def testar_movimento(tabuleiro: tp.board, flags: list, pos_rei: tp.coord, acao: tp.action) -> bool:
-    tab = tabuleiro_copia(tabuleiro)
+def testar_movimento(
+    tabuleiro: tp.board,
+    flags: list,
+    pos_rei: tp.coord,
+    acao: tp.action
+) -> bool:
+    from .rei import Roque
+
+    tab = board_copia(tabuleiro)
     pos, nova_pos = acao
     i, j = pos
     m, n = nova_pos
-    movimento = tab[i][j].get_movimentos_simples(tab, flags, pos)[m][n]
+
+    peca = tab[i][j]
+    if peca is None:
+        return False
+
+    movimento = peca.get_movimentos_simples(tab, flags, pos)[m][n]
 
     # Movimenta peca
     if isinstance(movimento, bool) and movimento:
         tab[m][n] = tabuleiro[i][j]
         tab[i][j] = None
-        tab[m][n].notifica_movimento()
+
+        peca = tab[m][n]
+        peca is None or peca.notifica_movimento()
 
         if pos_rei == pos:
             pos_rei = nova_pos
 
         flags.clear()
 
-    elif isinstance(movimento, MovimentoEspecial):
+    elif isinstance(movimento, MovimentoComplexo):
         movimento.executar(tab, flags)
 
-        if movimento.nome == 'roque' and pos_rei == movimento.rei:
-            pos_rei = movimento.nova_rei
+        if isinstance(movimento, Roque) and pos_rei == movimento.rei:
+            pos_rei = movimento.acao_rei.nova_pos
 
         flags.clear()
         movimento.atualiza_flags(flags)

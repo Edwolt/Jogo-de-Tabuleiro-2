@@ -1,15 +1,15 @@
 from __future__ import annotations
 
 __all__ = [
-    'Peca', 'Movimento', 'MovimentoEspecial',  # ABC
+    'Peca', 'Movimento', 'MovimentoComplexo',  # ABC
     'Rei', 'Rainha', 'Bispo', 'Cavalo', 'Torre', 'Peao',  # Pecas
     'Roque', 'Promocao', 'Avanco', 'AvancoDuplo', 'EnPassant',  # Movimentos
-    'testar_xeque',  # Funções
+    'board_inicial', 'testar_xeque',  # Funções
 ]
 
 # ABC
 from .abc_peca import Peca
-from .abc_movimento import Movimento, MovimentoEspecial
+from .abc_movimento import Movimento, MovimentoComplexo
 
 # Pecas
 from .rei import Rei
@@ -25,6 +25,7 @@ from .peao import Promocao, Avanco, AvancoDuplo, EnPassant
 
 # Funções
 from .xeque import testar_xeque
+from .util import board_inicial
 
 
 # Listas
@@ -46,7 +47,7 @@ LISTA_NOME_PECAS = [
     'peao'
 ]
 
-LISTA_MOVIMENTOS_ESPECIAIS = [
+LISTA_MOVIMENTOS_COMPLEXOS = [
     Roque,
     Promocao,
     Avanco,
@@ -54,10 +55,8 @@ LISTA_MOVIMENTOS_ESPECIAIS = [
     EnPassant
 ]
 
-LISTA_NOME_MOVIMENTOS_ESPECIAIS = [
-    'roque',
-    'promocao',
-    'avanco',
-    'avancoDuplo',
-    'enpassant'
+LISTA_MOVIMENTOS_ESPECIAIS = [
+    cls
+    for cls in LISTA_MOVIMENTOS_COMPLEXOS
+    if cls.especial
 ]

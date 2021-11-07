@@ -61,6 +61,12 @@ class pb(Generic[T]):
     def __getitem__(self, index: bool) -> T:
         return self.branco if index else self.preto
 
+    def __setitem__(self, index: bool, valor: T):
+        if index:
+            self.branco = valor
+        else:
+            self.preto = valor
+
     # Isso faz funcionar como o NamedTuple
     def __iter__(self):
         yield from astuple(self)

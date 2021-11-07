@@ -6,7 +6,7 @@ import tipos as tp
 
 
 class Movimento:
-    """Classe abstrata para os movimentos especiais"""
+    """Classe para os movimentos"""
 
     def __init__(self, acao: tp.action, rei: bool = False):
         self.acao = acao
@@ -21,19 +21,22 @@ class Movimento:
 
         tabuleiro[m][n] = tabuleiro[i][j]
         tabuleiro[i][j] = None
-        tabuleiro[m][n].notifica_movimento()
+
+        peca = tabuleiro[m][n]
+        peca is None or peca.notifica_movimento()
 
     def atualiza_flags(self, flags: list) -> None:
         """Atualiza a lista de flags do tabuleiro"""
         return
 
 
-class MovimentoEspecial(ABC):
-    """Classe abstrata para os movimentos especiais"""
+class MovimentoComplexo(ABC, Movimento):
+    """
+    Classe abstrata para os movimentos que não são apenas mover a peça de um lugar para outro
+    """
 
-    def __init__(self, *, nome: str, avanco: bool = False):
-        self.nome = nome
-        self.avanco = avanco
+    especial: bool = False
+    avanco: bool = False
 
     @abstractmethod
     def executar(self, tabuleiro: tp.board, flags: list) -> None:

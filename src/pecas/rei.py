@@ -1,21 +1,23 @@
 from __future__ import annotations
 
+from typing import Optional
+
 import tipos as tp
 
 from .abc_peca import Peca
-from .abc_movimento import MovimentoEspecial
+from .abc_movimento import Movimento, MovimentoComplexo
 from .xeque import testar_xeque
-from .util import tabuleiro_false, tabuleiro_copia, mover_peca
+from .util import movements_vazio, board_copia, mover_peca
+from .torre import Torre
 
 
-class Roque(MovimentoEspecial):
+class Roque(MovimentoComplexo):
     def __init__(self, acao_rei: tp. action, acao_torre: tp.action):
         """
         :param acao_rei: movimento a ser feito pelo rei
         :param acao_torre: movimento a ser feito pela torre
         """
 
-        super().__init__(nome='roque')
         self.acao_rei = acao_rei
         self.acao_torre = acao_torre
 
@@ -25,61 +27,83 @@ class Roque(MovimentoEspecial):
 
 
 class Rei(Peca):
+    nome = 'rei'
+
     def __init__(self, cor: bool, movimentou: bool = False):
-        super().__init__(cor, nome='rei')
+        super().__init__(cor)
         self.movimentou = movimentou
 
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def valida_posicao(self, tabuleiro: tp.board, pos: tp. coord) -> bool:
-        i, j = pos
-        return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
+    def criar_movimento(
+        self,
+        tabuleiro: tp.board,
+        acao: tp.action
+    ) -> Optional[Movimento]:
+        i, j = acao.nova_pos
+        capturada = tabuleiro[i][j]
+        if capturada is None or capturada.cor == self.cor:
+            return Movimento(acao)
+        return None
 
-    def get_movimentos_simples(self, tabuleiro: tp.board, flags: list, pos: tp.coord) -> tp.movements:
+    def get_movimentos_simples(
+        self,
+        tabuleiro: tp.board,
+        flags: list,
+        pos: tp.coord
+    ) -> tp.movements:
         # TODO Cuidado com xeque
-        res = tabuleiro_false()
+        res = movements_vazio()
         i, j = pos
 
-        # Casas acima do rei
-        if tp.coord(i-1, j-1).valida():
-            res[i-1][j-1] = self.valida_posicao(tabuleiro, tp.coord(i-1, j-1))
-        if tp.coord(i-1, j).valida():
-            res[i-1][j] = self.valida_posicao(tabuleiro, tp. coord(i-1, j))
-        if tp.coord(i-1, j+1).valida():
-            res[i-1][j+1] = self.valida_posicao(tabuleiro, tp. coord(i-1, j+1))
+        # Posições a verificar
+        VERIFICAR = (
+            # Casas acima do rei
+            tp.coord(i-1, j-1),
+            tp.coord(i-1, j),
+            tp.coord(i-1, j+1),
 
-        # Casas do meio
-        if tp.coord(i, j-1).valida():
-            res[i][j-1] = self.valida_posicao(tabuleiro, tp.coord(i, j-1))
-        if tp.coord(i, j+1).valida():
-            res[i][j+1] = self.valida_posicao(tabuleiro, tp.coord(i, j+1))
+            # Casas do meio
+            tp.coord(i, j-1),
+            tp.coord(i, j+1),
 
-        # Casas abaixo do rei
-        if tp.coord(i+1, j-1).valida():
-            res[i+1][j-1] = self.valida_posicao(tabuleiro, tp.coord(i+1, j-1))
-        if tp.coord(i+1, j).valida():
-            res[i+1][j] = self.valida_posicao(tabuleiro, tp. coord(i+1, j))
-        if tp.coord(i+1, j+1).valida():
-            res[i+1][j+1] = self.valida_posicao(tabuleiro, tp.coord(i+1, j+1))
+            # Casas abaixo do rei
+            tp.coord(i+1, j-1),
+            tp.coord(i+1, j),
+            tp.coord(i+1, j+1)
+        )
+
+        for nova_pos in VERIFICAR:
+            if nova_pos.valida():
+                m, n = nova_pos
+                res[m][n] = self.criar_movimento(
+                    tabuleiro,
+                    tp.action(pos, nova_pos)
+                )
 
         # Verifica se é possível fazer o Roque
         if not self.movimentou:
             torre = tabuleiro[i][0]
-            if torre is not None and torre.nome == 'torre' and not torre.movimentou:
+            eh_realmente_torre = (
+                torre is not None
+                and isinstance(torre, Torre)
+                and torre.movimentou
+            )
+            if eh_realmente_torre:
                 # TODO verifica se deixa o rei em xeque ou passa em casas em xeque
 
                 pecas_entre = False
                 for jj in range(1, j):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
-                tab = tabuleiro_copia(tabuleiro)
+                tab = board_copia(tabuleiro)
                 tab[i][3] = Rei(self.cor)
                 tab[i][4] = None
                 xeque = testar_xeque(tab, flags, tp.coord(i, 3))
 
                 if not xeque:
-                    tab = tabuleiro_copia(tabuleiro)
+                    tab = board_copia(tabuleiro)
                     tab[i][2] = Rei(self.cor)
                     tab[i][4] = None
                     xeque = testar_xeque(tab, flags, tp.coord(i, 2))
@@ -91,7 +115,12 @@ class Rei(Peca):
                     )
 
             torre = tabuleiro[i][7]
-            if torre is not None and torre.nome == 'torre' and not torre.movimentou:
+            eh_realmente_torre = (
+                torre is not None
+                and isinstance(torre, Torre)
+                and torre.movimentou
+            )
+            if eh_realmente_torre:
                 pecas_entre = False
                 for jj in range(j + 1, 7):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None

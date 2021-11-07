@@ -5,14 +5,14 @@ import pygame as pg
 import tipos as tp
 from recursos import Recursos
 from pecas import Cavalo, Bispo, Torre, Rainha
-from pecas import MovimentoEspecial
+from pecas import Promocao
 
 from .abc_janela import Janela
 from .menu import Menu
 
 
 class Escolha(Janela):
-    def __init__(self, xadrez, promocao: MovimentoEspecial):
+    def __init__(self, xadrez, promocao: Promocao):
         """
         Permite o usuário Escolher um peça entre:
         * Cavalo

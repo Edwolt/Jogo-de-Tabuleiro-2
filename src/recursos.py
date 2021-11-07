@@ -6,6 +6,7 @@ import importlib
 import tipos as tp
 from abc_config import Config
 from singleton import Singleton
+from pecas import LISTA_NOME_PECAS
 
 
 def get_config(nome: str) -> Config:
@@ -16,11 +17,17 @@ def get_config(nome: str) -> Config:
 
 def caminho_asset(nome: str, png_min: bool = False) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
+
     return f'assets/{nome}.png' + ('.min' if png_min else '')
 
 
 class Recursos(metaclass=Singleton):
-    def __init__(self, size: tuple[int, int] = (800, 800), framerate: int = 60, png_min: bool = False):
+    def __init__(
+        self,
+        size: tuple[int, int] = (800, 800),
+        framerate: int = 60,
+        png_min: bool = False
+    ):
         self.size = size
         self.framerate = framerate
         self.png_min = png_min
@@ -41,13 +48,18 @@ class Recursos(metaclass=Singleton):
     def set_config(self, config: str) -> None:
         self._config = get_config(config)
 
-    def gerar_imagem(self, sprite: pg.Surface, gradientes: tp.pb[tp.grad]) -> tp.pb[pg.Surface]:
+    def gerar_imagem(
+        self,
+        sprite: pg.Surface,
+        gradientes: tp.pb[tp.grad]
+    ) -> tp.pb[pg.Surface]:
         """
         Colore o sprite com os gradientes e os retorna
         :param sprite: sprite a ser colorido
         :param gradientes: gradientes para a peça preta e branca
         :return: sprites coloridos para a peça preta e para branca
         """
+
         sprites = tp.pb(sprite.copy(), sprite.copy())
         w, h = sprite.get_size()
 
@@ -61,17 +73,16 @@ class Recursos(metaclass=Singleton):
 
     def carregar(self) -> tp.load_gen:
         """Carrega os assets das peças na memória"""
-        nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
         cores = self.config.pecas_cor()
-        yield [tp.load_bar(len(nome_pecas), 0)]
-        for k, i in enumerate(nome_pecas):
+        yield [tp.load_bar(len(LISTA_NOME_PECAS), 0)]
+        for k, i in enumerate(LISTA_NOME_PECAS):
             try:
                 img = pg.image.load(caminho_asset(i, self.png_min))
             except:
                 img = pg.image.load(caminho_asset(i))
 
             self.assets[i] = self.gerar_imagem(img, cores)
-            yield [tp.load_bar(len(nome_pecas), k+1)]
+            yield [tp.load_bar(len(LISTA_NOME_PECAS), k+1)]
 
     def get_asset(self, nome: str, cor: bool) -> pg.Surface:
         """Retorna o asset da peca com o nome e a cor dada"""

@@ -41,14 +41,19 @@ class Xadrez(Janela):
 
             movimentado = False
             if self.movimento and click_antigo:
-                if self.tabuleiro.movimenta_peca(click_antigo, self.click, self.movimento):
+                movimento_oconteceu = self.tabuleiro.movimenta_peca(tp.action(
+                    click_antigo,
+                    self.click
+                ))
+                if movimento_oconteceu:
                     self.movimento = None
                     movimentado = True
 
             if not movimentado:
                 self.atualiza_movimentos(self.click)
             else:
-                self.vez = not self.vez
+                # TODO isso não deveria ser resposabilidade de xadrez
+                self.tabuleiro.vez = not self.tabuleiro.vez
 
             self.atualizacao = True
 
@@ -65,7 +70,7 @@ class Xadrez(Janela):
         self.tabuleiro.draw(canvas, self.click, self.movimento)
 
         self.atualizacao = False
-        pg.display.set_caption(Recursos().config.titulo(self.vez))
+        pg.display.set_caption(Recursos().config.titulo(self.tabuleiro.vez))
         pg.display.flip()
 
     def new(self):

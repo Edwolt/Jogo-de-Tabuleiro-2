@@ -1,20 +1,23 @@
 from __future__ import annotations
 
+from typing import Optional
+
 import tipos as tp
 
 from .abc_peca import Peca
-from .abc_movimento import MovimentoEspecial
-from .util import mover_peca, tabuleiro_false
+from .abc_movimento import Movimento, MovimentoComplexo
+from .util import movements_vazio, mover_peca
 
 
-class Promocao(MovimentoEspecial):
+class Promocao(MovimentoComplexo):
+    especial: bool = True
+
     def __init__(self, acao: tp. action, cor: bool):
         """
         :param pos: posição atual do peão
         :param cor: cor da peça (False: 'preto'; True: 'branco')
         """
 
-        super().__init__(nome='promocao')
         self.pos = acao.pos
         self.promocao = acao.nova_pos
         self.cor = cor
@@ -25,12 +28,15 @@ class Promocao(MovimentoEspecial):
         m, n = self.promocao
         tabuleiro[m][n] = tabuleiro[i][j]
         tabuleiro[i][j] = None
-        tabuleiro[m][n].notifica_movimento()
+
+        peca = tabuleiro[m][n]
+        peca is None or peca.notifica_movimento()
 
 
-class Avanco(MovimentoEspecial):
+class Avanco(MovimentoComplexo):
+    avanco: bool = True
+
     def __init__(self, cor: bool, pos: tp.coord):
-        super().__init__(nome='avanco', avanco=True)
         self.cor = cor
         self.pos = pos
 
@@ -40,7 +46,10 @@ class Avanco(MovimentoEspecial):
         mover_peca(tabuleiro, tp.action(self.pos, tp.coord(i, j)))
 
 
-class AvancoDuplo(MovimentoEspecial):
+class AvancoDuplo(MovimentoComplexo):
+    avanco: bool = True
+    especial: bool = True
+
     def __init__(self, cor: bool, caminho_acao: tp.pathaction):
         """
         :param cor: cor da peça (False: 'preto', True: 'branco'; )
@@ -50,7 +59,6 @@ class AvancoDuplo(MovimentoEspecial):
         * nova_pos: posição final do peão
         """
 
-        super().__init__(nome='avancoduplo', avanco=True)
         self.cor = cor
         self.caminho_acao = caminho_acao
 
@@ -61,7 +69,9 @@ class AvancoDuplo(MovimentoEspecial):
         flags.append(('enpassant', self.cor, self.caminho_acao))
 
 
-class EnPassant(MovimentoEspecial):
+class EnPassant(MovimentoComplexo):
+    especial: bool = True
+
     def __init__(self, acao: tp.action, capturado_pos: tp. coord):
         """
         :param acao: movimento que o peão aliado fará
@@ -70,7 +80,6 @@ class EnPassant(MovimentoEspecial):
         :param capturado_pos: posição do peão inimigo a ser capturado
         """
 
-        super().__init__(nome='enpassant')
         self.acao = acao
         self.capturado_pos = capturado_pos
 
@@ -81,8 +90,10 @@ class EnPassant(MovimentoEspecial):
 
 
 class Peao(Peca):
+    nome: str = 'peao'
+
     def __init__(self, cor: bool, movimentou: bool = False):
-        super().__init__(cor, nome='peao')
+        super().__init__(cor)
         self.movimentou = movimentou
 
     def notifica_movimento(self) -> None:
@@ -93,41 +104,60 @@ class Peao(Peca):
             if flag[0] == 'enpassant':
                 _, cor, (_, meio, final) = flag
                 if self.cor != cor and nova_pos == meio:
+                    # Existe no máximo um enpassant por turno
                     return meio, final
         return None
 
-    def criar_captura(self, tabuleiro: tp.board, flags: list, acao: tp. action):
+    def criar_captura(
+        self,
+        tabuleiro: tp.board,
+        flags: list,
+        acao: tp. action
+    ) -> Optional[Movimento]:
         i, j = acao.nova_pos
         promocao = 0 if self.cor else 7
 
-        if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
+        capturada = tabuleiro[i][j]
+        if capturada is not None and capturada.cor != self.cor:
             if i == promocao:
                 return Promocao(acao, self.cor)
             else:
-                return True
+                return Movimento(acao)
         else:
             enpassant = self.get_enpassant(flags, acao.nova_pos)
             if enpassant is not None:
                 meio, final = enpassant
                 return EnPassant(tp.action(acao.pos, final), meio)
             else:
-                return False
+                return None
 
-    def get_movimentos_simples(self, tabuleiro: tp.board, flags: list, pos: tp.coord) -> tp.movements:
-        res = tabuleiro_false()
+    def get_movimentos_simples(
+        self,
+        tabuleiro: tp.board,
+        flags: list,
+        pos: tp.coord
+    ) -> tp.movements:
+        res = movements_vazio()
         linha_promocao = 0 if self.cor else 7
 
         i, j = pos
         i += -1 if self.cor else 1
         if tp. coord.valida_componente(i) and tabuleiro[i][j] is None:
             if i == linha_promocao:
-                res[i][j] = Promocao(tp. action(
-                    pos,  tp. coord(i, j)), self.cor)
+                res[i][j] = Promocao(
+                    tp. action(pos,  tp. coord(i, j)),
+                    self.cor
+                )
             else:
                 res[i][j] = Avanco(self.cor, pos)
 
             ii = i-1 if self.cor else i+1
-            if not self.movimentou and tp. coord.valida_componente(ii) and tabuleiro[ii][j] is None:
+            avanco_duplo = (
+                not self.movimentou
+                and tp.coord.valida_componente(ii)
+                and tabuleiro[ii][j] is None
+            )
+            if avanco_duplo:
                 if i == linha_promocao:
                     res[ii][j] = Promocao(
                         tp.action(pos, tp.coord(ii, j)),

@@ -17,7 +17,8 @@ class Config(ABC):
         * click: Último quadrado que foi clicado
         * movimento: Quadrado disponível para movimentar
         * especial: Quadrado onde o movimento é especial
-        * captura: Quadrado disponível para movimentar que resultará em um captura
+        * captura: Quadrado disponível para movimentar que resultará em um
+        captura
         * xeque: Quadrado onde o rei está em xeque
         """
 
@@ -25,7 +26,8 @@ class Config(ABC):
     def pecas_cor(self) -> tp.pb[tp.grad]:
         """
         :return: pb(gradiente_preto, gradiente_branco)
-        Retorna dois gradientes, um para colorir as peças brancas outro para as peças pretas
+        Retorna dois gradientes, um para colorir as peças brancas outro para as
+        peças pretas
         """
 
     @abstractmethod
