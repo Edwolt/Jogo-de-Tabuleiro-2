@@ -8,10 +8,10 @@ from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
 from pecas import testar_xeque
 from pecas import MovimentoEspecial
 
-from tipos import matriz_movimento, matriz_tabuleiro, coord
+from tipos import board, movements, coord
 
 
-def novo_tabuleiro() -> matriz_tabuleiro:
+def novo_tabuleiro() -> board:
     """
     :param pecas: objeto da classe Peca
     :return: list 8x8 onde os espacos vazios valem None
@@ -19,7 +19,7 @@ def novo_tabuleiro() -> matriz_tabuleiro:
     """
 
     # list 8x8 com None
-    tabuleiro: matriz_tabuleiro = [
+    tabuleiro: board = [
         [None] * 8 for _ in range(8)
     ]
 
@@ -57,7 +57,7 @@ class Tabuleiro:
         self.flags = list()
         self.rei = SimpleNamespace(branco=(7, 4), preto=(0, 4))
 
-    def movimenta_peca(self, pos: coord, nova_pos: coord, movimento: matriz_movimento) -> bool:
+    def movimenta_peca(self, pos: coord, nova_pos: coord, movimento: movements) -> bool:
         """
         Movimenta a peça se o movimento for validao
         retornando se foi possível ou não
@@ -100,7 +100,7 @@ class Tabuleiro:
 
         return False
 
-    def get_movimentos(self, pos: coord) -> Optional[matriz_movimento]:
+    def get_movimentos(self, pos: coord) -> Optional[movements]:
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:
@@ -115,7 +115,7 @@ class Tabuleiro:
         else:
             return None
 
-    def draw(self, canvas: Surface, click: Optional[tuple[int, int]], movimento: matriz_movimento) -> None:
+    def draw(self, canvas: Surface, click: Optional[coord], movimento: movements) -> None:
         recursos = Recursos()
 
         size = canvas.get_size()
@@ -126,18 +126,18 @@ class Tabuleiro:
                 # i, j = y, x
 
                 tipo = 'vazio'
-                if click and (y, x) == click:
+                if click and coord(y, x) == click:
                     tipo = 'click'
                 elif movimento and movimento[y][x]:
                     if isinstance(movimento[y][x], MovimentoEspecial) and movimento[y][x].nome in ('roque', 'enpassant', 'avancoduplo'):
                         tipo = 'especial'
                     else:
                         tipo = 'movimento'
-                elif ((y, x) == self.rei.branco or (y, x) == self.rei.preto) and testar_xeque(self.tabuleiro, self.flags, (y, x)):
+                elif ((y, x) == self.rei.branco or (y, x) == self.rei.preto) and testar_xeque(self.tabuleiro, self.flags, coord(y, x)):
                     tipo = 'xeque'
 
                 surf = Surface(size)
-                recursos.config.quadrado(surf, (x, y), tipo)
+                recursos.config.quadrado(surf, coord(x, y), tipo)
 
                 if peca:
                     peca.draw(surf)

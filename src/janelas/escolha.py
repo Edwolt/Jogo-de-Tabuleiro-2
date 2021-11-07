@@ -6,6 +6,7 @@ from pygame.event import Event
 from recursos import Recursos
 from pecas import Cavalo, Bispo, Torre, Rainha
 from pecas import MovimentoEspecial
+from tipos import coord
 
 from .abc_janela import Janela
 from .menu import Menu
@@ -74,7 +75,7 @@ class Escolha(Janela):
             i, j = offset_i, offset_j + jj
 
             surf = Surface(self.qsize)
-            recursos.config.quadrado(surf, (j, i), 'vazio')
+            recursos.config.quadrado(surf, coord(j, i), 'vazio')
             peca.draw(surf)
             pos = j * self.qsize[0], i * self.qsize[1]
             canvas.blit(surf, pos)
@@ -93,6 +94,6 @@ class Escolha(Janela):
         elif self.escape:
             self.escape = False
             self.atualizacao = True
-            return Menu(Recursos(), self)
+            return Menu(self)
         else:
             return self

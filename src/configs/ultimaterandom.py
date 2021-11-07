@@ -1,23 +1,29 @@
+from typing import NamedTuple
 from pygame import Color, Surface
 from pygame.font import Font
 
 from random import randint
 
 from abc_config import Config
-from tipos import coord, grad
+from tipos import coord, grad, pb
 
 
 def randcor() -> Color:
     return Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
+class Nome(NamedTuple):
+    titulo: str
+    jogador: pb[str]
+
+
 class ConfigUltimateRandom(Config):
     def __init__(self):
         self.nomes = (
-            ('Xadrez', 'Branco', 'Preto'),
-            ('Jogo de Tabuleiro', 'Claro', 'Escuro'),
-            ('Chess', 'White', 'Black'),
-            ('Chess Game', 'Player 1', 'Player 2'),
+            Nome('Xadrez', pb('Preto', 'Branco')),
+            Nome('Jogo de Tabuleiro', pb('Escuro', 'Claro')),
+            Nome('Chess', pb('Black', 'White')),
+            Nome('Chess Game', pb('Player 2', 'Player 1')),
         )
 
         self.vez = None
@@ -26,12 +32,10 @@ class ConfigUltimateRandom(Config):
     def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
         canvas.fill(randcor())
 
-    def pecas_cor(self) -> tuple[grad, grad]:
-        res = (randcor(), randcor()), (randcor(), randcor())
-        res[0][0].a = 0
-        res[0][1].a = 255
-        res[1][0].a = 0
-        res[1][1].a = 255
+    def pecas_cor(self) -> pb[grad]:
+        res = pb(grad(randcor(), randcor()), grad(randcor(), randcor()))
+        res[False].tranparencia_padrao()
+        res[True].tranparencia_padrao()
 
         return res
 
@@ -47,10 +51,9 @@ class ConfigUltimateRandom(Config):
     def titulo(self, vez: bool) -> str:
         if self.vez is None or self.vez != vez:
             self.vez = vez
-            x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]
-            p = p1 if vez else p2
-            self.titulo_anterior = f'{x} : {p}'
-            return f'{x} : {p}'
+            x, p = self.nomes[randint(0, len(self.nomes) - 1)]
+            self.titulo_anterior = f'{x} : {p[vez]}'
+            return f'{x} : {p[vez]}'
         else:
             return self.titulo_anterior
 

@@ -3,15 +3,16 @@ from pygame import Color, Surface, Rect
 from pygame import display, draw
 
 from recursos import Recursos
+from tipos import load_gen
 
 from .abc_janela import Janela
 
 
 class Loading(Janela):
-    def __init__(self, carregamento, janela: Janela):
+    def __init__(self, carregamento: load_gen, janela: Janela):
         self.janela = janela
 
-        self.pronto = False
+        self.finalizado = False
         self.carregamento = carregamento
 
         recursos = Recursos()
@@ -29,7 +30,7 @@ class Loading(Janela):
         try:
             barras = next(self.carregamento)
         except StopIteration:
-            self.pronto = True
+            self.finalizado = True
             return
 
         x, y = 10, 10
@@ -69,4 +70,4 @@ class Loading(Janela):
         display.flip()
 
     def new(self):
-        return self.janela if self.pronto else self
+        return self.janela if self.finalizado else self

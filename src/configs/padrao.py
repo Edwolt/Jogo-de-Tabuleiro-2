@@ -2,15 +2,12 @@ from pygame import Color, Surface
 from pygame.font import Font
 
 from abc_config import Config
-from tipos import coord, grad
+from tipos import pb, coord, grad
 
 
 class ConfigPadrao(Config):
     def __init__(self):
-        self.vazio = (
-            Color(255, 255, 255),  # Branco
-            Color(0, 0, 0)  # Preto
-        )
+        self.vazio = pb(Color(0, 0, 0), Color(255, 255, 255))
         self.click = Color(255, 255, 0)
         self.movimento = Color(0, 255, 255)
         self.xeque = Color(255, 0, 0)
@@ -22,7 +19,7 @@ class ConfigPadrao(Config):
 
         cor = Color(0, 0, 0)
         if tipo == 'vazio':
-            cor = self.vazio[(i+j) % 2]
+            cor = self.vazio[(i+j) % 2 == 0]
         elif tipo == 'click':
             cor = self.click
         elif tipo == 'movimento':
@@ -36,10 +33,10 @@ class ConfigPadrao(Config):
 
         canvas.fill(cor)
 
-    def pecas_cor(self) -> tuple[grad, grad]:
-        return (
-            (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+    def pecas_cor(self) -> pb[grad]:
+        return pb(
+            grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
         )
 
     def menu_fundo(self, canvas: Surface) -> None:
@@ -52,7 +49,8 @@ class ConfigPadrao(Config):
         return Color(0, 255, 0), Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
-        return 'Xadrez : ' + ('Branco' if vez else 'Preto')
+        texto_cor = pb('Preto', 'Branco')
+        return 'Xadrez : ' + texto_cor[vez]
 
     def fonte(self, tam) -> Font:
         return Font(

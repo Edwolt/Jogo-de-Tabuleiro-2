@@ -5,17 +5,28 @@ from pygame.event import Event
 from pygame.locals import KEYDOWN, K_UP, K_DOWN, K_RETURN, K_ESCAPE
 
 from glob import glob
-from abc import ABC
-from typing import Optional
+from abc import ABC, abstractmethod
+from typing import Optional, Union
+from typing import Generator, NamedTuple
 
 from recursos import Recursos
+from tipos import load_gen, load_bar
 
 from .abc_janela import Janela
 from .loading import Loading
 
 
+class Op(NamedTuple):
+    """Guarda uma opcao de uma lista de opções"""
+    sel: bool
+    nome: str
+
+
+Listagem = Generator[Op, None, None]
+
+
 class Opcoes(ABC):
-    def __init__(self, menu, anterior):
+    def __init__(self, menu: 'Menu', anterior: 'Optional[Opcoes]'):
         """
         Classe abstrata para criar menus de opções
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la
@@ -26,7 +37,7 @@ class Opcoes(ABC):
         self.menu = menu
         self.anterior = anterior
         self.sel = 0
-        self.opcoes = []
+        self.opcoes: tuple[str, ...] = ()
 
     ##### Interface #####
     def event(self, event: Event) -> None:
@@ -47,35 +58,34 @@ class Opcoes(ABC):
         return len(self.opcoes)
 
     def nome(self, key) -> str:
-        """:return: o nome da opção de numero"""
+        """:return: o nome da opção em key"""
         return self.opcoes[key]
 
-    def executar(self, key) -> 'Optional[Opcoes]':
+    @abstractmethod
+    def executar(self, key) -> 'Union[None, Opcoes, load_gen]':
         """
         Executa a opção de número key
         :return: Pode ser
         * None: Sair do menu
         * Opcoes: Qual novo menu de opções deve entrar
-        * Generator: Cria uma tela de Loading e sai do menu
+        * load_gen: Cria uma tela de Loading e sai do menu
         """
 
-        return self.voltar()
-
-    def listar(self):
+    def listar(self) -> Listagem:
         """
         :yield: (selecionado, nome)
         selecionado: se é aquela opção que está selecionada
         nome: nome da opção selecionada
         """
 
-        yield from ((self.sel == i, self.nome(i)) for i in range(self.tamanho))
+        yield from (Op(self.sel == i, self.nome(i)) for i in range(self.tamanho))
 
     def voltar(self):
         return self.anterior
 
 
 class OpcoesConfigs(Opcoes):
-    def __init__(self, menu, anterior: Opcoes):
+    def __init__(self, menu: 'Menu', anterior: Opcoes):
         super().__init__(menu, anterior)
         self.configs = self.listar_configs()
 
@@ -106,7 +116,7 @@ class OpcoesConfigs(Opcoes):
 
 
 class OpcoesPrincipal(Opcoes):
-    def __init__(self, menu, anterior: Optional[Opcoes] = None):
+    def __init__(self, menu: 'Menu', anterior: Optional[Opcoes] = None):
         super().__init__(menu, anterior)
         self.opcoes = (
             'Config',
@@ -161,7 +171,11 @@ class Menu(Janela):
                 else:
                     self.loading = ret
             elif event.key == K_ESCAPE:
-                self.opcoes = self.opcoes.voltar()
+                ret = self.opcoes.voltar()
+                if ret == None:
+                    self.finalizado
+                else:
+                    self.opcoes = ret
             else:
                 self.opcoes.event(event)
             self.atualizacao = True

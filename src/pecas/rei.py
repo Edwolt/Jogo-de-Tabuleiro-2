@@ -1,14 +1,14 @@
 from recursos import Recursos
-from tipos import matriz_tabuleiro, matriz_movimento, coord, mov
+from tipos import board, movements, coord, action
 
 from .abc_peca import Peca
 from .abc_movimento import MovimentoEspecial
 from .xeque import testar_xeque
-from .util import tabuleiro_false, tabuleiro_copia, valida_coordenadas, mover_peca
+from .util import tabuleiro_false, tabuleiro_copia, mover_peca
 
 
 class Roque(MovimentoEspecial):
-    def __init__(self, mov_rei: mov, mov_torre: mov):
+    def __init__(self, acao_rei: action, acao_torre: action):
         """
         :param rei: posição atual do rei
         :param nova_rei: posição para a qual o rei será movido
@@ -17,14 +17,12 @@ class Roque(MovimentoEspecial):
         """
 
         super().__init__(nome='roque')
-        self.rei = rei
-        self.nova_rei = nova_rei
-        self.torre = torre
-        self.nova_torre = nova_torre
+        self.acao_rei = acao_rei
+        self.acao_torre = acao_torre
 
-    def executar(self, tabuleiro: matriz_tabuleiro, flags: list) -> None:
-        mover_peca(tabuleiro, self.rei, self.nova_rei)
-        mover_peca(tabuleiro, self.torre, self.nova_torre)
+    def executar(self, tabuleiro: board, flags: list) -> None:
+        mover_peca(tabuleiro, self.acao_rei)
+        mover_peca(tabuleiro, self.acao_torre)
 
 
 class Rei(Peca):
@@ -35,36 +33,36 @@ class Rei(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def valida_posicao(self, tabuleiro: matriz_tabuleiro, pos: coord) -> bool:
+    def valida_posicao(self, tabuleiro: board, pos: coord) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos_simples(self, tabuleiro: matriz_movimento, flags: list, pos: coord) -> matriz_movimento:
+    def get_movimentos_simples(self, tabuleiro: board, flags: list, pos: coord) -> movements:
         # TODO Cuidado com cheque
         res = tabuleiro_false()
         i, j = pos
 
         # Casas acima do rei
-        if valida_coordenadas(i-1, j-1):
-            res[i-1][j-1] = self.valida_posicao(tabuleiro, (i-1, j-1))
-        if valida_coordenadas(i-1, j):
-            res[i-1][j] = self.valida_posicao(tabuleiro, (i-1, j))
-        if valida_coordenadas(i-1, j+1):
-            res[i-1][j+1] = self.valida_posicao(tabuleiro, (i-1, j+1))
+        if coord(i-1, j-1).valida:
+            res[i-1][j-1] = self.valida_posicao(tabuleiro, coord(i-1, j-1))
+        if coord(i-1, j).valida:
+            res[i-1][j] = self.valida_posicao(tabuleiro, coord(i-1, j))
+        if coord(i-1, j+1).valida():
+            res[i-1][j+1] = self.valida_posicao(tabuleiro, coord(i-1, j+1))
 
         # Casas do meio
-        if valida_coordenadas(i, j-1):
-            res[i][j-1] = self.valida_posicao(tabuleiro, (i, j-1))
-        if valida_coordenadas(i, j+1):
-            res[i][j+1] = self.valida_posicao(tabuleiro, (i, j+1))
+        if coord(i, j-1).valida:
+            res[i][j-1] = self.valida_posicao(tabuleiro, coord(i, j-1))
+        if coord(i, j+1).valida:
+            res[i][j+1] = self.valida_posicao(tabuleiro, coord(i, j+1))
 
         # Casas abaixo do rei
-        if valida_coordenadas(i+1, j-1):
-            res[i+1][j-1] = self.valida_posicao(tabuleiro, (i+1, j-1))
-        if valida_coordenadas(i+1, j):
-            res[i+1][j] = self.valida_posicao(tabuleiro, (i+1, j))
-        if valida_coordenadas(i+1, j+1):
-            res[i+1][j+1] = self.valida_posicao(tabuleiro, (i+1, j+1))
+        if coord(i+1, j-1).valida():
+            res[i+1][j-1] = self.valida_posicao(tabuleiro, coord(i+1, j-1))
+        if coord(i+1, j).valida():
+            res[i+1][j] = self.valida_posicao(tabuleiro, coord(i+1, j))
+        if coord(i+1, j+1).valida():
+            res[i+1][j+1] = self.valida_posicao(tabuleiro, coord(i+1, j+1))
 
         # Verifica se é possível fazer o Roque
         if not self.movimentou:
@@ -79,16 +77,19 @@ class Rei(Peca):
                 tab = tabuleiro_copia(tabuleiro)
                 tab[i][3] = Rei(self.cor)
                 tab[i][4] = None
-                xeque = testar_xeque(tab, flags, (i, 3))
+                xeque = testar_xeque(tab, flags, coord(i, 3))
 
                 if not xeque:
                     tab = tabuleiro_copia(tabuleiro)
                     tab[i][2] = Rei(self.cor)
                     tab[i][4] = None
-                    xeque = testar_xeque(tab, flags, (i, 2))
+                    xeque = testar_xeque(tab, flags, coord(i, 2))
 
                 if not pecas_entre and not xeque:
-                    res[i][j-2] = Roque((i, j), (i, j-2), (i, 0), (i, j-1))
+                    res[i][j-2] = Roque(
+                        action(coord(i, j), coord(i, j-2)),
+                        action(coord(i, 0), coord(i, j-1))
+                    )
 
             torre = tabuleiro[i][7]
             if torre is not None and torre.nome == 'torre' and not torre.movimentou:
@@ -97,6 +98,9 @@ class Rei(Peca):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 if not pecas_entre:
-                    res[i][j+2] = Roque((i, j), (i, j+2), (i, 7), (i, j+1))
+                    res[i][j+2] = Roque(
+                        action(coord(i, j), coord(i, j+2)),
+                        action(coord(i, 7), coord(i, j+1))
+                    )
 
         return res

@@ -39,7 +39,7 @@ class Xadrez(Janela):
         if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
             click_antigo = self.click
 
-            self.click = (
+            self.click = coord(
                 int(event.pos[1] // self.qsize[1]),
                 int(event.pos[0] // self.qsize[0])
             )

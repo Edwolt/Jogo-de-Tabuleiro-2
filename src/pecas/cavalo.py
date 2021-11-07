@@ -1,43 +1,43 @@
-from tipos import matriz_tabuleiro, matriz_movimento, coord
+from tipos import board, movements, coord
 
 from .abc_peca import Peca
-from .util import tabuleiro_false, valida_coordenadas
+from .util import tabuleiro_false
 
 
 class Cavalo(Peca):
     def __init__(self, cor: bool):
         super().__init__(cor, nome='cavalo')
 
-    def valida_posicao(self, tabuleiro: matriz_tabuleiro, pos: coord) -> bool:
+    def valida_posicao(self, tabuleiro: board, pos: coord) -> bool:
         i, j = pos
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
-    def get_movimentos_simples(self, tabuleiro: matriz_tabuleiro, flags: list, pos: coord) -> matriz_movimento:
+    def get_movimentos_simples(self, tabuleiro: board, flags: list, pos: coord) -> movements:
         res = tabuleiro_false()
         i, j = pos
 
         # Casas acima
-        if valida_coordenadas(i-2, j-1):
-            res[i-2][j-1] = self.valida_posicao(tabuleiro, (i-2, j-1))
-        if valida_coordenadas(i-2, j+1):
-            res[i-2][j+1] = self.valida_posicao(tabuleiro, (i-2, j+1))
+        if coord(i-2, j-1).valida:
+            res[i-2][j-1] = self.valida_posicao(tabuleiro, coord(i-2, j-1))
+        if coord(i-2, j+1).valida:
+            res[i-2][j+1] = self.valida_posicao(tabuleiro, coord(i-2, j+1))
 
         # Casas abaixo
-        if valida_coordenadas(i+2, j-1):
-            res[i+2][j-1] = self.valida_posicao(tabuleiro, (i+2, j-1))
-        if valida_coordenadas(i+2, j+1):
-            res[i+2][j+1] = self.valida_posicao(tabuleiro, (i+2, j+1))
+        if coord(i+2, j-1).valida:
+            res[i+2][j-1] = self.valida_posicao(tabuleiro, coord(i+2, j-1))
+        if coord(i+2, j+1).valida:
+            res[i+2][j+1] = self.valida_posicao(tabuleiro, coord(i+2, j+1))
 
         # Casas a esquerda
-        if valida_coordenadas(i-1, j-2):
-            res[i-1][j-2] = self.valida_posicao(tabuleiro, (i-1, j-2))
-        if valida_coordenadas(i+1, j-2):
-            res[i+1][j-2] = self.valida_posicao(tabuleiro, (i+1, j-2))
+        if coord(i-1, j-2).valida:
+            res[i-1][j-2] = self.valida_posicao(tabuleiro, coord(i-1, j-2))
+        if coord(i+1, j-2).valida:
+            res[i+1][j-2] = self.valida_posicao(tabuleiro, coord(i+1, j-2))
 
         # Casas a direira
-        if valida_coordenadas(i-1, j+2):
-            res[i-1][j+2] = self.valida_posicao(tabuleiro, (i-1, j+2))
-        if valida_coordenadas(i+1, j+2):
-            res[i+1][j+2] = self.valida_posicao(tabuleiro, (i+1, j+2))
+        if coord(i-1, j+2).valida:
+            res[i-1][j+2] = self.valida_posicao(tabuleiro, coord(i-1, j+2))
+        if coord(i+1, j+2).valida:
+            res[i+1][j+2] = self.valida_posicao(tabuleiro, coord(i+1, j+2))
 
         return res

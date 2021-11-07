@@ -2,25 +2,31 @@ from pygame import Color, Surface
 from pygame.font import Font
 
 from random import randint
+from typing import NamedTuple
 
 from abc_config import Config
-from tipos import coord, grad
+from tipos import pb, coord, grad
 
 
 def randcor() -> Color:
     return Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
+class Nome(NamedTuple):
+    titulo: str
+    jogador: pb[str]
+
+
 class ConfigRandom(Config):
     def __init__(self):
         self.nomes = (
-            ('Xadrez', 'Branco', 'Preto'),
-            ('Jogo de Tabuleiro', 'Claro', 'Escuro'),
-            ('Chess', 'White', 'Black'),
-            ('Chess Game', 'Player 1', 'Player 2'),
+            Nome('Xadrez', pb('Preto', 'Branco')),
+            Nome('Jogo de Tabuleiro', pb('Escuro', 'Claro'), ),
+            Nome('Chess', pb('Black', 'White')),
+            Nome('Chess Game', pb('Player 2', 'Player 1')),
         )
 
-        self.vazio = randcor(), randcor()
+        self.vazio = pb(randcor(), randcor())
         self.click = randcor()
         self.movimento = randcor()
         self.background = Color(0, 0, 0)
@@ -34,7 +40,7 @@ class ConfigRandom(Config):
 
         cor = Color(0, 0, 0)
         if tipo == 'vazio':
-            cor = self.vazio[(i+j) % 2]
+            cor = self.vazio[(i+j) % 2 == 0]
         elif tipo == 'click':
             cor = self.click
         elif tipo == 'movimento':
@@ -44,10 +50,10 @@ class ConfigRandom(Config):
 
         canvas.fill(cor)
 
-    def pecas_cor(self) -> tuple[grad, grad]:
-        return (
-            (Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            (Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+    def pecas_cor(self) -> pb[grad]:
+        return pb(
+            grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
         )
 
     def menu_fundo(self, canvas: Surface) -> None:
@@ -62,10 +68,9 @@ class ConfigRandom(Config):
     def titulo(self, vez: bool) -> str:
         if self.vez != vez:
             self.vez = vez
-            x, p1, p2 = self.nomes[randint(0, len(self.nomes) - 1)]
-            p = p1 if vez else p2
-            self.titulo_anterior = f'{x} : {p}'
-            return f'{x} : {p}'
+            x, p = self.nomes[randint(0, len(self.nomes) - 1)]
+            self.titulo_anterior = f'{x} : {p[vez]}'
+            return f'{x} : {p[vez]}'
         else:
             return self.titulo_anterior
 

@@ -5,7 +5,7 @@ import importlib
 
 from singleton import Singleton
 from abc_config import Config
-from tipos import grad
+from tipos import load_bar, load_gen, pb, grad
 
 
 def get_config(nome: str) -> Config:
@@ -41,39 +41,31 @@ class Recursos(metaclass=Singleton):
     def set_config(self, config: str) -> None:
         self._config = get_config(config)
 
-    def gerar_cor(self, gradiente: grad, c: Color) -> Color:
-        res = Color(0, 0, 0)
-        a, b = gradiente
-        for k in range(len(res)):
-            res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))
-        return res
-
-    def gerar_imagem(self, sprite: Surface, grad_preto: grad, grad_branco: grad) -> tuple[Surface, Surface]:
-        preto = sprite.copy()
-        branco = sprite.copy()
+    def gerar_imagem(self, sprite: Surface, gradientes: pb[grad]) -> pb[Surface]:
+        sprites = pb(sprite.copy(), sprite.copy())
         w, h = sprite.get_size()
 
         for i in range(w):
             for j in range(h):
                 cor = sprite.get_at((i, j))
-                preto.set_at((i, j), self.gerar_cor(grad_preto, cor))
-                branco.set_at((i, j), self.gerar_cor(grad_branco, cor))
+                sprites[False].set_at((i, j), gradientes[False].gerar_cor(cor))
+                sprites[True].set_at((i, j), gradientes[True].gerar_cor(cor))
 
-        return preto, branco
+        return sprites
 
-    def carregar(self):
+    def carregar(self) -> load_gen:
         """Carrega os assets das peças na memória"""
         nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
         cores = self.config.pecas_cor()
-        yield [(len(nome_pecas), 0)]
+        yield [load_bar(len(nome_pecas), 0)]
         for k, i in enumerate(nome_pecas):
             try:
                 img = image.load(caminho_asset(i, self.png_min))
             except:
                 img = image.load(caminho_asset(i))
 
-            self.assets[i] = self.gerar_imagem(img, *cores)
-            yield [(len(nome_pecas), k+1)]
+            self.assets[i] = self.gerar_imagem(img, cores)
+            yield [load_bar(len(nome_pecas), k+1)]
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""

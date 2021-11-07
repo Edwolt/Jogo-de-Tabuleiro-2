@@ -3,7 +3,7 @@ from pygame.font import Font
 
 from abc import ABC, abstractmethod
 
-from tipos import grad, coord
+from tipos import pb, grad, coord
 
 
 class Config(ABC):
@@ -22,7 +22,7 @@ class Config(ABC):
         """
 
     @abstractmethod
-    def pecas_cor(self) -> tuple[grad, grad]:
+    def pecas_cor(self) -> pb[grad]:
         """
         :return: (gradiente_branco, gradiente_preto)
         Retorna dois gradientes, um para colorir as peças brancas outro para as peças pretas

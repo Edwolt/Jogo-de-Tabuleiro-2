@@ -1,24 +1,24 @@
-from tipos import matriz_tabuleiro, matriz_movimento, coord, mov
+from tipos import board, movements, pb, coord, action, pathaction
 
 from .abc_peca import Peca
 from .abc_movimento import MovimentoEspecial
-from .util import mover_peca, tabuleiro_false, valida_coordenadas
+from .util import mover_peca, tabuleiro_false
 
 
 class Promocao(MovimentoEspecial):
-    def __init__(self, pos: coord, promocao: coord, cor: bool):
+    def __init__(self, acao: action, cor: bool):
         """
         :param pos: posição atual do peão
         :param promocao: posição para o qual o peão será movido causando a promoção
         """
 
         super().__init__(nome='promocao')
-        self.pos = pos
+        self.pos = acao.pos
+        self.promocao = acao.nova_pos
         self.cor = cor
-        self.promocao = promocao
         pass
 
-    def executar(self, tabuleiro: matriz_tabuleiro, flags: list) -> None:
+    def executar(self, tabuleiro: board, flags: list) -> None:
         i, j = self.pos
         m, n = self.promocao
         tabuleiro[m][n] = tabuleiro[i][j]
@@ -32,14 +32,14 @@ class Avanco(MovimentoEspecial):
         self.cor = cor
         self.pos = pos
 
-    def executar(self, tabuleiro: matriz_tabuleiro, flags: list):
+    def executar(self, tabuleiro: board, flags: list):
         i, j = self.pos
         i += -1 if self.cor else 1
-        mover_peca(tabuleiro, self.pos, (i, j))
+        mover_peca(tabuleiro, action(self.pos, coord(i, j)))
 
 
 class AvancoDuplo(MovimentoEspecial):
-    def __init__(self, cor: bool, pos: coord, meio: coord, nova_pos: coord):
+    def __init__(self, cor: bool, acao: pathaction):
         """
         :param cor: cor da peça (True: 'branco'; False: 'preto')
         :param pos: posição do peão
@@ -49,19 +49,17 @@ class AvancoDuplo(MovimentoEspecial):
 
         super().__init__(nome='avancoduplo', avanco=True)
         self.cor = cor
-        self.pos = pos
-        self.meio = meio
-        self.nova_pos = nova_pos
+        self.acao = acao
 
-    def executar(self, tabuleiro: matriz_tabuleiro, flags: list) -> None:
-        mover_peca(tabuleiro, self.pos, self.nova_pos)
+    def executar(self, tabuleiro: board, flags: list) -> None:
+        mover_peca(tabuleiro, self.acao.to_action())
 
     def update_flags(self, flags: list) -> None:
-        flags.append(('enpassant', self.cor, self.meio, self.nova_pos))
+        flags.append(('enpassant', self.cor, self.acao))
 
 
 class EnPassant(MovimentoEspecial):
-    def __init__(self, pos: coord, capturado_pos: coord, nova_pos: coord):
+    def __init__(self, acao: action, capturado_pos: coord):
         """
         :param pos: posição do peão aliado
         :param capturado_pos: posição do peão inimigo a ser capturado
@@ -69,12 +67,11 @@ class EnPassant(MovimentoEspecial):
         """
 
         super().__init__(nome='enpassant')
-        self.pos = pos
+        self.acao = acao
         self.capturado_pos = capturado_pos
-        self.nova_pos = nova_pos
 
-    def executar(self, tabuleiro: matriz_tabuleiro, flags: list) -> None:
-        mover_peca(tabuleiro, self.pos, self.nova_pos)
+    def executar(self, tabuleiro: board, flags: list) -> None:
+        mover_peca(tabuleiro, self.acao)
         i, j = self.capturado_pos
         tabuleiro[i][j] = None
 
@@ -90,52 +87,60 @@ class Peao(Peca):
     def get_enpassant(self, flags: list, nova_pos):
         for flag in flags:
             if flag[0] == 'enpassant':
-                _, cor, meio, final = flag
+                _, cor, (_, meio, final) = flag
                 if self.cor != cor and nova_pos == meio:
                     return meio, final
         return None
 
-    def criar_captura(self, tabuleiro: matriz_tabuleiro, flags: list, movimento: mov):
-        i, j = movimento.nova_pos
+    def criar_captura(self, tabuleiro: board, flags: list, acao: action):
+        i, j = acao.nova_pos
         promocao = 0 if self.cor else 7
 
         if tabuleiro[i][j] is not None and tabuleiro[i][j].cor != self.cor:
             if i == promocao:
-                return Promocao(movimento.pos, movimento.nova_pos, self.cor)
+                return Promocao(acao, self.cor)
             else:
                 return True
         else:
-            enpassant = self.get_enpassant(flags, movimento.nova_pos)
+            enpassant = self.get_enpassant(flags, acao.nova_pos)
             if enpassant is not None:
                 meio, final = enpassant
-                return EnPassant(movimento.pos, final, meio)
+                return EnPassant(action(acao.pos, final), meio)
             else:
                 return False
 
-    def get_movimentos_simples(self, tabuleiro: matriz_tabuleiro, flags: list, pos: coord) -> matriz_movimento:
+    def get_movimentos_simples(self, tabuleiro: board, flags: list, pos: coord) -> movements:
         res = tabuleiro_false()
-        promocao = 0 if self.cor else 7
+        linha_promocao = 0 if self.cor else 7
 
         i, j = pos
         i += -1 if self.cor else 1
-        if valida_coordenadas(i) and tabuleiro[i][j] is None:
-            if i == promocao:
-                res[i][j] = Promocao(pos, (i, j), self.cor)
+        if coord.valida_componente(i) and tabuleiro[i][j] is None:
+            if i == linha_promocao:
+                res[i][j] = Promocao(action(pos, coord(i, j)), self.cor)
             else:
                 res[i][j] = Avanco(self.cor, pos)
 
             ii = i-1 if self.cor else i+1
-            if not self.movimentou and valida_coordenadas(ii) and tabuleiro[ii][j] is None:
-                if i == promocao:
+            if not self.movimentou and coord.valida_componente(ii) and tabuleiro[ii][j] is None:
+                if i == linha_promocao:
                     res[ii][j] = Promocao(pos, (ii, j), self.cor)
                 else:
                     res[ii][j] = AvancoDuplo(self.cor, pos, (i, j), (ii, j))
 
         i, j = pos
         i += -1 if self.cor else 1
-        if valida_coordenadas(i, j-1):
-            res[i][j-1] = self.criar_captura(tabuleiro, flags, pos, (i, j-1))
-        if valida_coordenadas(i, j+1):
-            res[i][j+1] = self.criar_captura(tabuleiro, flags, pos, (i, j+1))
+        if coord(i, j-1).valida():
+            res[i][j-1] = self.criar_captura(
+                tabuleiro,
+                flags,
+                action(pos, coord(i, j-1))
+            )
+        if coord(i, j+1).valida():
+            res[i][j+1] = self.criar_captura(
+                tabuleiro,
+                flags,
+                action(pos, coord(i, j+1))
+            )
 
         return res

@@ -7,6 +7,8 @@ from janelas import Loading, Xadrez
 from recursos import Recursos
 
 
+# TODO atualizar todos os comentários
+# TODO Resolver bugs
 def main():
     pygame.init()
     recursos = Recursos(size=(800, 800), framerate=60, png_min=True)
