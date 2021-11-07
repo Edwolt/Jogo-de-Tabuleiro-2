@@ -1,12 +1,14 @@
+from __future__ import annotations
+
 from pygame.locals import MOUSEBUTTONDOWN, KEYDOWN, K_ESCAPE
 from pygame import display
 from pygame import Surface, Color
 from pygame.event import Event
 
+import tipos as tp
 from recursos import Recursos
 from pecas import Cavalo, Bispo, Torre, Rainha
 from pecas import MovimentoEspecial
-from tipos import coord
 
 from .abc_janela import Janela
 from .menu import Menu
@@ -75,7 +77,7 @@ class Escolha(Janela):
             i, j = offset_i, offset_j + jj
 
             surf = Surface(self.qsize)
-            recursos.config.quadrado(surf, coord(j, i), 'vazio')
+            recursos.config.quadrado(surf, tp.coord(j, i), 'vazio')
             peca.draw(surf)
             pos = j * self.qsize[0], i * self.qsize[1]
             canvas.blit(surf, pos)

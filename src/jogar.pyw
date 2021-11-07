@@ -1,13 +1,14 @@
+from __future__ import annotations
+
 import pygame
 from pygame import display
 from pygame.time import Clock
 from pygame.locals import QUIT
 
-from janelas import Loading, Xadrez
 from recursos import Recursos
+from janelas import Loading, Xadrez
 
 
-# TODO Resolver bugs
 def main():
     pygame.init()
     recursos = Recursos(size=(800, 800), framerate=60, png_min=True)

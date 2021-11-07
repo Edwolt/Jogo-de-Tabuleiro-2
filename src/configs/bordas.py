@@ -1,14 +1,16 @@
+from __future__ import annotations
+
 from pygame import Color, Surface, Rect
 from pygame.font import Font
 from pygame import draw
 
+import tipos as tp
 from abc_config import Config
-from tipos import pb, coord, grad
 
 
 class ConfigBordas(Config):
     def __init__(self):
-        self.vazio = pb(Color(124, 49, 0), Color(214, 165, 132))
+        self.vazio = tp.pb(Color(124, 49, 0), Color(214, 165, 132))
         self.click = Color(153, 0, 0)
         self.movimento = Color(229, 126, 0)
         self.xeque = Color(100, 0, 0)
@@ -16,7 +18,7 @@ class ConfigBordas(Config):
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
         size = canvas.get_size()
         quad = Rect(1, 1, size[0] - 2, size[1] - 2)
 
@@ -47,10 +49,10 @@ class ConfigBordas(Config):
 
         draw.rect(canvas, cor, quad)
 
-    def pecas_cor(self) -> pb[grad]:
-        return pb(
-            grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+    def pecas_cor(self) -> tp.pb[tp.grad]:
+        return tp.pb(
+            tp.grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            tp.grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
         )
 
     def menu_fundo(self, canvas: Surface) -> None:
@@ -63,7 +65,7 @@ class ConfigBordas(Config):
         return Color(0, 255, 0), Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
-        texto_cor = pb('Preto', 'Braco')
+        texto_cor = tp.pb('Preto', 'Braco')
         return 'Xadrez : ' + texto_cor[vez]
 
     def fonte(self, tam) -> Font:

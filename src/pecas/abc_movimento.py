@@ -1,16 +1,18 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
-from tipos import board, action
+import tipos as tp
 
 
 class Movimento:
     """Classe abstrata para os movimentos especiais"""
 
-    def __init__(self, acao: action, rei: bool = False):
+    def __init__(self, acao: tp.action, rei: bool = False):
         self.acao = acao
         self.rei = rei
 
-    def executar(self, tabuleiro: board, flags: list) -> None:
+    def executar(self, tabuleiro: tp.board, flags: list) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro
@@ -34,7 +36,7 @@ class MovimentoEspecial(ABC):
         self.avanco = avanco
 
     @abstractmethod
-    def executar(self, tabuleiro: board, flags: list) -> None:
+    def executar(self, tabuleiro: tp.board, flags: list) -> None:
         """
         Executa o movimento no tabuleiro
         :param flags: lista de flags do tabuleiro

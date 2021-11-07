@@ -1,10 +1,12 @@
-from tipos import board, coord, action
+from __future__ import annotations
+
+import tipos as tp
 
 from .abc_movimento import MovimentoEspecial
 from .util import tabuleiro_copia
 
 
-def testar_xeque(tabuleiro: board, flags: list, pos_rei: coord) -> bool:
+def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
     """
     Testa se o rei está em xeque
     :param pos_rei: posição do rei
@@ -18,7 +20,7 @@ def testar_xeque(tabuleiro: board, flags: list, pos_rei: coord) -> bool:
                 movimentos = peca.get_movimentos_simples(
                     tabuleiro,
                     flags,
-                    coord(pi, pj)
+                    tp.coord(pi, pj)
                 )
                 if isinstance(movimentos[ri][rj], bool) and movimentos[ri][rj]:
                     return True
@@ -28,7 +30,7 @@ def testar_xeque(tabuleiro: board, flags: list, pos_rei: coord) -> bool:
 
 
 # TODO pode ser muito otimizado
-def testar_movimento(tabuleiro: board, flags: list, pos_rei: coord, acao: action) -> bool:
+def testar_movimento(tabuleiro: tp.board, flags: list, pos_rei: tp.coord, acao: tp.action) -> bool:
     tab = tabuleiro_copia(tabuleiro)
     pos, nova_pos = acao
     i, j = pos
@@ -53,7 +55,7 @@ def testar_movimento(tabuleiro: board, flags: list, pos_rei: coord, acao: action
             pos_rei = movimento.nova_rei
 
         flags.clear()
-        movimento.update_flags(flags)
+        movimento.atualiza_flags(flags)
     else:
         return False
 

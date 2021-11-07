@@ -1,15 +1,17 @@
+from __future__ import annotations
+
 from pygame.event import Event
 from pygame import Color, Surface, Rect
 from pygame import display, draw
 
+import tipos as tp
 from recursos import Recursos
-from tipos import load_gen
 
 from .abc_janela import Janela
 
 
 class Loading(Janela):
-    def __init__(self, carregamento: load_gen, janela: Janela):
+    def __init__(self, carregamento: tp.load_gen, janela: Janela):
         self.janela = janela
 
         self.finalizado = False

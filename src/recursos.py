@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 from pygame import image
-from pygame import Color, Surface
+from pygame import Surface
 
 import importlib
 
-from singleton import Singleton
+import tipos as tp
 from abc_config import Config
-from tipos import load_bar, load_gen, pb, grad
+from singleton import Singleton
 
 
 def get_config(nome: str) -> Config:
@@ -41,14 +43,14 @@ class Recursos(metaclass=Singleton):
     def set_config(self, config: str) -> None:
         self._config = get_config(config)
 
-    def gerar_imagem(self, sprite: Surface, gradientes: pb[grad]) -> pb[Surface]:
+    def gerar_imagem(self, sprite: Surface, gradientes: tp.pb[tp.grad]) -> tp.pb[Surface]:
         """
         Colore o sprite com os gradientes e os retorna
         :param sprite: sprite a ser colorido
         :param gradientes: gradientes para a peça preta e branca
         :return: sprites coloridos para a peça preta e para branca
         """
-        sprites = pb(sprite.copy(), sprite.copy())
+        sprites = tp.pb(sprite.copy(), sprite.copy())
         w, h = sprite.get_size()
 
         for i in range(w):
@@ -59,11 +61,11 @@ class Recursos(metaclass=Singleton):
 
         return sprites
 
-    def carregar(self) -> load_gen:
+    def carregar(self) -> tp.load_gen:
         """Carrega os assets das peças na memória"""
         nome_pecas = ['rei', 'rainha', 'bispo', 'cavalo', 'torre', 'peao']
         cores = self.config.pecas_cor()
-        yield [load_bar(len(nome_pecas), 0)]
+        yield [tp.load_bar(len(nome_pecas), 0)]
         for k, i in enumerate(nome_pecas):
             try:
                 img = image.load(caminho_asset(i, self.png_min))
@@ -71,7 +73,7 @@ class Recursos(metaclass=Singleton):
                 img = image.load(caminho_asset(i))
 
             self.assets[i] = self.gerar_imagem(img, cores)
-            yield [load_bar(len(nome_pecas), k+1)]
+            yield [tp.load_bar(len(nome_pecas), k+1)]
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""

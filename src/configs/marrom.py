@@ -1,19 +1,21 @@
+from __future__ import annotations
+
 from pygame import Color, Surface
 from pygame.font import Font
 
+import tipos as tp
 from abc_config import Config
-from tipos import pb, coord, grad
 
 
 class ConfigMarrom(Config):
     def __init__(self):
-        self.vazio = pb(Color(124, 49, 0), Color(214, 165, 132))
+        self.vazio = tp.pb(Color(124, 49, 0), Color(214, 165, 132))
         self.click = Color(153, 0, 0)
         self.movimento = Color(229, 126, 0)
         self.background = Color(214, 165, 132)
         self.foreground = Color(124, 49, 0)
 
-    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
         cor = Color(0, 0, 0)
@@ -28,10 +30,10 @@ class ConfigMarrom(Config):
 
         canvas.fill(cor)
 
-    def pecas_cor(self) -> pb[grad]:
-        return pb(
-            grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+    def pecas_cor(self) -> tp.pb[tp.grad]:
+        return tp.pb(
+            tp.grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            tp.grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
         )
 
     def menu_fundo(self, canvas: Surface) -> None:
@@ -44,7 +46,7 @@ class ConfigMarrom(Config):
         return Color(0, 255, 0), Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
-        texto_cor = pb('Preto', 'Branco')
+        texto_cor = tp.pb('Preto', 'Branco')
         return 'Xadrez : ' + texto_cor[vez]
 
     def fonte(self, tam) -> Font:

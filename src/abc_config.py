@@ -1,14 +1,16 @@
+from __future__ import annotations
+
 from pygame import Color, Surface
 from pygame.font import Font
 
 from abc import ABC, abstractmethod
 
-from tipos import pb, grad, coord
+import tipos as tp
 
 
 class Config(ABC):
     @abstractmethod
-    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
         """
         Colore o quadrado que será usado em baixo da peça
         :param pos: Posição da peça
@@ -22,7 +24,7 @@ class Config(ABC):
         """
 
     @abstractmethod
-    def pecas_cor(self) -> pb[grad]:
+    def pecas_cor(self) -> tp.pb[tp.grad]:
         """
         :return: pb(gradiente_preto, gradiente_branco)
         Retorna dois gradientes, um para colorir as peças brancas outro para as peças pretas

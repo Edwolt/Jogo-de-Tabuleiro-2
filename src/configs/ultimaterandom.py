@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 from typing import NamedTuple
 from pygame import Color, Surface
 from pygame.font import Font
 
 from random import randint
 
+import tipos as tp
 from abc_config import Config
-from tipos import coord, grad, pb
 
 
 def randcor() -> Color:
@@ -14,26 +16,29 @@ def randcor() -> Color:
 
 class Nome(NamedTuple):
     titulo: str
-    jogador: pb[str]
+    jogador: tp.pb[str]
 
 
 class ConfigUltimateRandom(Config):
     def __init__(self):
         self.nomes = (
-            Nome('Xadrez', pb('Preto', 'Branco')),
-            Nome('Jogo de Tabuleiro', pb('Escuro', 'Claro')),
-            Nome('Chess', pb('Black', 'White')),
-            Nome('Chess Game', pb('Player 2', 'Player 1')),
+            Nome('Xadrez', tp.pb('Preto', 'Branco')),
+            Nome('Jogo de Tabuleiro', tp. pb('Escuro', 'Claro')),
+            Nome('Chess', tp. pb('Black', 'White')),
+            Nome('Chess Game', tp.pb('Player 2', 'Player 1')),
         )
 
         self.vez = None
         self.titulo_anterior = '.'
 
-    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
         canvas.fill(randcor())
 
-    def pecas_cor(self) -> pb[grad]:
-        res = pb(grad(randcor(), randcor()), grad(randcor(), randcor()))
+    def pecas_cor(self) -> tp.pb[tp.grad]:
+        res = tp.pb(
+            tp.grad(randcor(), randcor()),
+            tp.grad(randcor(), randcor())
+        )
         res[False].tranparencia_padrao()
         res[True].tranparencia_padrao()
 

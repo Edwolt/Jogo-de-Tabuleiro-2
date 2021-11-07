@@ -1,23 +1,24 @@
+
+from __future__ import annotations
+
 from pygame import Color
 
+from typing import Optional, Generator
+from typing import Generic, TypeVar
+from typing import NewType, NamedTuple
 from dataclasses import dataclass, astuple
-from typing import Generic, TypeVar, Union, overload
-from typing import Optional, Generator, NamedTuple
 
 from pecas import Peca, Movimento
 
 
-T = TypeVar('T')
-
-
-board = list[list[Optional[Peca]]]
+board = NewType('board', list[list[Optional[Peca]]])
 """
 Matriz board que representa as peças no tabuleiro
 Se o espaço estiver vazio o valor será None
 """
 
 
-movements = list[list[Optional[Movimento]]]
+movements = NewType('movements', list[list[Optional[Movimento]]])
 """
 Matriz movements que representa todos os movimentos que são possível para
 aquela peça
@@ -39,6 +40,9 @@ class load_bar(NamedTuple):
 
 load_gen = Generator[list[load_bar], None, None]
 """Generator de load_bar"""
+
+
+T = TypeVar('T')
 
 
 @dataclass

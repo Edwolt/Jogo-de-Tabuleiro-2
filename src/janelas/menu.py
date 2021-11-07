@@ -1,16 +1,18 @@
+from __future__ import annotations
+
 import pygame
 from pygame import display
 from pygame import Surface
 from pygame.event import Event
 from pygame.locals import KEYDOWN, K_UP, K_DOWN, K_RETURN, K_ESCAPE
 
-from glob import glob
-from abc import ABC, abstractmethod
-from typing import Optional, Union
 from typing import Generator, NamedTuple
+from typing import Optional, Union
+from abc import ABC, abstractmethod
+from glob import glob
 
+import tipos as tp
 from recursos import Recursos
-from tipos import load_gen, load_bar
 
 from .abc_janela import Janela
 from .loading import Loading
@@ -68,7 +70,7 @@ class Opcoes(ABC):
         return self.opcoes[key]
 
     @abstractmethod
-    def executar(self, key) -> 'Union[None, Opcoes, load_gen]':
+    def executar(self, key) -> 'Union[None, Opcoes, tp.load_gen]':
         """
         Executa a opção de número key
         :return: Pode ser

@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from pygame import transform
 from pygame import Surface
 
 from abc import ABC, abstractmethod
 
-from recursos import Recursos
-from tipos import board, movements, coord, action
+import tipos as tp
+import recursos as rsc  # Para evitar circular import
 
 from .xeque import testar_movimento
 from .util import tabuleiro_false
@@ -26,7 +28,7 @@ class Peca(ABC):
         :param canvas: Surface onde o jogo sera desenhado
         """
 
-        recursos = Recursos()
+        recursos = rsc.Recursos()
 
         sprite = recursos.get_asset(self.nome, self.cor)
         sprite = transform.scale(sprite, canvas.get_size())
@@ -37,14 +39,14 @@ class Peca(ABC):
         return
 
     @abstractmethod
-    def get_movimentos_simples(self, tabuleiro: board, flags: list, pos: coord) -> movements:
+    def get_movimentos_simples(self, tabuleiro: tp.board, flags: list, pos: tp.coord) -> tp.movements:
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estão sendo calculados
         :return: matriz movements com todos os movimentos possíveis, porém contendo movimentos ilegais que causam xeque
         """
 
-    def get_movimentos(self, tabuleiro: board, flags: list, pos_rei: coord, pos: coord) -> movements:
+    def get_movimentos(self, tabuleiro: tp.board, flags: list, pos_rei: tp.coord, pos: tp.coord) -> tp.movements:
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estão sendo calculados
@@ -57,7 +59,7 @@ class Peca(ABC):
             for j, mov in enumerate(linha):
                 teste = testar_movimento(
                     tabuleiro, flags,
-                    pos_rei, action(pos, coord(i, j)),
+                    pos_rei, tp.action(pos, tp.coord(i, j)),
                 )
                 res[i][j] = mov if teste else False
         return res

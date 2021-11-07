@@ -1,13 +1,15 @@
+from __future__ import annotations
+
 from pygame.locals import MOUSEBUTTONDOWN, KEYDOWN, K_ESCAPE
 from pygame import display
 from pygame import Surface
 from pygame.event import Event
 
+from typing import Optional
 from recursos import Recursos
 from tabuleiro import Tabuleiro
-from typing import Optional
 
-from tipos import movements, coord
+import tipos as tp
 
 from .abc_janela import Janela
 from .menu import Menu
@@ -25,10 +27,10 @@ class Xadrez(Janela):
         self.flags = list()
 
         self.click = None
-        self.movimento: Optional[movements] = None
+        self.movimento: Optional[tp.movements] = None
         self.qsize = 0, 0
 
-    def atualiza_movimentos(self, pos: coord) -> None:
+    def atualiza_movimentos(self, pos: tp.coord) -> None:
         self.movimento = self.tabuleiro.get_movimentos(pos)
 
     ##### Interface #####
@@ -36,7 +38,7 @@ class Xadrez(Janela):
         if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
             click_antigo = self.click
 
-            self.click = coord(
+            self.click = tp.coord(
                 int(event.pos[1] // self.qsize[1]),
                 int(event.pos[0] // self.qsize[0])
             )

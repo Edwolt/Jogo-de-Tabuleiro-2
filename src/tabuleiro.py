@@ -1,17 +1,18 @@
+from __future__ import annotations
+
 from pygame import Surface
 
 from types import SimpleNamespace
 from typing import Optional
 
+import tipos as tp
 from recursos import Recursos
 from pecas import Rei, Rainha, Bispo, Cavalo, Torre, Peao
 from pecas import testar_xeque
 from pecas import MovimentoEspecial
 
-from tipos import board, movements, coord
 
-
-def novo_tabuleiro() -> board:
+def novo_tabuleiro() -> tp.board:
     """
     Um tabuleiro com as peças na posição inicial
     :param pecas: objeto da classe Peca
@@ -20,7 +21,7 @@ def novo_tabuleiro() -> board:
     """
 
     # list 8x8 com None
-    tabuleiro: board = [
+    tabuleiro: tp.board = [
         [None] * 8 for _ in range(8)
     ]
 
@@ -56,9 +57,9 @@ class Tabuleiro:
         self.tabuleiro = novo_tabuleiro()
         self.vez = True
         self.flags = list()
-        self.rei = SimpleNamespace(branco=(7, 4), preto=(0, 4))
+        self.rei = tp.pb(tp.coord(0, 4), tp.coord(7, 4))
 
-    def movimenta_peca(self, pos: coord, nova_pos: coord, movimento: movements) -> bool:
+    def movimenta_peca(self, acao: tp.action, movimento: tp.movements) -> bool:
         """
         Movimenta a peça se o movimento for validao
         retornando se foi possível ou não
@@ -68,18 +69,17 @@ class Tabuleiro:
         :return: Se a peça foi movimentada
         """
 
-        i, j = pos
-        m, n = nova_pos
+        (i, j), (m, n) = acao
 
         if isinstance(movimento, bool) and movimento:
             self.tabuleiro[m][n] = self.tabuleiro[i][j]
             self.tabuleiro[i][j] = None
             self.tabuleiro[m][n].notifica_movimento()
 
-            if self.rei.branco == pos:
-                self.rei.branco = nova_pos
-            elif self.rei.preto == pos:
-                self.rei.preto = nova_pos
+            if self.rei.branco == acao.pos:
+                self.rei.branco = acao.nova_pos
+            elif self.rei.preto == acao.pos:
+                self.rei.preto = acao.nova_pos
 
             self.flags.clear()
             return True
@@ -96,12 +96,12 @@ class Tabuleiro:
                 self.promocao = movimento
 
             self.flags.clear()
-            movimento.update_flags(self.flags)
+            movimento.atualiza_flags(self.flags)
             return True
 
         return False
 
-    def get_movimentos(self, pos: coord) -> Optional[movements]:
+    def get_movimentos(self, pos: tp.coord) -> Optional[tp.movements]:
         """
 
         :param pos: [description]
@@ -118,13 +118,13 @@ class Tabuleiro:
             return peca.get_movimentos(
                 self.tabuleiro,
                 self.flags,
-                self.rei.braco if self.vez else self.rei.preto,
+                self.rei[self.vez],
                 pos
             )
         else:
             return None
 
-    def draw(self, canvas: Surface, click: Optional[coord], movimento: movements) -> None:
+    def draw(self, canvas: Surface, click: Optional[tp.coord], movimento: tp.movements) -> None:
         recursos = Recursos()
 
         size = canvas.get_size()
@@ -135,18 +135,18 @@ class Tabuleiro:
                 # i, j = y, x
 
                 tipo = 'vazio'
-                if click and coord(y, x) == click:
+                if click and tp.coord(y, x) == click:
                     tipo = 'click'
                 elif movimento and movimento[y][x]:
                     if isinstance(movimento[y][x], MovimentoEspecial) and movimento[y][x].nome in ('roque', 'enpassant', 'avancoduplo'):
                         tipo = 'especial'
                     else:
                         tipo = 'movimento'
-                elif ((y, x) == self.rei.branco or (y, x) == self.rei.preto) and testar_xeque(self.tabuleiro, self.flags, coord(y, x)):
+                elif ((y, x) == self.rei.branco or (y, x) == self.rei.preto) and testar_xeque(self.tabuleiro, self.flags, tp.coord(y, x)):
                     tipo = 'xeque'
 
                 surf = Surface(size)
-                recursos.config.quadrado(surf, coord(x, y), tipo)
+                recursos.config.quadrado(surf, tp.coord(x, y), tipo)
 
                 if peca:
                     peca.draw(surf)

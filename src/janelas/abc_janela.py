@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pygame.event import Event
 from pygame import Surface
 

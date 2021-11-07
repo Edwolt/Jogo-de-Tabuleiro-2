@@ -1,19 +1,21 @@
+from __future__ import annotations
+
 from pygame import Color, Surface
 from pygame.font import Font
 
+import tipos as tp
 from abc_config import Config
-from tipos import pb, coord, grad
 
 
 class ConfigAzul(Config):
     def __init__(self):
-        self.vazio = pb(Color(0, 14, 173), Color(94, 255, 91))
+        self.vazio = tp.pb(Color(0, 14, 173), Color(94, 255, 91))
         self.click = Color(255, 0, 0)
         self.movimento = Color(0, 255, 255)
         self.background = Color(0, 0, 0)
         self.foreground = Color(255, 255, 255)
 
-    def quadrado(self, canvas: Surface, pos: coord, tipo: str) -> None:
+    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
         cor = Color(0, 0, 0)
@@ -28,10 +30,10 @@ class ConfigAzul(Config):
 
         canvas.fill(cor)
 
-    def pecas_cor(self) -> pb[grad]:
-        return pb(
-            grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+    def pecas_cor(self) -> tp.pb[tp.grad]:
+        return tp.pb(
+            tp.grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
+            tp.grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
         )
 
     def menu_fundo(self, canvas: Surface) -> None:
@@ -44,7 +46,7 @@ class ConfigAzul(Config):
         return Color(0, 255, 0), Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
-        texto_cor = pb('Preto', 'Braco')
+        texto_cor = tp.pb('Preto', 'Braco')
         return 'Xadrez : ' + texto_cor[vez]
 
     def fonte(self, tam) -> Font:

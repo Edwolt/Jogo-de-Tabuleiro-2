@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 class Singleton(type):
     """Uma metaclass que transoforma uma classe em um Singleton"""
 
