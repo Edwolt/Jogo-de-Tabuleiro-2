@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import Color, Surface
-from pygame.font import Font
-
+import pygame as pg
 from typing import NamedTuple
 from random import randint
 
@@ -10,8 +8,8 @@ import tipos as tp
 from abc_config import Config
 
 
-def randcor() -> Color:
-    return Color(randint(0, 255), randint(0, 255), randint(0, 255))
+def randcor() -> pg.Color:
+    return pg.Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
 class Nome(NamedTuple):
@@ -31,16 +29,16 @@ class ConfigRandom(Config):
         self.vazio = tp.pb(randcor(), randcor())
         self.click = randcor()
         self.movimento = randcor()
-        self.background = Color(0, 0, 0)
-        self.foreground = Color(255, 255, 255)
+        self.background = pg.Color(0, 0, 0)
+        self.foreground = pg.Color(255, 255, 255)
 
         self.vez = True
         self.titulo_anterior = '.'
 
-    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
+    def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
-        cor = Color(0, 0, 0)
+        cor = pg.Color(0, 0, 0)
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2 == 0]
         elif tipo == 'click':
@@ -54,18 +52,18 @@ class ConfigRandom(Config):
 
     def pecas_cor(self) -> tp.pb[tp.grad]:
         return tp.pb(
-            tp.grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            tp.grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+            tp.grad(pg.Color(0, 0, 0, 0), pg.Color(100, 100, 100, 255)),
+            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255))
         )
 
-    def menu_fundo(self, canvas: Surface) -> None:
+    def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> pg.Color:
         return self.foreground
 
-    def loading_cores(self) -> tuple[Color, Color]:
-        return Color(0, 255, 0), Color(255, 0, 0)
+    def loading_cores(self) -> tuple[pg.Color, pg.Color]:
+        return pg.Color(0, 255, 0), pg.Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
         if self.vez != vez:
@@ -76,8 +74,8 @@ class ConfigRandom(Config):
         else:
             return self.titulo_anterior
 
-    def fonte(self, tam) -> Font:
-        return Font(
+    def fonte(self, tam) -> pg.font.Font:
+        return pg.font.Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )

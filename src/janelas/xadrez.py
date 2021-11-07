@@ -1,15 +1,11 @@
 from __future__ import annotations
 
-from pygame.locals import MOUSEBUTTONDOWN, KEYDOWN, K_ESCAPE
-from pygame import display
-from pygame import Surface
-from pygame.event import Event
-
+import pygame as pg
 from typing import Optional
-from recursos import Recursos
-from tabuleiro import Tabuleiro
 
 import tipos as tp
+from recursos import Recursos
+from tabuleiro import Tabuleiro
 
 from .abc_janela import Janela
 from .menu import Menu
@@ -34,8 +30,8 @@ class Xadrez(Janela):
         self.movimento = self.tabuleiro.get_movimentos(pos)
 
     ##### Interface #####
-    def event(self, event: Event) -> None:
-        if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
+    def event(self, event: pg.event.Event) -> None:
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
             click_antigo = self.click
 
             self.click = tp.coord(
@@ -56,10 +52,10 @@ class Xadrez(Janela):
 
             self.atualizacao = True
 
-        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             self.escape = True
 
-    def draw(self, canvas: Surface) -> None:
+    def draw(self, canvas: pg.Surface) -> None:
         if not self.atualizacao:
             return
 
@@ -69,8 +65,8 @@ class Xadrez(Janela):
         self.tabuleiro.draw(canvas, self.click, self.movimento)
 
         self.atualizacao = False
-        display.set_caption(Recursos().config.titulo(self.vez))
-        display.flip()
+        pg.display.set_caption(Recursos().config.titulo(self.vez))
+        pg.display.flip()
 
     def new(self):
         if self.escape:

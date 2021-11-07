@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame.event import Event
-from pygame import Color, Surface, Rect
-from pygame import display, draw
+import pygame as pg
 
 import tipos as tp
 from recursos import Recursos
@@ -22,12 +20,12 @@ class Loading(Janela):
         self.fonte_loading = recursos.config.fonte(50)
 
     ##### Interface #####
-    def event(self, event: Event) -> None:
+    def event(self, event: pg.Event) -> None:
         pass
 
-    def draw(self, canvas: Surface) -> None:
+    def draw(self, canvas: pg.Surface) -> None:
         recursos = Recursos()
-        canvas.fill(Color(0, 0, 0))
+        canvas.fill(pg.Color(0, 0, 0))
 
         try:
             barras = next(self.carregamento)
@@ -42,7 +40,7 @@ class Loading(Janela):
 
         texto = 'Loading'
         tam_x, tam_y = self.fonte_loading.size(texto)
-        texto = self.fonte_loading.render(texto, False, Color(255, 255, 255))
+        texto = self.fonte_loading.render(texto, False, pg.Color(255, 255, 255))
         meio = w/2 - tam_x/2
         canvas.blit(texto, (meio, y))
 
@@ -50,26 +48,26 @@ class Loading(Janela):
 
         for tam, val in barras:
             cor_carregado, cor_falta = recursos.config.loading_cores()
-            draw.rect(
+            pg.draw.rect(
                 canvas,
                 cor_falta,
-                Rect(x, y, barra_w, barra_h)
+                pg.Rect(x, y, barra_w, barra_h)
             )
-            draw.rect(
+            pg.draw.rect(
                 canvas,
                 cor_carregado,
-                Rect(x, y, barra_w * (val/tam), barra_h)
+                pg.Rect(x, y, barra_w * (val/tam), barra_h)
             )
 
             texto = f'{val} / {tam}'
             tam_x, tam_y = self.fonte.size(texto)
-            texto = self.fonte.render(texto, False, Color(255, 255, 255))
+            texto = self.fonte.render(texto, False, pg.Color(255, 255, 255))
             meio = w/2 - tam_x/2
             canvas.blit(texto, (meio, y))
 
             y += barra_h + espaco
 
-        display.flip()
+        pg.display.flip()
 
     def new(self):
         return self.janela if self.finalizado else self

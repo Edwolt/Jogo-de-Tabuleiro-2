@@ -1,12 +1,11 @@
 
 from __future__ import annotations
 
-from pygame import Color
-
+import pygame as pg
+from dataclasses import dataclass, astuple
 from typing import Optional, Generator
 from typing import Generic, TypeVar
 from typing import NewType, NamedTuple
-from dataclasses import dataclass, astuple
 
 from pecas import Peca, Movimento
 
@@ -70,12 +69,12 @@ class pb(Generic[T]):
 class grad(NamedTuple):
     """Representa um gradiente de cor com um valor inicial e um final"""
 
-    start: Color
-    end: Color
+    start: pg.Color
+    end: pg.Color
 
-    def gerar_cor(self, c: Color) -> Color:
+    def gerar_cor(self, c: pg.Color) -> pg.Color:
         """:return: A cor equivalente a c dentro do gradiente"""
-        res = Color(0, 0, 0)
+        res = pg.Color(0, 0, 0)
         a, b = self
         for k in range(len(res)):
             res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))

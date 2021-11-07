@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-from pygame.locals import MOUSEBUTTONDOWN, KEYDOWN, K_ESCAPE
-from pygame import display
-from pygame import Surface, Color
-from pygame.event import Event
+import pygame as pg
 
 import tipos as tp
 from recursos import Recursos
@@ -44,8 +41,8 @@ class Escolha(Janela):
             i.notifica_movimento()
 
     ##### Interface #####
-    def event(self, event: Event) -> None:
-        if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
+    def event(self, event: pg.Event) -> None:
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
             i = int(event.pos[1] // self.qsize[1])
             j = int(event.pos[0] // self.qsize[0])
             print(i, j)
@@ -54,10 +51,10 @@ class Escolha(Janela):
                 self.escolhido = self.pecas[j - 2]
                 print(self.escolhido)
 
-        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             self.escape = True
 
-    def draw(self, canvas: Surface) -> None:
+    def draw(self, canvas: pg.Surface) -> None:
         if not self.atualizacao:
             return
 
@@ -66,8 +63,8 @@ class Escolha(Janela):
         size = canvas.get_size()
         self.qsize = size[0] // 8, size[1] // 8
 
-        canvas.fill(Color(0, 0, 0))
-        tabuleiro = Surface((6 * self.qsize[0], 6 * self.qsize[1]))
+        canvas.fill(pg.Color(0, 0, 0))
+        tabuleiro = pg.Surface((6 * self.qsize[0], 6 * self.qsize[1]))
         self.xadrez.draw(tabuleiro)
         canvas.blit(tabuleiro, (self.qsize[0], 2 * self.qsize[1]))
 
@@ -76,7 +73,7 @@ class Escolha(Janela):
             # i, j = y, x
             i, j = offset_i, offset_j + jj
 
-            surf = Surface(self.qsize)
+            surf = pg.Surface(self.qsize)
             recursos.config.quadrado(surf, tp.coord(j, i), 'vazio')
             peca.draw(surf)
             pos = j * self.qsize[0], i * self.qsize[1]
@@ -84,8 +81,8 @@ class Escolha(Janela):
 
         self.atualizacao = False
         self.xadrez.atualizacao = True
-        display.set_caption(recursos.config.titulo(self.cor))
-        display.flip()
+        pg.display.set_caption(recursos.config.titulo(self.cor))
+        pg.display.flip()
 
     def new(self):
         if self.escolhido is not None:

@@ -1,17 +1,15 @@
 from __future__ import annotations
 
+import pygame as pg
 from typing import NamedTuple
-from pygame import Color, Surface
-from pygame.font import Font
-
 from random import randint
 
 import tipos as tp
 from abc_config import Config
 
 
-def randcor() -> Color:
-    return Color(randint(0, 255), randint(0, 255), randint(0, 255))
+def randcor() -> pg.Color:
+    return pg.Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
 class Nome(NamedTuple):
@@ -31,7 +29,7 @@ class ConfigUltimateRandom(Config):
         self.vez = None
         self.titulo_anterior = '.'
 
-    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
+    def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         canvas.fill(randcor())
 
     def pecas_cor(self) -> tp.pb[tp.grad]:
@@ -44,13 +42,13 @@ class ConfigUltimateRandom(Config):
 
         return res
 
-    def menu_fundo(self, canvas: Surface) -> None:
+    def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(randcor())
 
-    def menu_cor(self, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> pg.Color:
         return randcor()
 
-    def loading_cores(self) -> tuple[Color, Color]:
+    def loading_cores(self) -> tuple[pg.Color, pg.Color]:
         return randcor(), randcor()
 
     def titulo(self, vez: bool) -> str:
@@ -62,8 +60,8 @@ class ConfigUltimateRandom(Config):
         else:
             return self.titulo_anterior
 
-    def fonte(self, tam) -> Font:
-        return Font(
+    def fonte(self, tam) -> pg.font.Font:
+        return pg.font.Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )

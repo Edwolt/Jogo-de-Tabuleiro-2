@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import Color, Surface
-from pygame.font import Font
-
+import pygame as pg
 from abc import ABC, abstractmethod
 
 import tipos as tp
@@ -10,7 +8,7 @@ import tipos as tp
 
 class Config(ABC):
     @abstractmethod
-    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
+    def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         """
         Colore o quadrado que será usado em baixo da peça
         :param pos: Posição da peça
@@ -31,18 +29,18 @@ class Config(ABC):
         """
 
     @abstractmethod
-    def menu_fundo(self, canvas: Surface) -> None:
+    def menu_fundo(self, canvas: pg.Surface) -> None:
         """Colore o fundo do menu (canvas)"""
 
     @abstractmethod
-    def menu_cor(self, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> pg.Color:
         """
         :param selecionado: Se a opção está selecionada
         :return: Cor que será usada na fonte para desenhar essa opção
         """
 
     @abstractmethod
-    def loading_cores(self) -> tuple[Color, Color]:
+    def loading_cores(self) -> tuple[pg.Color, pg.Color]:
         """
         :returns: Retorna uma tupla de cores para desenhar as barras de loading
         A primeira cor é usada para mostrar o que já foi carregado
@@ -57,7 +55,7 @@ class Config(ABC):
         """
 
     @abstractmethod
-    def fonte(self, tam: int) -> Font:
+    def fonte(self, tam: int) -> pg.font.Font:
         """
         :param tam: Tamanho da fonte
         :return: Objeto Font

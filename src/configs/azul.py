@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from pygame import Color, Surface
-from pygame.font import Font
+import pygame as pg
 
 import tipos as tp
 from abc_config import Config
@@ -9,16 +8,16 @@ from abc_config import Config
 
 class ConfigAzul(Config):
     def __init__(self):
-        self.vazio = tp.pb(Color(0, 14, 173), Color(94, 255, 91))
-        self.click = Color(255, 0, 0)
-        self.movimento = Color(0, 255, 255)
-        self.background = Color(0, 0, 0)
-        self.foreground = Color(255, 255, 255)
+        self.vazio = tp.pb(pg.Color(0, 14, 173), pg.Color(94, 255, 91))
+        self.click = pg.Color(255, 0, 0)
+        self.movimento = pg.Color(0, 255, 255)
+        self.background = pg.Color(0, 0, 0)
+        self.foreground = pg.Color(255, 255, 255)
 
-    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
+    def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
-        cor = Color(0, 0, 0)
+        cor = pg.Color(0, 0, 0)
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2 == 0]
         elif tipo == 'click':
@@ -32,25 +31,25 @@ class ConfigAzul(Config):
 
     def pecas_cor(self) -> tp.pb[tp.grad]:
         return tp.pb(
-            tp.grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            tp.grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+            tp.grad(pg.Color(0, 0, 0, 0), pg.Color(100, 100, 100, 255)),
+            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255))
         )
 
-    def menu_fundo(self, canvas: Surface) -> None:
+    def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> pg.Color:
         return self.foreground
 
-    def loading_cores(self) -> tuple[Color, Color]:
-        return Color(0, 255, 0), Color(255, 0, 0)
+    def loading_cores(self) -> tuple[pg.Color, pg.Color]:
+        return pg.Color(0, 255, 0), pg.Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
         texto_cor = tp.pb('Preto', 'Braco')
         return 'Xadrez : ' + texto_cor[vez]
 
-    def fonte(self, tam) -> Font:
-        return Font(
+    def fonte(self, tam) -> pg.font.Font:
+        return pg.font.Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import Surface
-
-from types import SimpleNamespace
+import pygame as pg
 from typing import Optional
 
 import tipos as tp
@@ -124,7 +122,7 @@ class Tabuleiro:
         else:
             return None
 
-    def draw(self, canvas: Surface, click: Optional[tp.coord], movimento: tp.movements) -> None:
+    def draw(self, canvas: pg.Surface, click: Optional[tp.coord], movimento: tp.movements) -> None:
         recursos = Recursos()
 
         size = canvas.get_size()
@@ -145,7 +143,7 @@ class Tabuleiro:
                 elif ((y, x) == self.rei.branco or (y, x) == self.rei.preto) and testar_xeque(self.tabuleiro, self.flags, tp.coord(y, x)):
                     tipo = 'xeque'
 
-                surf = Surface(size)
+                surf = pg.Surface(size)
                 recursos.config.quadrado(surf, tp.coord(x, y), tipo)
 
                 if peca:

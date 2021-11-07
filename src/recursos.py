@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import image
-from pygame import Surface
-
+import pygame as pg
 import importlib
 
 import tipos as tp
@@ -43,7 +41,7 @@ class Recursos(metaclass=Singleton):
     def set_config(self, config: str) -> None:
         self._config = get_config(config)
 
-    def gerar_imagem(self, sprite: Surface, gradientes: tp.pb[tp.grad]) -> tp.pb[Surface]:
+    def gerar_imagem(self, sprite: pg.Surface, gradientes: tp.pb[tp.grad]) -> tp.pb[pg.Surface]:
         """
         Colore o sprite com os gradientes e os retorna
         :param sprite: sprite a ser colorido
@@ -68,13 +66,13 @@ class Recursos(metaclass=Singleton):
         yield [tp.load_bar(len(nome_pecas), 0)]
         for k, i in enumerate(nome_pecas):
             try:
-                img = image.load(caminho_asset(i, self.png_min))
+                img = pg.image.load(caminho_asset(i, self.png_min))
             except:
-                img = image.load(caminho_asset(i))
+                img = pg.image.load(caminho_asset(i))
 
             self.assets[i] = self.gerar_imagem(img, cores)
             yield [tp.load_bar(len(nome_pecas), k+1)]
 
-    def get_asset(self, nome: str, cor: bool) -> Surface:
+    def get_asset(self, nome: str, cor: bool) -> pg.Surface:
         """Retorna o asset da peca com o nome e a cor dada"""
         return self.assets[nome][cor]

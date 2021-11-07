@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-import pygame
-from pygame import display
-from pygame import Surface
-from pygame.event import Event
-from pygame.locals import KEYDOWN, K_UP, K_DOWN, K_RETURN, K_ESCAPE
-
+import pygame as pg
 from typing import Generator, NamedTuple
 from typing import Optional, Union
 from abc import ABC, abstractmethod
@@ -48,13 +43,13 @@ class Opcoes(ABC):
         self.opcoes: tuple[str, ...] = ()
 
     ##### Interface #####
-    def event(self, event: Event) -> None:
-        if event.key == K_UP:
+    def event(self, event: pg.event.Event) -> None:
+        if event.key == pg.K_UP:
             if self.sel > 0:
                 self.sel -= 1
             else:
                 self.sel = self.tamanho - 1
-        elif event.key == K_DOWN:
+        elif event.key == pg.K_DOWN:
             if self.sel < self.tamanho - 1:
                 self.sel += 1
             else:
@@ -144,7 +139,7 @@ class OpcoesPrincipal(Opcoes):
         elif opcao == 'novo jogo':
             self.menu.xadrez.__init__()
         elif opcao == 'sair':
-            pygame.quit()
+            pg.quit()
             quit(0)
         else:
             print(f'{opcao} não implementado')
@@ -166,9 +161,9 @@ class Menu(Janela):
             self.opcoes = opcoes
 
     ##### Interface #####
-    def event(self, event: Event) -> None:
-        if event.type == KEYDOWN:
-            if event.key == K_RETURN:
+    def event(self, event: pg.event.Event) -> None:
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_RETURN:
                 ret = self.opcoes.executar(self.opcoes.sel)
 
                 if isinstance(ret, Opcoes):
@@ -177,7 +172,7 @@ class Menu(Janela):
                     self.finalizado = True
                 else:  # isinstance(ret, load_gen)
                     self.loading = ret
-            elif event.key == K_ESCAPE:
+            elif event.key == pg.K_ESCAPE:
                 ret = self.opcoes.voltar()
                 if ret == None:
                     self.finalizado
@@ -187,7 +182,7 @@ class Menu(Janela):
                 self.opcoes.event(event)
             self.atualizacao = True
 
-    def draw(self, canvas: Surface) -> None:
+    def draw(self, canvas: pg.Surface) -> None:
         if not self.atualizacao:
             return
         if self.opcoes is None:
@@ -209,8 +204,8 @@ class Menu(Janela):
             y += altura
 
         self.atualizacao = False
-        display.set_caption('Menu')
-        display.flip()
+        pg.display.set_caption('Menu')
+        pg.display.flip()
 
     def new(self):
         if self.finalizado:

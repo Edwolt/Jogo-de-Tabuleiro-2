@@ -1,21 +1,19 @@
 from __future__ import annotations
 
-from pygame.event import Event
-from pygame import Surface
-
+import pygame as pg
 from abc import ABC, abstractmethod
 
 
 class Janela(ABC):
     @abstractmethod
-    def event(self, event: Event) -> None:
+    def event(self, event: pg.Event) -> None:
         """
         Recebe um evento e executa uma operação com ele
         :param event: evento
         """
 
     @abstractmethod
-    def draw(self, canvas: Surface) -> None:
+    def draw(self, canvas: pg.Surface) -> None:
         """:param canvas: Surface onde o jogo sera desenhado"""
 
     @abstractmethod

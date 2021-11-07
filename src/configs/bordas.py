@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import Color, Surface, Rect
-from pygame.font import Font
-from pygame import draw
+import pygame as pg
 
 import tipos as tp
 from abc_config import Config
@@ -10,23 +8,23 @@ from abc_config import Config
 
 class ConfigBordas(Config):
     def __init__(self):
-        self.vazio = tp.pb(Color(124, 49, 0), Color(214, 165, 132))
-        self.click = Color(153, 0, 0)
-        self.movimento = Color(229, 126, 0)
-        self.xeque = Color(100, 0, 0)
-        self.borda = Color(100, 100, 100)
-        self.background = Color(0, 0, 0)
-        self.foreground = Color(255, 255, 255)
+        self.vazio = tp.pb(pg.Color(124, 49, 0), pg.Color(214, 165, 132))
+        self.click = pg.Color(153, 0, 0)
+        self.movimento = pg.Color(229, 126, 0)
+        self.xeque = pg.Color(100, 0, 0)
+        self.borda = pg.Color(100, 100, 100)
+        self.background = pg.Color(0, 0, 0)
+        self.foreground = pg.Color(255, 255, 255)
 
-    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
+    def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         size = canvas.get_size()
-        quad = Rect(1, 1, size[0] - 2, size[1] - 2)
+        quad = pg.Rect(1, 1, size[0] - 2, size[1] - 2)
 
         canvas.fill(self.borda)
 
         i, j = pos
 
-        cor = Color(0, 0, 0)
+        cor = pg.Color(0, 0, 0)
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2 == 0]
         elif tipo == 'click':
@@ -38,8 +36,8 @@ class ConfigBordas(Config):
         elif tipo == 'captura':
             cor = self.movimento
         elif tipo == 'xeque':
-            draw.rect(canvas, self.vazio[(i+j) % 2 == 0], quad)
-            draw.circle(
+            pg.draw.rect(canvas, self.vazio[(i+j) % 2 == 0], quad)
+            pg.draw.circle(
                 canvas,
                 self.xeque,
                 (canvas.get_size()[0] / 2, canvas.get_size()[0]/2),
@@ -47,29 +45,29 @@ class ConfigBordas(Config):
             )
             return
 
-        draw.rect(canvas, cor, quad)
+        pg.draw.rect(canvas, cor, quad)
 
     def pecas_cor(self) -> tp.pb[tp.grad]:
         return tp.pb(
-            tp.grad(Color(0, 0, 0, 0), Color(100, 100, 100, 255)),
-            tp.grad(Color(100, 100, 100, 0), Color(255, 255, 255, 255))
+            tp.grad(pg.Color(0, 0, 0, 0), pg.Color(100, 100, 100, 255)),
+            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255))
         )
 
-    def menu_fundo(self, canvas: Surface) -> None:
+    def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> pg.Color:
         return self.foreground
 
-    def loading_cores(self) -> tuple[Color, Color]:
-        return Color(0, 255, 0), Color(255, 0, 0)
+    def loading_cores(self) -> tuple[pg.Color, pg.Color]:
+        return pg.Color(0, 255, 0), pg.Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
         texto_cor = tp.pb('Preto', 'Braco')
         return 'Xadrez : ' + texto_cor[vez]
 
-    def fonte(self, tam) -> Font:
-        return Font(
+    def fonte(self, tam) -> pg.font.Font:
+        return pg.font.Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )

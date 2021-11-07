@@ -1,28 +1,25 @@
 from __future__ import annotations
 
-import pygame
-from pygame import display
-from pygame.time import Clock
-from pygame.locals import QUIT
+import pygame as pg
 
 from recursos import Recursos
 from janelas import Loading, Xadrez
 
 
 def main():
-    pygame.init()
+    pg.init()
     recursos = Recursos(size=(800, 800), framerate=60, png_min=True)
     recursos.set_config('bordas')
 
-    screen = display.set_mode(recursos.size)
-    clock = Clock()
+    screen = pg.display.set_mode(recursos.size)
+    clock = pg.time.Clock()
 
     janela = Loading(recursos.carregar(), Xadrez())
 
     while True:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
                 quit(0)
             else:
                 janela.event(event)

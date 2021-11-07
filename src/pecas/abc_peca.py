@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import transform
-from pygame import Surface
-
+import pygame as pg
 from abc import ABC, abstractmethod
 
 import tipos as tp
@@ -22,7 +20,7 @@ class Peca(ABC):
         self.nome = nome
         self.cor = cor
 
-    def draw(self, canvas: Surface) -> None:
+    def draw(self, canvas: pg.Surface) -> None:
         """
         Desenha a peça no canvas
         :param canvas: Surface onde o jogo sera desenhado
@@ -31,7 +29,7 @@ class Peca(ABC):
         recursos = rsc.Recursos()
 
         sprite = recursos.get_asset(self.nome, self.cor)
-        sprite = transform.scale(sprite, canvas.get_size())
+        sprite = pg.transform.scale(sprite, canvas.get_size())
         canvas.blit(sprite, (0, 0))
 
     def notifica_movimento(self) -> None:

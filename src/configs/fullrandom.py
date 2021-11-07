@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pygame import Color, Surface
-from pygame.font import Font
-
+import pygame as pg
 from typing import NamedTuple
 from random import randint
 
@@ -10,8 +8,8 @@ import tipos as tp
 from abc_config import Config
 
 
-def randcor() -> Color:
-    return Color(randint(0, 255), randint(0, 255), randint(0, 255))
+def randcor() -> pg.Color:
+    return pg.Color(randint(0, 255), randint(0, 255), randint(0, 255))
 
 
 class Nome(NamedTuple):
@@ -38,10 +36,10 @@ class ConfigFullRandom(Config):
         self.vez = True
         self.titulo_anterior = '.'
 
-    def quadrado(self, canvas: Surface, pos: tp.coord, tipo: str) -> None:
+    def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
-        cor = Color(0, 0, 0)
+        cor = pg.Color(0, 0, 0)
         if tipo == 'vazio':
             cor = self.vazio[(i+j) % 2 == 0]
         elif tipo == 'click':
@@ -63,10 +61,10 @@ class ConfigFullRandom(Config):
 
         return res
 
-    def menu_fundo(self, canvas: Surface) -> None:
+    def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> Color:
+    def menu_cor(self, selecionado: bool) -> pg.Color:
         return self.foreground
 
     def titulo(self, vez: bool) -> str:
@@ -78,11 +76,11 @@ class ConfigFullRandom(Config):
         else:
             return self.titulo_anterior
 
-    def loading_cores(self) -> tuple[Color, Color]:
+    def loading_cores(self) -> tuple[pg.Color, pg.Color]:
         return self.loading
 
-    def fonte(self, tam) -> Font:
-        return Font(
+    def fonte(self, tam) -> pg.font.Font:
+        return pg.font.Font(
             'assets/inconsolata/static/Inconsolata-Medium.ttf',
             tam
         )
