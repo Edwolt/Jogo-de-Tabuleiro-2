@@ -24,7 +24,7 @@ class Config(ABC):
     @abstractmethod
     def pecas_cor(self) -> pb[grad]:
         """
-        :return: (gradiente_branco, gradiente_preto)
+        :return: pb(gradiente_preto, gradiente_branco)
         Retorna dois gradientes, um para colorir as peças brancas outro para as peças pretas
         """
 
@@ -35,7 +35,6 @@ class Config(ABC):
     @abstractmethod
     def menu_cor(self, selecionado: bool) -> Color:
         """
-        :param texto: Texto da opção
         :param selecionado: Se a opção está selecionada
         :return: Cor que será usada na fonte para desenhar essa opção
         """

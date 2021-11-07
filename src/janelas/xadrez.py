@@ -5,11 +5,13 @@ from pygame.event import Event
 
 from recursos import Recursos
 from tabuleiro import Tabuleiro
+from typing import Optional
+
+from tipos import movements, coord
 
 from .abc_janela import Janela
 from .menu import Menu
 from .escolha import Escolha
-from tipos import coord
 
 
 class Xadrez(Janela):
@@ -23,7 +25,7 @@ class Xadrez(Janela):
         self.flags = list()
 
         self.click = None
-        self.movimento = None
+        self.movimento: Optional[movements] = None
         self.qsize = 0, 0
 
     def atualiza_movimentos(self, pos: coord) -> None:
@@ -31,11 +33,6 @@ class Xadrez(Janela):
 
     ##### Interface #####
     def event(self, event: Event) -> None:
-        """
-        Recebe um evento e executa uma operação com ele
-        :param event: evento
-        """
-
         if event.type == MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
             click_antigo = self.click
 
@@ -61,11 +58,6 @@ class Xadrez(Janela):
             self.escape = True
 
     def draw(self, canvas: Surface) -> None:
-        """
-        :param canvas: Surface onde o jogo sera desenhado
-        :return: Retorna se a tela precisa ser atualizada
-        """
-
         if not self.atualizacao:
             return
 

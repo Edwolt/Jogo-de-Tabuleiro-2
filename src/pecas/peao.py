@@ -9,7 +9,7 @@ class Promocao(MovimentoEspecial):
     def __init__(self, acao: action, cor: bool):
         """
         :param pos: posição atual do peão
-        :param promocao: posição para o qual o peão será movido causando a promoção
+        :param cor: cor da peça (False: 'preto'; True: 'branco')
         """
 
         super().__init__(nome='promocao')
@@ -39,31 +39,33 @@ class Avanco(MovimentoEspecial):
 
 
 class AvancoDuplo(MovimentoEspecial):
-    def __init__(self, cor: bool, acao: pathaction):
+    def __init__(self, cor: bool, caminho_acao: pathaction):
         """
-        :param cor: cor da peça (True: 'branco'; False: 'preto')
-        :param pos: posição do peão
-        :param meio: posição pela qual o peão passará
-        :param nova_pos: posição final do peão
+        :param cor: cor da peça (False: 'preto', True: 'branco'; )
+        :param pathaction: movimento que o peão fará
+        * pos: posição do peão
+        * meio: posição pela qual o peão passará para que seja possível calcular onde ele poderá ser capturado por enpassant
+        * nova_pos: posição final do peão
         """
 
         super().__init__(nome='avancoduplo', avanco=True)
         self.cor = cor
-        self.acao = acao
+        self.caminho_acao = caminho_acao
 
     def executar(self, tabuleiro: board, flags: list) -> None:
-        mover_peca(tabuleiro, self.acao.to_action())
+        mover_peca(tabuleiro, self.caminho_acao.to_action())
 
     def update_flags(self, flags: list) -> None:
-        flags.append(('enpassant', self.cor, self.acao))
+        flags.append(('enpassant', self.cor, self.caminho_acao))
 
 
 class EnPassant(MovimentoEspecial):
     def __init__(self, acao: action, capturado_pos: coord):
         """
-        :param pos: posição do peão aliado
+        :param acao: movimento que o peão aliado fará
+        * pos: posição do peão aliado
+        * nova_pos: posição para o qual o peão aliado será movido
         :param capturado_pos: posição do peão inimigo a ser capturado
-        :param nova_pos: posição para o qual o peão aliado será movido
         """
 
         super().__init__(nome='enpassant')

@@ -13,8 +13,9 @@ from tipos import board, movements, coord
 
 def novo_tabuleiro() -> board:
     """
+    Um tabuleiro com as peças na posição inicial
     :param pecas: objeto da classe Peca
-    :return: list 8x8 onde os espacos vazios valem None
+    :return: matriz board onde os espacos vazios valem None
     e os espacos com pecas são objetos
     """
 
@@ -101,6 +102,14 @@ class Tabuleiro:
         return False
 
     def get_movimentos(self, pos: coord) -> Optional[movements]:
+        """
+
+        :param pos: [description]
+        :return: Retorna um matriz movements com os movimentos legais para peça
+        em pos
+        Se pos não for uma peça aliada retorna None
+        """
+
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:

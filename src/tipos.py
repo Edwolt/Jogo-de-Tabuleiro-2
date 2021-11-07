@@ -11,21 +11,44 @@ T = TypeVar('T')
 
 
 board = list[list[Optional[Peca]]]
+"""
+Matriz board que representa as peças no tabuleiro
+Se o espaço estiver vazio o valor será None
+"""
 
 
 movements = list[list[Optional[Movimento]]]
+"""
+Matriz movements que representa todos os movimentos que são possível para
+aquela peça
+Se o movimento não for possível o valor naquela posição será None
+"""
 
 
 class load_bar(NamedTuple):
+    """
+    Representa quanto falta para concluir uma tarefa para permitir desenhar uma
+    barra de carregamento
+    tam: O total de tarefas a ser feita, incluindo as que já foram concluídas
+    val: O quanto já foi feito
+    """
+
     tam: int
     val: int
 
 
 load_gen = Generator[list[load_bar], None, None]
+"""Generator de load_bar"""
 
 
 @dataclass
 class pb(Generic[T]):
+    """
+    Armazena um valor para as pretas e o brancas
+
+    Pode ser indexado com um valor bool
+    """
+
     # Isso faz funcionar como o NamedTuple
     __slots__ = ('preto', 'branco')
 
@@ -41,10 +64,13 @@ class pb(Generic[T]):
 
 
 class grad(NamedTuple):
+    """Representa um gradiente de cor com um valor inicial e um final"""
+
     start: Color
     end: Color
 
     def gerar_cor(self, c: Color) -> Color:
+        """:return: A cor equivalente a c dentro do gradiente"""
         res = Color(0, 0, 0)
         a, b = self
         for k in range(len(res)):
@@ -52,7 +78,7 @@ class grad(NamedTuple):
         return res
 
     def tranparencia_padrao(self):
-        """ Configura a transparência para variar de 0 a 255 """
+        """Configura a transparência para variar de 0 a 255"""
         self.start.a = 0
         self.end.a = 255
 
@@ -63,6 +89,8 @@ class direction(NamedTuple):
 
 
 class coord(NamedTuple):
+    """Um coordenada dentro do tabuleiro"""
+
     i: int
     j: int
 
@@ -77,11 +105,15 @@ class coord(NamedTuple):
 
 
 class action(NamedTuple):
+    """Um movimento a ser feito"""
+
     pos: coord
     nova_pos: coord
 
 
 class pathaction(NamedTuple):
+    """Um movimento a ser feito e uma coordenada pelo qual a peça passou"""
+
     pos: coord
     meio: coord
     nova_pos: coord

@@ -17,7 +17,12 @@ from .loading import Loading
 
 
 class Op(NamedTuple):
-    """Guarda uma opcao de uma lista de opções"""
+    """
+    Guarda uma opcao de uma lista de opções
+    sel: se é aquela opção que está selecionada
+    nome: nome da opção selecionada
+    """
+
     sel: bool
     nome: str
 
@@ -31,7 +36,8 @@ class Opcoes(ABC):
         Classe abstrata para criar menus de opções
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la
         :param menu: Objeto da classe Menu
-        :param anterior: Opcoes anteriores
+        :param anterior: Objeto Opcoes que estava sendo exibida anteriormente e
+        portanto é para onde deve voltar
         """
 
         self.menu = menu
@@ -72,11 +78,7 @@ class Opcoes(ABC):
         """
 
     def listar(self) -> Listagem:
-        """
-        :yield: (selecionado, nome)
-        selecionado: se é aquela opção que está selecionada
-        nome: nome da opção selecionada
-        """
+        """:yield: Op(selecionado, nome)"""
 
         yield from (Op(self.sel == i, self.nome(i)) for i in range(self.tamanho))
 
@@ -91,9 +93,12 @@ class OpcoesConfigs(Opcoes):
 
     def listar_configs(self) -> list[str]:
         """Lista todas as configs na pasta Configs"""
-        # 8 por causa do nome da pasta
-        # -3 por causa da extensao
-        return [i[8:-3] for i in glob('configs/*py')]
+
+        PASTA = 'configs'
+        EXT = '.py'
+        BUSCA = f'{PASTA}/*{EXT}'  # configs/*.py
+
+        return [i[len(PASTA): -len(EXT)] for i in glob(BUSCA)]
 
     ##### Interface #####
     @property
@@ -168,7 +173,7 @@ class Menu(Janela):
                     self.opcoes = ret
                 elif ret is None:
                     self.finalizado = True
-                else:
+                else:  # isinstance(ret, load_gen)
                     self.loading = ret
             elif event.key == K_ESCAPE:
                 ret = self.opcoes.voltar()

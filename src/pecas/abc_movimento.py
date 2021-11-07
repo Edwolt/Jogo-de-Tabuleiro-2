@@ -21,7 +21,7 @@ class Movimento:
         tabuleiro[i][j] = None
         tabuleiro[m][n].notifica_movimento()
 
-    def update_flags(self, flags: list) -> None:
+    def atualiza_flags(self, flags: list) -> None:
         """Atualiza a lista de flags do tabuleiro"""
         return
 
@@ -40,6 +40,6 @@ class MovimentoEspecial(ABC):
         :param flags: lista de flags do tabuleiro
         """
 
-    def update_flags(self, flags: list) -> None:
+    def atualiza_flags(self, flags: list) -> None:
         """Atualiza a lista de flags do tabuleiro"""
         return

@@ -14,13 +14,11 @@ class Janela(ABC):
 
     @abstractmethod
     def draw(self, canvas: Surface) -> None:
-        """
-        :param canvas: Surface onde o jogo sera desenhado
-        :return: Retorna se a tela precisa ser atualizada
-        """
+        """:param canvas: Surface onde o jogo sera desenhado"""
 
     @abstractmethod
     def new(self) -> 'Janela':
         """
-        Create
+        Diz qual a janela a ser exibida no próximo frame
+        Para continuar na mesma janela basta retorna ela mesma
         """

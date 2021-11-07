@@ -7,7 +7,6 @@ from janelas import Loading, Xadrez
 from recursos import Recursos
 
 
-# TODO atualizar todos os comentários
 # TODO Resolver bugs
 def main():
     pygame.init()

@@ -42,6 +42,12 @@ class Recursos(metaclass=Singleton):
         self._config = get_config(config)
 
     def gerar_imagem(self, sprite: Surface, gradientes: pb[grad]) -> pb[Surface]:
+        """
+        Colore o sprite com os gradientes e os retorna
+        :param sprite: sprite a ser colorido
+        :param gradientes: gradientes para a peça preta e branca
+        :return: sprites coloridos para a peça preta e para branca
+        """
         sprites = pb(sprite.copy(), sprite.copy())
         w, h = sprite.get_size()
 
@@ -69,4 +75,4 @@ class Recursos(metaclass=Singleton):
 
     def get_asset(self, nome: str, cor: bool) -> Surface:
         """Retorna o asset da peca com o nome e a cor dada"""
-        return self.assets[nome][1 if cor else 0]
+        return self.assets[nome][cor]

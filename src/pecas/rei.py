@@ -10,10 +10,8 @@ from .util import tabuleiro_false, tabuleiro_copia, mover_peca
 class Roque(MovimentoEspecial):
     def __init__(self, acao_rei: action, acao_torre: action):
         """
-        :param rei: posição atual do rei
-        :param nova_rei: posição para a qual o rei será movido
-        :param torre: posição atual da torre
-        :param nova_torre: posição para o qual a torre será movida
+        :param acao_rei: movimento a ser feito pelo rei
+        :param acao_torre: movimento a ser feito pela torre
         """
 
         super().__init__(nome='roque')
@@ -38,7 +36,7 @@ class Rei(Peca):
         return tabuleiro[i][j] is None or tabuleiro[i][j].cor != self.cor
 
     def get_movimentos_simples(self, tabuleiro: board, flags: list, pos: coord) -> movements:
-        # TODO Cuidado com cheque
+        # TODO Cuidado com xeque
         res = tabuleiro_false()
         i, j = pos
 

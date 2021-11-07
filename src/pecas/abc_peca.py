@@ -4,7 +4,7 @@ from pygame import Surface
 from abc import ABC, abstractmethod
 
 from recursos import Recursos
-from tipos import board, movements, coord
+from tipos import board, movements, coord, action
 
 from .xeque import testar_movimento
 from .util import tabuleiro_false
@@ -13,8 +13,8 @@ from .util import tabuleiro_false
 class Peca(ABC):
     def __init__(self, cor: bool, *, nome: str):
         """
-        :param sprite: Uma Surface com a imagem da peca
-        :param cor: True: 'branco'; False: 'preto'
+        :param nome: O nome da peça
+        :param cor: False: 'preto'; True: 'branco'
         """
 
         self.nome = nome
@@ -22,7 +22,7 @@ class Peca(ABC):
 
     def draw(self, canvas: Surface) -> None:
         """
-        Desenha o sprite em canvas
+        Desenha a peça no canvas
         :param canvas: Surface onde o jogo sera desenhado
         """
 
@@ -41,16 +41,14 @@ class Peca(ABC):
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estão sendo calculados
-        :return: list 8x8 dizendo se é possivel movimentar ou não
-        Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
+        :return: matriz movements com todos os movimentos possíveis, porém contendo movimentos ilegais que causam xeque
         """
 
     def get_movimentos(self, tabuleiro: board, flags: list, pos_rei: coord, pos: coord) -> movements:
         """
         :param flags: flags do tabuleiro
         :param pos: posição da peça, cujos movimentos estão sendo calculados
-        :return: list 8x8 dizendo se é possivel movimentar ou não
-        Caso o movimento seja especial é retornado um objeto de uma subclasse de MovimentoEspecial
+        :return: matriz movements com todos os movimentos legais
         """
 
         res = tabuleiro_false()
@@ -59,7 +57,7 @@ class Peca(ABC):
             for j, mov in enumerate(linha):
                 teste = testar_movimento(
                     tabuleiro, flags,
-                    pos_rei, (pos, (i, j)),
+                    pos_rei, action(pos, coord(i, j)),
                 )
                 res[i][j] = mov if teste else False
         return res
