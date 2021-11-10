@@ -10,12 +10,12 @@ from .abc_movimento import Movimento
 ##### Tabuleiro #####
 def movements_vazio() -> tp.movements:
     """:return: matriz movements com todos os valores None"""
-    return [[None] * 8 for _ in range(8)]
+    return tp.movements([[None] * 8 for _ in range(8)])
 
 
 def board_vazio() -> tp.board:
     """:return: matriz board com todos os valores None"""
-    return [[None]*8 for _ in range(8)]
+    return tp.board([[None]*8 for _ in range(8)])
 
 
 def board_inicial() -> tp.board:
@@ -25,6 +25,7 @@ def board_inicial() -> tp.board:
     :return: matriz board onde os espacos vazios valem None
     e os espacos com pecas são objetos
     """
+
     from .rei import Rei
     from .rainha import Rainha
     from .torre import Torre
