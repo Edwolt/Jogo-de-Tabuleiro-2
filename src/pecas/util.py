@@ -15,7 +15,7 @@ def movements_vazio() -> tp.movements:
 
 def board_vazio() -> tp.board:
     """:return: matriz board com todos os valores None"""
-    return tp.board([[None]*8 for _ in range(8)])
+    return tp.board([[None] * 8 for _ in range(8)])
 
 
 def board_inicial() -> tp.board:
@@ -82,7 +82,6 @@ def mover_peca(tabuleiro: tp.board, movimento: tp.action) -> None:
     peca is None or peca.notifica_movimento()
 
 
-# TODO usar coord + direction para tornar o código mais legível
 def calcula_direcao(
         res: tp.movements,
         tabuleiro: tp.board,
@@ -91,10 +90,10 @@ def calcula_direcao(
         cor: bool,
         rei: bool = False
 ) -> None:
-    for di, dj in direcoes:
-        i, j = pos
-        i, j = i + di, j + dj
-        while tp.coord(i, j).valida():
+    for direcao in direcoes:
+        p = pos + direcao
+        while p.valida():
+            i, j = p
             peca = tabuleiro[i][j]
             if peca is None:
                 res[i][j] = Movimento(tp.action(pos, tp.coord(i, j)), rei)
@@ -102,4 +101,4 @@ def calcula_direcao(
                 if cor != peca.cor:
                     res[i][j] = Movimento(tp.action(pos, tp.coord(i, j)), rei)
                 break  # Se a casa não está vazia, não tem porquê olhar adiante
-            i, j = i + di, j + dj
+            p += direcao

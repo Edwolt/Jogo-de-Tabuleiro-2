@@ -12,6 +12,7 @@ from pecas import Roque
 from pecas import board_inicial, testar_xeque
 
 
+# TODO tranformar em uma classe que possa ser passada para peças
 class Tabuleiro:
     def __init__(self):
         self.tabuleiro = board_inicial()
