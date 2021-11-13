@@ -29,10 +29,10 @@ class Recursos(metaclass=Singleton):
     ):
         self.size = size
         self.framerate = framerate
-        self.png_min = png_min
+        self._png_min = png_min
 
         self._config = None
-        self.assets = dict()
+        self._assets = dict()
 
     @property
     def config(self) -> Config:
@@ -64,8 +64,8 @@ class Recursos(metaclass=Singleton):
         for i in range(w):
             for j in range(h):
                 cor = sprite.get_at((i, j))
-                sprites[False].set_at((i, j), gradientes[False].gerar_cor(cor))
-                sprites[True].set_at((i, j), gradientes[True].gerar_cor(cor))
+                sprites.preto.set_at((i, j), gradientes.preto.gerar_cor(cor))
+                sprites.branco.set_at((i, j), gradientes.branco.gerar_cor(cor))
 
         return sprites
 
@@ -75,13 +75,13 @@ class Recursos(metaclass=Singleton):
         yield [tp.load_bar(len(LISTA_NOME_PECAS), 0)]
         for k, i in enumerate(LISTA_NOME_PECAS):
             try:
-                img = pg.image.load(caminho_asset(i, self.png_min))
+                img = pg.image.load(caminho_asset(i, self._png_min))
             except:
                 img = pg.image.load(caminho_asset(i))
 
-            self.assets[i] = self.gerar_imagem(img, cores)
+            self._assets[i] = self.gerar_imagem(img, cores)
             yield [tp.load_bar(len(LISTA_NOME_PECAS), k+1)]
 
     def get_asset(self, nome: str, cor: bool) -> pg.Surface:
         """Retorna o asset da peca com o nome e a cor dada"""
-        return self.assets[nome][cor]
+        return self._assets[nome][cor]

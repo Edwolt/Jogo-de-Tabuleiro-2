@@ -97,7 +97,7 @@ class Peao(Peca):
         self.movimentou = True
 
     # TODO type notation
-    def get_enpassant(
+    def _get_enpassant(
         self,
         flags: list,
         nova_pos
@@ -110,7 +110,7 @@ class Peao(Peca):
                     return meio, final
         return None
 
-    def criar_captura(
+    def _criar_captura(
         self,
         tabuleiro: tp.board,
         flags: list,
@@ -126,7 +126,7 @@ class Peao(Peca):
             else:
                 return Movimento(acao)
         else:
-            enpassant = self.get_enpassant(flags, acao.nova_pos)
+            enpassant = self._get_enpassant(flags, acao.nova_pos)
             if enpassant is not None:
                 meio, final = enpassant
                 return EnPassant(tp.action(acao.pos, final), meio)
@@ -174,13 +174,13 @@ class Peao(Peca):
         i, j = pos
         i += -1 if self.cor else 1
         if tp.coord(i, j-1).valida():
-            res[i][j-1] = self.criar_captura(
+            res[i][j-1] = self._criar_captura(
                 tabuleiro,
                 flags,
                 tp. action(pos, tp. coord(i, j-1))
             )
         if tp. coord(i, j+1).valida():
-            res[i][j+1] = self.criar_captura(
+            res[i][j+1] = self._criar_captura(
                 tabuleiro,
                 flags,
                 tp. action(pos, tp.  coord(i, j+1))

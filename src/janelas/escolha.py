@@ -11,6 +11,7 @@ from .abc_janela import Janela
 from .menu import Menu
 
 
+# TODO Não está aparecendo quando deveria acontecer uma promoção
 class Escolha(Janela):
     def __init__(self, xadrez, promocao: Promocao):
         """
@@ -23,12 +24,11 @@ class Escolha(Janela):
         self.xadrez = xadrez
         self.promocao = promocao
         self.cor = self.promocao.cor
-
-        self.atualizacao = True
         self.escolhido = None
-        self.escape = False
 
-        self.qsize = 0, 0
+        self._atualizacao = True
+        self._escape = False
+        self._qsize = 0, 0
 
         self.pecas = [
             Cavalo(self.cor),
@@ -42,8 +42,8 @@ class Escolha(Janela):
     ##### Interface #####
     def event(self, event: pg.Event) -> None:
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
-            i = int(event.pos[1] // self.qsize[1])
-            j = int(event.pos[0] // self.qsize[0])
+            i = int(event.pos[1] // self._qsize[1])
+            j = int(event.pos[0] // self._qsize[0])
             print(i, j)
 
             if i == 0 and 0 <= j - 2 < 4:
@@ -60,22 +60,22 @@ class Escolha(Janela):
         recursos = Recursos()
 
         size = canvas.get_size()
-        self.qsize = size[0] // 8, size[1] // 8
+        self._qsize = size[0] // 8, size[1] // 8
 
         canvas.fill(pg.Color(0, 0, 0))
-        tabuleiro = pg.Surface((6 * self.qsize[0], 6 * self.qsize[1]))
+        tabuleiro = pg.Surface((6 * self._qsize[0], 6 * self._qsize[1]))
         self.xadrez.draw(tabuleiro)
-        canvas.blit(tabuleiro, (self.qsize[0], 2 * self.qsize[1]))
+        canvas.blit(tabuleiro, (self._qsize[0], 2 * self._qsize[1]))
 
         offset_i, offset_j = 0, 2
         for jj, peca in enumerate(self.pecas):
             # i, j = y, x
             i, j = offset_i, offset_j + jj
 
-            surf = pg.Surface(self.qsize)
+            surf = pg.Surface(self._qsize)
             recursos.config.quadrado(surf, tp.coord(j, i), 'vazio')
             peca.draw(surf)
-            pos = j * self.qsize[0], i * self.qsize[1]
+            pos = j * self._qsize[0], i * self._qsize[1]
             canvas.blit(surf, pos)
 
         self.atualizacao = False
@@ -89,9 +89,9 @@ class Escolha(Janela):
             self.xadrez.tabuleiro[i][j] = self.escolhido
             print(self.escolhido)
             return self.xadrez
-        elif self.escape:
-            self.escape = False
-            self.atualizacao = True
+        elif self._escape:
+            self._escape = False
+            self._atualizacao = True
             return Menu(self)
         else:
             return self

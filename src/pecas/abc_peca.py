@@ -4,6 +4,7 @@ import pygame as pg
 from abc import ABC, abstractmethod
 
 import tipos as tp
+# TODO melhorar esse import
 import recursos as rsc  # Para evitar circular import
 
 from .xeque import testar_movimento

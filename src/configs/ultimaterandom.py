@@ -37,8 +37,8 @@ class ConfigUltimateRandom(Config):
             tp.grad(randcor(), randcor()),
             tp.grad(randcor(), randcor())
         )
-        res[False].transparencia_padrao()
-        res[True].transparencia_padrao()
+        res.preto.transparencia_padrao()
+        res.branco.transparencia_padrao()
 
         return res
 

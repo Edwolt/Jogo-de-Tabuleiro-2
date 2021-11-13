@@ -16,15 +16,15 @@ class Xadrez(Janela):
     """Toda a lógica do jogo"""
 
     def __init__(self):
-        self.atualizacao = True
         self.tabuleiro = Tabuleiro()
-        self.escape = False
-        self.promocao = None
-        self.flags = list()
 
-        self.click = None
+        self._atualizacao = True
+        self._escape = False
+        self._promocao = None
+
+        self._click = None
+        self._qsize = 0, 0
         self.movimento: Optional[tp.movements] = None
-        self.qsize = 0, 0
 
     def atualiza_movimentos(self, pos: tp.coord) -> None:
         self.movimento = self.tabuleiro.get_movimentos(pos)
@@ -32,56 +32,56 @@ class Xadrez(Janela):
     ##### Interface #####
     def event(self, event: pg.event.Event) -> None:
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
-            click_antigo = self.click
+            click_antigo = self._click
 
-            self.click = tp.coord(
-                int(event.pos[1] // self.qsize[1]),
-                int(event.pos[0] // self.qsize[0])
+            self._click = tp.coord(
+                int(event.pos[1] // self._qsize[1]),
+                int(event.pos[0] // self._qsize[0])
             )
 
             movimentado = False
             if self.movimento and click_antigo:
                 movimento_oconteceu = self.tabuleiro.movimenta_peca(tp.action(
                     click_antigo,
-                    self.click
+                    self._click
                 ))
                 if movimento_oconteceu:
                     self.movimento = None
                     movimentado = True
 
             if not movimentado:
-                self.atualiza_movimentos(self.click)
+                self.atualiza_movimentos(self._click)
             else:
                 # TODO isso não deveria ser resposabilidade de xadrez
                 self.tabuleiro.vez = not self.tabuleiro.vez
 
-            self.atualizacao = True
+            self._atualizacao = True
 
         elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            self.escape = True
+            self._escape = True
 
     def draw(self, canvas: pg.Surface) -> None:
-        if not self.atualizacao:
+        if not self._atualizacao:
             return
 
         size = canvas.get_size()
-        self.qsize = size[0] // 8, size[1] // 8
+        self._qsize = size[0] // 8, size[1] // 8
 
-        self.tabuleiro.draw(canvas, self.click, self.movimento)
+        self.tabuleiro.draw(canvas, self._click, self.movimento)
 
-        self.atualizacao = False
+        self._atualizacao = False
         pg.display.set_caption(Recursos().config.titulo(self.tabuleiro.vez))
         pg.display.flip()
 
     def new(self):
-        if self.escape:
-            self.atualizacao = True
-            self.escape = False
+        if self._escape:
+            self._atualizacao = True
+            self._escape = False
             return Menu(self)
-        elif self.promocao is not None:
-            self.atualizacao = True
-            promocao = self.promocao
-            self.promocao = None
+        elif self._promocao is not None:
+            self._atualizacao = True
+            promocao = self._promocao
+            self._promocao = None
             return Escolha(self, promocao)
         else:
             return self

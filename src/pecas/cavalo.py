@@ -15,7 +15,7 @@ class Cavalo(Peca):
     def __init__(self, cor: bool):
         super().__init__(cor)
 
-    def criar_movimento(
+    def _criar_movimento(
         self,
         tabuleiro: tp.board,
         acao: tp.action
@@ -61,7 +61,7 @@ class Cavalo(Peca):
         for nova_pos in VERIFICAR:
             if nova_pos.valida():
                 m, n = nova_pos
-                res[m][n] = self.criar_movimento(
+                res[m][n] = self._criar_movimento(
                     tabuleiro,
                     tp.action(pos, nova_pos)
                 )

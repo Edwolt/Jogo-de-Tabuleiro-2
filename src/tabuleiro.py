@@ -4,7 +4,6 @@ import pygame as pg
 from typing import Optional
 from pecas.peao import Promocao
 
-
 import tipos as tp
 from recursos import Recursos
 from pecas import Movimento, MovimentoComplexo
@@ -18,7 +17,7 @@ class Tabuleiro:
         self.tabuleiro = board_inicial()
         self.vez = True
         self.flags = list()
-        self.rei = tp.pb(tp.coord(0, 4), tp.coord(7, 4))
+        self._rei = tp.pb(tp.coord(0, 4), tp.coord(7, 4))
 
     def movimenta_peca(self, acao: tp.action) -> bool:
         """
@@ -48,10 +47,10 @@ class Tabuleiro:
             mov.executar(self.tabuleiro, self.flags)
 
             if isinstance(mov, Roque):
-                if self.rei.branco == mov.rei:
-                    self.rei.branco = mov.acao_rei.nova_pos
-                elif self.rei.preto == mov.rei:
-                    self.rei.preto = mov.acao_rei.nova_pos
+                if self._rei.branco == mov.rei:
+                    self._rei.branco = mov.acao_rei.nova_pos
+                elif self._rei.preto == mov.rei:
+                    self._rei.preto = mov.acao_rei.nova_pos
             elif isinstance(mov, Promocao):
                 self.promocao = mov
 
@@ -63,7 +62,7 @@ class Tabuleiro:
             mov.executar(self.tabuleiro, self.flags)
 
             if mov.rei:
-                self.rei[self.vez] = acao.nova_pos
+                self._rei[self.vez] = acao.nova_pos
 
             self.flags.clear()
             return True
@@ -72,13 +71,10 @@ class Tabuleiro:
 
     def get_movimentos(self, pos: tp.coord) -> Optional[tp.movements]:
         """
-        :param pos: [description]
         :return: Retorna um matriz movements com os movimentos legais para peça
         em pos
         Se pos não for uma peça aliada retorna None
         """
-        # TODO atualizar docstring
-
         i, j = pos
         peca = self.tabuleiro[i][j]
         if peca is None:
@@ -119,8 +115,8 @@ class Tabuleiro:
                         tipo = 'movimento'
                 elif (
                     (
-                        tp.coord(y, x) == self.rei.branco
-                        or tp.coord(y, x) == self.rei.preto
+                        tp.coord(y, x) == self._rei.branco
+                        or tp.coord(y, x) == self._rei.preto
                     )
                     and testar_xeque(
                         self.tabuleiro,

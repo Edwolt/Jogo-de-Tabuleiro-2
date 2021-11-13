@@ -86,9 +86,9 @@ class Opcoes(ABC):
 class OpcoesConfigs(Opcoes):
     def __init__(self, menu: Menu, anterior: Opcoes):
         super().__init__(menu, anterior)
-        self.configs = self.listar_configs()
+        self.configs = self._listar_configs()
 
-    def listar_configs(self) -> list[str]:
+    def _listar_configs(self) -> list[str]:
         """Lista todas as configs na pasta Configs"""
         PASTA = 'configs'
         EXT = '.py'
@@ -149,9 +149,10 @@ class Menu(Janela):
         recursos = Recursos()
         self.xadrez = xadrez
 
-        self.loading = None
-        self.atualizacao = True
-        self.finalizado = False
+        self._loading = None
+        self._atualizacao = True
+        self._finalizado = False
+
         self.fonte = recursos.config.fonte(50)
 
         if opcoes is None:
@@ -168,21 +169,21 @@ class Menu(Janela):
                 if isinstance(ret, Opcoes):
                     self.opcoes = ret
                 elif ret is None:
-                    self.finalizado = True
+                    self._finalizado = True
                 else:  # isinstance(ret, load_gen)
-                    self.loading = ret
+                    self._loading = ret
             elif event.key == pg.K_ESCAPE:
                 ret = self.opcoes.voltar()
                 if ret == None:
-                    self.finalizado
+                    self._finalizado
                 else:
                     self.opcoes = ret
             else:
                 self.opcoes.event(event)
-            self.atualizacao = True
+            self._atualizacao = True
 
     def draw(self, canvas: pg.Surface) -> None:
-        if not self.atualizacao:
+        if not self._atualizacao:
             return
         if self.opcoes is None:
             return
@@ -202,14 +203,14 @@ class Menu(Janela):
             canvas.blit(texto, (0, y))
             y += altura
 
-        self.atualizacao = False
+        self._atualizacao = False
         pg.display.set_caption('Menu')
         pg.display.flip()
 
     def new(self):
-        if self.finalizado:
+        if self._finalizado:
             return self.xadrez
-        elif self.loading is not None:
-            return Loading(self.loading, self.xadrez)
+        elif self._loading is not None:
+            return Loading(self._loading, self.xadrez)
         else:
             return self

@@ -11,9 +11,9 @@ from .abc_janela import Janela
 class Loading(Janela):
     def __init__(self, carregamento: tp.load_gen, janela: Janela):
         self.janela = janela
-
-        self.finalizado = False
         self.carregamento = carregamento
+
+        self._finalizado = False
 
         recursos = Recursos()
         self.fonte = recursos.config.fonte(25)
@@ -30,7 +30,7 @@ class Loading(Janela):
         try:
             barras = next(self.carregamento)
         except StopIteration:
-            self.finalizado = True
+            self._finalizado = True
             return
 
         x, y = 10, 10
@@ -40,7 +40,11 @@ class Loading(Janela):
 
         texto = 'Loading'
         tam_x, tam_y = self.fonte_loading.size(texto)
-        texto = self.fonte_loading.render(texto, False, pg.Color(255, 255, 255))
+        texto = self.fonte_loading.render(
+            texto,
+            False,
+            pg.Color(255, 255, 255)
+        )
         meio = w/2 - tam_x/2
         canvas.blit(texto, (meio, y))
 
@@ -70,4 +74,4 @@ class Loading(Janela):
         pg.display.flip()
 
     def new(self):
-        return self.janela if self.finalizado else self
+        return self.janela if self._finalizado else self
