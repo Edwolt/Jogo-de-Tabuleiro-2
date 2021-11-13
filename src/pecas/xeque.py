@@ -17,16 +17,14 @@ def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
     rei = tabuleiro[ri][rj]
     if rei is None or not isinstance(rei, Rei):
         raise Exception(
-            'testar_xeque não recebeu uma posição válida para o rei'
+            "testar_xeque não recebeu uma posição válida para o rei"
         )
 
     for pi, linha in enumerate(tabuleiro):
         for pj, peca in enumerate(linha):
             if peca is not None and peca.cor != rei.cor:
                 movimentos = peca.get_movimentos_simples(
-                    tabuleiro,
-                    flags,
-                    tp.coord(pi, pj)
+                    tabuleiro, flags, tp.coord(pi, pj)
                 )
                 mov = movimentos[ri][rj]
                 if isinstance(mov, Movimento):
@@ -38,10 +36,7 @@ def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
 
 # TODO pode ser muito otimizado
 def testar_movimento(
-    tabuleiro: tp.board,
-    flags: list,
-    pos_rei: tp.coord,
-    acao: tp.action
+    tabuleiro: tp.board, flags: list, pos_rei: tp.coord, acao: tp.action
 ) -> bool:
     from .rei import Roque
 

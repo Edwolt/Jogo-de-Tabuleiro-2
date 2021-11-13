@@ -10,7 +10,7 @@ from .torre import Torre
 
 
 class Roque(MovimentoComplexo):
-    def __init__(self, acao_rei: tp. action, acao_torre: tp.action):
+    def __init__(self, acao_rei: tp.action, acao_torre: tp.action):
         """
         :param acao_rei: movimento a ser feito pelo rei
         :param acao_torre: movimento a ser feito pela torre
@@ -24,7 +24,7 @@ class Roque(MovimentoComplexo):
 
 
 class Rei(Peca):
-    nome = 'rei'
+    nome = "rei"
 
     def __init__(self, cor: bool, movimentou: bool = False):
         super().__init__(cor)
@@ -34,9 +34,7 @@ class Rei(Peca):
         self.movimentou = True
 
     def _criar_movimento(
-        self,
-        tabuleiro: tp.board,
-        acao: tp.action
+        self, tabuleiro: tp.board, acao: tp.action
     ) -> Movimento | None:
         i, j = acao.nova_pos
         capturada = tabuleiro[i][j]
@@ -45,10 +43,7 @@ class Rei(Peca):
         return None
 
     def get_movimentos_simples(
-        self,
-        tabuleiro: tp.board,
-        flags: list,
-        pos: tp.coord
+        self, tabuleiro: tp.board, flags: list, pos: tp.coord
     ) -> tp.movements:
         # TODO Cuidado com xeque
         res = movements_vazio()
@@ -57,26 +52,23 @@ class Rei(Peca):
         # Posições a verificar
         VERIFICAR = (
             # Casas acima do rei
-            tp.coord(i-1, j-1),
-            tp.coord(i-1, j),
-            tp.coord(i-1, j+1),
-
+            tp.coord(i - 1, j - 1),
+            tp.coord(i - 1, j),
+            tp.coord(i - 1, j + 1),
             # Casas do meio
-            tp.coord(i, j-1),
-            tp.coord(i, j+1),
-
+            tp.coord(i, j - 1),
+            tp.coord(i, j + 1),
             # Casas abaixo do rei
-            tp.coord(i+1, j-1),
-            tp.coord(i+1, j),
-            tp.coord(i+1, j+1)
+            tp.coord(i + 1, j - 1),
+            tp.coord(i + 1, j),
+            tp.coord(i + 1, j + 1),
         )
 
         for nova_pos in VERIFICAR:
             if nova_pos.valida():
                 m, n = nova_pos
                 res[m][n] = self._criar_movimento(
-                    tabuleiro,
-                    tp.action(pos, nova_pos)
+                    tabuleiro, tp.action(pos, nova_pos)
                 )
 
         # Verifica se é possível fazer o Roque
@@ -106,9 +98,9 @@ class Rei(Peca):
                     xeque = testar_xeque(tab, flags, tp.coord(i, 2))
 
                 if not pecas_entre and not xeque:
-                    res[i][j-2] = Roque(
-                        tp.action(tp.coord(i, j), tp.coord(i, j-2)),
-                        tp.action(tp.coord(i, 0), tp.coord(i, j-1))
+                    res[i][j - 2] = Roque(
+                        tp.action(tp.coord(i, j), tp.coord(i, j - 2)),
+                        tp.action(tp.coord(i, 0), tp.coord(i, j - 1)),
                     )
 
             torre = tabuleiro[i][7]
@@ -123,9 +115,9 @@ class Rei(Peca):
                     pecas_entre = pecas_entre or tabuleiro[i][jj] is not None
 
                 if not pecas_entre:
-                    res[i][j+2] = Roque(
-                        tp. action(tp.coord(i, j), tp. coord(i, j+2)),
-                        tp. action(tp.coord(i, 7), tp.coord(i, j+1))
+                    res[i][j + 2] = Roque(
+                        tp.action(tp.coord(i, j), tp.coord(i, j + 2)),
+                        tp.action(tp.coord(i, 7), tp.coord(i, j + 1)),
                     )
 
         return res

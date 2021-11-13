@@ -10,14 +10,14 @@ from pecas import LISTA_NOME_PECAS
 
 
 def get_config(nome: str) -> Config:
-    module = importlib.import_module(f'configs.{nome.lower()}')
-    cls = getattr(module, 'export')
+    module = importlib.import_module(f"configs.{nome.lower()}")
+    cls = getattr(module, "export")
     return cls()
 
 
 def caminho_asset(nome: str, png_min: bool = False) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
-    return f'assets/{nome}.png' + ('.min' if png_min else '')
+    return f"assets/{nome}.png" + (".min" if png_min else "")
 
 
 class Recursos(metaclass=Singleton):
@@ -25,7 +25,7 @@ class Recursos(metaclass=Singleton):
         self,
         size: tuple[int, int] = (800, 800),
         framerate: int = 60,
-        png_min: bool = False
+        png_min: bool = False,
     ):
         self.size = size
         self.framerate = framerate
@@ -37,7 +37,7 @@ class Recursos(metaclass=Singleton):
     @property
     def config(self) -> Config:
         if self._config is None:
-            raise Exception('Nenhum config foi carregada')
+            raise Exception("Nenhum config foi carregada")
         return self._config
 
     @config.deleter
@@ -48,9 +48,7 @@ class Recursos(metaclass=Singleton):
         self._config = get_config(config)
 
     def gerar_imagem(
-        self,
-        sprite: pg.Surface,
-        gradientes: tp.pb[tp.grad]
+        self, sprite: pg.Surface, gradientes: tp.pb[tp.grad]
     ) -> tp.pb[pg.Surface]:
         """
         Colore o sprite com os gradientes e os retorna
@@ -80,7 +78,7 @@ class Recursos(metaclass=Singleton):
                 img = pg.image.load(caminho_asset(i))
 
             self._assets[i] = self.gerar_imagem(img, cores)
-            yield [tp.load_bar(len(LISTA_NOME_PECAS), k+1)]
+            yield [tp.load_bar(len(LISTA_NOME_PECAS), k + 1)]
 
     def get_asset(self, nome: str, cor: bool) -> pg.Surface:
         """Retorna o asset da peca com o nome e a cor dada"""

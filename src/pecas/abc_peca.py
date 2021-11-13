@@ -4,6 +4,7 @@ import pygame as pg
 from abc import ABC, abstractmethod
 
 import tipos as tp
+
 # TODO melhorar esse import
 import recursos as rsc  # Para evitar circular import
 
@@ -12,7 +13,7 @@ from .util import movements_vazio
 
 
 class Peca(ABC):
-    nome: str = 'ABC'
+    nome: str = "ABC"
 
     def __init__(self, cor: bool):
         """:param cor: False: 'preto'; True: 'branco'"""
@@ -35,10 +36,7 @@ class Peca(ABC):
 
     @abstractmethod
     def get_movimentos_simples(
-        self,
-        tabuleiro: tp.board,
-        flags: list,
-        pos: tp.coord
+        self, tabuleiro: tp.board, flags: list, pos: tp.coord
     ) -> tp.movements:
         """
         :param flags: flags do tabuleiro
@@ -47,11 +45,7 @@ class Peca(ABC):
         """
 
     def get_movimentos(
-        self,
-        tabuleiro: tp.board,
-        flags: list,
-        pos_rei: tp.coord,
-        pos: tp.coord
+        self, tabuleiro: tp.board, flags: list, pos_rei: tp.coord, pos: tp.coord
     ) -> tp.movements:
         """
         :param flags: flags do tabuleiro
@@ -63,8 +57,7 @@ class Peca(ABC):
         for i, linha in enumerate(movimentos):
             for j, mov in enumerate(linha):
                 teste = testar_movimento(
-                    tabuleiro, flags,
-                    pos_rei, tp.action(pos, tp.coord(i, j)),
+                    tabuleiro, flags, pos_rei, tp.action(pos, tp.coord(i, j))
                 )
                 res[i][j] = mov if teste else None
         return res

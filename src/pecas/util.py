@@ -63,7 +63,7 @@ def board_inicial() -> tp.board:
     return tabuleiro
 
 
-def board_copia(tabuleiro: tp. board) -> tp.board:
+def board_copia(tabuleiro: tp.board) -> tp.board:
     copia = board_vazio()
     for i, linha in enumerate(tabuleiro):
         for j, peca in enumerate(linha):
@@ -83,12 +83,12 @@ def mover_peca(tabuleiro: tp.board, movimento: tp.action) -> None:
 
 
 def calcula_direcao(
-        res: tp.movements,
-        tabuleiro: tp.board,
-        pos: tp.coord,
-        direcoes: tuple[tp.direction, ...],
-        cor: bool,
-        rei: bool = False
+    res: tp.movements,
+    tabuleiro: tp.board,
+    pos: tp.coord,
+    direcoes: tuple[tp.direction, ...],
+    cor: bool,
+    rei: bool = False,
 ) -> None:
     for direcao in direcoes:
         p = pos + direcao

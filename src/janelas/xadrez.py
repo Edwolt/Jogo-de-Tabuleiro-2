@@ -37,15 +37,14 @@ class Xadrez(Janela):
 
                 self._click = tp.coord(
                     int(event.pos[1] // self._qsize[1]),
-                    int(event.pos[0] // self._qsize[0])
+                    int(event.pos[0] // self._qsize[0]),
                 )
 
                 movimentado = False
                 if self.movimento and click_antigo:
-                    movimento_oconteceu = self.tabuleiro.movimenta_peca(tp.action(
-                        click_antigo,
-                        self._click
-                    ))
+                    movimento_oconteceu = self.tabuleiro.movimenta_peca(
+                        tp.action(click_antigo, self._click)
+                    )
                     if movimento_oconteceu:
                         self.movimento = None
                         movimentado = True

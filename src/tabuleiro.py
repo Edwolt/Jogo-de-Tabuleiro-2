@@ -36,7 +36,7 @@ class Tabuleiro:
             self.tabuleiro,
             self.flags,
             # self.rei[self.vez],
-            acao.pos
+            acao.pos,
         )[m][n]
 
         if mov is None:
@@ -84,7 +84,7 @@ class Tabuleiro:
                 self.tabuleiro,
                 self.flags,
                 # self.rei[self.vez],
-                pos
+                pos,
             )
         else:
             return None
@@ -93,40 +93,36 @@ class Tabuleiro:
         self,
         pos: tp.coord,
         click: tp.coord | None,
-        movimento: tp.movements | None
+        movimento: tp.movements | None,
     ) -> str:
         i, j = pos
 
         if click is not None and pos == click:
-            return 'click'
+            return "click"
 
         if movimento is not None and movimento[i][j] is not None:
             mov = movimento[i][j]
             if mov is not None:
                 if isinstance(mov, MovimentoComplexo) and mov.especial:
-                    return 'especial'
+                    return "especial"
                 else:
-                    return 'movimento'
+                    return "movimento"
 
         em_xeque = (
             tp.coord(i, j) == self._rei.branco
             or tp.coord(i, j) == self._rei.preto
-        ) and testar_xeque(
-            self.tabuleiro,
-            self.flags,
-            tp.coord(i, j)
-        )
+        ) and testar_xeque(self.tabuleiro, self.flags, tp.coord(i, j))
 
         if em_xeque:
-            return 'xeque'
+            return "xeque"
 
-        return 'vazio'
+        return "vazio"
 
     def draw(
         self,
         canvas: pg.Surface,
         click: tp.coord | None,
-        movimento: tp.movements | None
+        movimento: tp.movements | None,
     ) -> None:
         recursos = Recursos()
 

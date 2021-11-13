@@ -34,7 +34,7 @@ class Escolha(Janela):
             Cavalo(self.cor),
             Bispo(self.cor),
             Torre(self.cor),
-            Rainha(self.cor)
+            Rainha(self.cor),
         ]
         for i in self.pecas:
             i.notifica_movimento()
@@ -74,7 +74,7 @@ class Escolha(Janela):
             i, j = offset_i, offset_j + jj
 
             surf = pg.Surface(self._qsize)
-            recursos.config.quadrado(surf, tp.coord(j, i), 'vazio')
+            recursos.config.quadrado(surf, tp.coord(j, i), "vazio")
             peca.draw(surf)
             pos = j * self._qsize[0], i * self._qsize[1]
             canvas.blit(surf, pos)

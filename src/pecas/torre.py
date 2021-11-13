@@ -7,7 +7,7 @@ from .util import movements_vazio, calcula_direcao
 
 
 class Torre(Peca):
-    nome: str = 'torre'
+    nome: str = "torre"
 
     def __init__(self, cor: bool, movimentou: bool = False):
         super().__init__(cor)
@@ -17,17 +17,14 @@ class Torre(Peca):
         self.movimentou = True
 
     def get_movimentos_simples(
-        self,
-        tabuleiro: tp.board,
-        flags: list,
-        pos: tp.coord
+        self, tabuleiro: tp.board, flags: list, pos: tp.coord
     ) -> tp.movements:
         res = movements_vazio()
         direcoes = (
             tp.direction(-1, 0),  # Cima
-            tp.direction(1, 0),   # Baixo
+            tp.direction(1, 0),  # Baixo
             tp.direction(0, -1),  # Esquerda
-            tp.direction(0, 1),   # Direita
+            tp.direction(0, 1),  # Direita
         )
         calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
         return res

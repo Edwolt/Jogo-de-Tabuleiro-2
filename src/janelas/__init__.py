@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-__all__ = [
-    'Janela',  # ABC
-    'Escolha', 'Loading', 'Menu', 'Xadrez',  # Janelas
-]
+__all__ = ["Janela", "Escolha", "Loading", "Menu", "Xadrez"]  # ABC  # Janelas
 
 # ABC
 from .abc_janela import Janela

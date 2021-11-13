@@ -20,22 +20,21 @@ class Nome(NamedTuple):
 class ConfigUltimateRandom(Config):
     def __init__(self):
         self.nomes = (
-            Nome('Xadrez', tp.pb('Preto', 'Branco')),
-            Nome('Jogo de Tabuleiro', tp.pb('Escuro', 'Claro')),
-            Nome('Chess', tp.pb('Black', 'White')),
-            Nome('Chess Game', tp.pb('Player 2', 'Player 1')),
+            Nome("Xadrez", tp.pb("Preto", "Branco")),
+            Nome("Jogo de Tabuleiro", tp.pb("Escuro", "Claro")),
+            Nome("Chess", tp.pb("Black", "White")),
+            Nome("Chess Game", tp.pb("Player 2", "Player 1")),
         )
 
         self.vez = None
-        self.titulo_anterior = '.'
+        self.titulo_anterior = "."
 
     def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         canvas.fill(randcor())
 
     def pecas_cor(self) -> tp.pb[tp.grad]:
         res = tp.pb(
-            tp.grad(randcor(), randcor()),
-            tp.grad(randcor(), randcor())
+            tp.grad(randcor(), randcor()), tp.grad(randcor(), randcor())
         )
         res.preto.transparencia_padrao()
         res.branco.transparencia_padrao()
@@ -55,15 +54,14 @@ class ConfigUltimateRandom(Config):
         if self.vez is None or self.vez != vez:
             self.vez = vez
             x, p = self.nomes[randint(0, len(self.nomes) - 1)]
-            self.titulo_anterior = f'{x} : {p[vez]}'
-            return f'{x} : {p[vez]}'
+            self.titulo_anterior = f"{x} : {p[vez]}"
+            return f"{x} : {p[vez]}"
         else:
             return self.titulo_anterior
 
     def fonte(self, tam) -> pg.font.Font:
         return pg.font.Font(
-            'assets/inconsolata/static/Inconsolata-Medium.ttf',
-            tam
+            "assets/inconsolata/static/Inconsolata-Medium.ttf", tam
         )
 
 

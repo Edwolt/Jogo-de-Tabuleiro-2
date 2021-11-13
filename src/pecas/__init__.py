@@ -1,10 +1,22 @@
 from __future__ import annotations
 
 __all__ = [
-    'Peca', 'Movimento', 'MovimentoComplexo',  # ABC
-    'Rei', 'Rainha', 'Bispo', 'Cavalo', 'Torre', 'Peao',  # Pecas
-    'Roque', 'Promocao', 'Avanco', 'AvancoDuplo', 'EnPassant',  # Movimentos
-    'board_inicial', 'testar_xeque',  # Funções
+    "Peca",
+    "Movimento",
+    "MovimentoComplexo",  # ABC
+    "Rei",
+    "Rainha",
+    "Bispo",
+    "Cavalo",
+    "Torre",
+    "Peao",  # Pecas
+    "Roque",
+    "Promocao",
+    "Avanco",
+    "AvancoDuplo",
+    "EnPassant",  # Movimentos
+    "board_inicial",
+    "testar_xeque",  # Funções
 ]
 
 # ABC
@@ -29,34 +41,12 @@ from .util import board_inicial
 
 
 # Listas
-LISTA_PECAS = [
-    Rei,
-    Rainha,
-    Bispo,
-    Cavalo,
-    Torre,
-    Peao
-]
+LISTA_PECAS = [Rei, Rainha, Bispo, Cavalo, Torre, Peao]
 
-LISTA_NOME_PECAS = [
-    'rei',
-    'rainha',
-    'bispo',
-    'cavalo',
-    'torre',
-    'peao'
-]
+LISTA_NOME_PECAS = ["rei", "rainha", "bispo", "cavalo", "torre", "peao"]
 
-LISTA_MOVIMENTOS_COMPLEXOS = [
-    Roque,
-    Promocao,
-    Avanco,
-    AvancoDuplo,
-    EnPassant
-]
+LISTA_MOVIMENTOS_COMPLEXOS = [Roque, Promocao, Avanco, AvancoDuplo, EnPassant]
 
 LISTA_MOVIMENTOS_ESPECIAIS = [
-    cls
-    for cls in LISTA_MOVIMENTOS_COMPLEXOS
-    if cls.especial
+    cls for cls in LISTA_MOVIMENTOS_COMPLEXOS if cls.especial
 ]

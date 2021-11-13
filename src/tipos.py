@@ -8,14 +8,14 @@ from typing import Generator, NamedTuple
 from pecas import Peca, Movimento
 
 
-board = NewType('board', list[list[Peca | None]])
+board = NewType("board", list[list[Peca | None]])
 """
 Matriz board que representa as peças no tabuleiro
 Se o espaço estiver vazio o valor será None
 """
 
 
-movements = NewType('movements', list[list[Movimento | None]])
+movements = NewType("movements", list[list[Movimento | None]])
 """
 Matriz movements que representa todos os movimentos que são possível para
 aquela peça
@@ -30,15 +30,16 @@ class load_bar(NamedTuple):
     tam: O total de tarefas a ser feita, incluindo as que já foram concluídas
     val: O quanto já foi feito
     """
+
     tam: int
     val: int
 
 
-load_gen = NewType('load_gen', Generator[list[load_bar], None, None])
+load_gen = NewType("load_gen", Generator[list[load_bar], None, None])
 """Generator de load_bar"""
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 # slots=True faz funcionar como um NamedTuple
@@ -49,6 +50,7 @@ class pb(Generic[T]):
 
     Pode ser indexado com um valor bool
     """
+
     preto: T
     branco: T
 
@@ -70,6 +72,7 @@ class pb(Generic[T]):
 
 class grad(NamedTuple):
     """Representa um gradiente de cor com um valor inicial e um final"""
+
     start: pg.Color
     end: pg.Color
 
@@ -94,6 +97,7 @@ class direction(NamedTuple):
 
 class coord(NamedTuple):
     """Um coordenada dentro do tabuleiro"""
+
     i: int
     j: int
 
@@ -112,12 +116,14 @@ class coord(NamedTuple):
 
 class action(NamedTuple):
     """Um movimento a ser feito"""
+
     pos: coord
     nova_pos: coord
 
 
 class pathaction(NamedTuple):
     """Um movimento a ser feito e uma coordenada pelo qual a peça passou"""
+
     pos: coord
     meio: coord
     nova_pos: coord
