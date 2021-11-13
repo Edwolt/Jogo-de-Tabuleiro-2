@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame as pg
 from typing import Optional
-from pecas.peao import Promocao
+from pecas import Promocao
 
 import tipos as tp
 from recursos import Recursos
@@ -89,6 +89,39 @@ class Tabuleiro:
         else:
             return None
 
+    def _tipo_casa(
+        self,
+        pos: tp.coord,
+        click: Optional[tp.coord],
+        movimento: tp.movements
+    ):
+        i, j = pos
+
+        if click is not None and pos == click:
+            return 'click'
+
+        if movimento is not None and movimento[i][j] is not None:
+            mov = movimento[i][j]
+            if mov is not None:
+                if isinstance(mov, MovimentoComplexo) and mov.especial:
+                    return 'especial'
+                else:
+                    return 'movimento'
+
+        em_xeque = (
+            tp.coord(i, j) == self._rei.branco
+            or tp.coord(i, j) == self._rei.preto
+        ) and testar_xeque(
+            self.tabuleiro,
+            self.flags,
+            tp.coord(i, j)
+        )
+
+        if em_xeque:
+            return 'xeque'
+
+        return 'vazio'
+
     def draw(
         self,
         canvas: pg.Surface,
@@ -104,30 +137,9 @@ class Tabuleiro:
             for x, peca in enumerate(linha):
                 # i, j = y, x
 
-                tipo = 'vazio'
-                if click and tp.coord(y, x) == click:
-                    tipo = 'click'
-                elif movimento is not None and movimento[y][x]:
-                    mov = movimento[y][x]
-                    if isinstance(mov, MovimentoComplexo) and mov.especial:
-                        tipo = 'especial'
-                    else:
-                        tipo = 'movimento'
-                elif (
-                    (
-                        tp.coord(y, x) == self._rei.branco
-                        or tp.coord(y, x) == self._rei.preto
-                    )
-                    and testar_xeque(
-                        self.tabuleiro,
-                        self.flags,
-                        tp.coord(y, x)
-                    )
-                ):
-                    tipo = 'xeque'
-
                 surf = pg.Surface(size)
-                recursos.config.quadrado(surf, tp.coord(x, y), tipo)
+                tipo = self._tipo_casa(tp.coord(y, x), click, movimento)
+                recursos.config.quadrado(surf, tp.coord(y, x), tipo)
 
                 if peca:
                     peca.draw(surf)
