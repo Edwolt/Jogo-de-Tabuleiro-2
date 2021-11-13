@@ -2,21 +2,20 @@ from __future__ import annotations
 
 import pygame as pg
 from dataclasses import dataclass, astuple
-from typing import Optional, Generator
-from typing import Generic, TypeVar
-from typing import NewType, NamedTuple
+from typing import Generic, TypeVar, NewType
+from typing import Generator, NamedTuple
 
 from pecas import Peca, Movimento
 
 
-board = NewType('board', list[list[Optional[Peca]]])
+board = NewType('board', list[list[Peca | None]])
 """
 Matriz board que representa as peças no tabuleiro
 Se o espaço estiver vazio o valor será None
 """
 
 
-movements = NewType('movements', list[list[Optional[Movimento]]])
+movements = NewType('movements', list[list[Movimento | None]])
 """
 Matriz movements que representa todos os movimentos que são possível para
 aquela peça
@@ -35,24 +34,21 @@ class load_bar(NamedTuple):
     val: int
 
 
-load_gen = Generator[list[load_bar], None, None]
+load_gen = NewType('load_gen', Generator[list[load_bar], None, None])
 """Generator de load_bar"""
 
 
 T = TypeVar('T')
 
 
-@dataclass
+# slots=True faz funcionar como um NamedTuple
+@dataclass(slots=True)
 class pb(Generic[T]):
     """
     Armazena um valor para as pretas e o brancas
 
     Pode ser indexado com um valor bool
     """
-
-    # Isso faz funcionar como o NamedTuple
-    __slots__ = ('preto', 'branco')
-
     preto: T
     branco: T
 
@@ -60,12 +56,14 @@ class pb(Generic[T]):
         return self.branco if index else self.preto
 
     def __setitem__(self, index: bool, valor: T):
-        if index:
-            self.branco = valor
-        else:
-            self.preto = valor
+        match index:
+            case False:
+                self.preto = valor
+            case True:
+                self.branco = valor
 
     # Isso faz funcionar como o NamedTuple
+
     def __iter__(self):
         yield from astuple(self)
 

@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import tipos as tp
 
 from .abc_peca import Peca
@@ -101,13 +99,13 @@ class Peao(Peca):
         self,
         flags: list,
         nova_pos
-    ) -> Optional[tuple[tp.coord, tp.coord]]:
+    ) -> tuple[tp.coord, tp.coord] | None:
         for flag in flags:
-            if flag[0] == 'enpassant':
-                _, cor, (_, meio, final) = flag
-                if self.cor != cor and nova_pos == meio:
-                    # Existe no máximo um enpassant por turno
-                    return meio, final
+            match flag:
+                case ['enpassant', cor, (_, meio, final)]:
+                    if self.cor != cor and nova_pos == meio:
+                        # Existe no máximo um enpassant por turno
+                        return meio, final
         return None
 
     def _criar_captura(
@@ -115,7 +113,7 @@ class Peao(Peca):
         tabuleiro: tp.board,
         flags: list,
         acao: tp. action
-    ) -> Optional[Movimento]:
+    ) -> Movimento | None:
         i, j = acao.nova_pos
         promocao = 0 if self.cor else 7
 
@@ -179,7 +177,7 @@ class Peao(Peca):
                 flags,
                 tp. action(pos, tp. coord(i, j-1))
             )
-        if tp. coord(i, j+1).valida():
+        if tp.coord(i, j+1).valida():
             res[i][j+1] = self._criar_captura(
                 tabuleiro,
                 flags,

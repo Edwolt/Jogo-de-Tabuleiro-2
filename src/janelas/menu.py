@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pygame as pg
 from typing import Generator, NamedTuple
-from typing import Optional, Union
 from abc import ABC, abstractmethod
 from glob import glob
 
@@ -27,7 +26,7 @@ Listagem = Generator[Op, None, None]
 
 
 class Opcoes(ABC):
-    def __init__(self, menu: Menu, anterior: Optional[Opcoes]):
+    def __init__(self, menu: Menu, anterior: Opcoes | None):
         """
         Classe abstrata para criar menus de opções
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la
@@ -41,17 +40,18 @@ class Opcoes(ABC):
         self.opcoes: tuple[str, ...] = tuple()
 
     ##### Interface #####
-    def event(self, event: pg.event.Event) -> None:
-        if event.key == pg.K_UP:
-            if self.sel > 0:
-                self.sel -= 1
-            else:
-                self.sel = self.tamanho - 1
-        elif event.key == pg.K_DOWN:
-            if self.sel < self.tamanho - 1:
-                self.sel += 1
-            else:
-                self.sel = 0
+    def event(self, event: pg.event.EventType) -> None:
+        match event.key:
+            case pg.K_UP:
+                if self.sel > 0:
+                    self.sel -= 1
+                else:
+                    self.sel = self.tamanho - 1
+            case pg.K_DOWN:
+                if self.sel < self.tamanho - 1:
+                    self.sel += 1
+                else:
+                    self.sel = 0
 
     @property
     def tamanho(self) -> int:
@@ -63,7 +63,7 @@ class Opcoes(ABC):
         return self.opcoes[key]
 
     @abstractmethod
-    def executar(self, key) -> Union[None, Opcoes, tp.load_gen]:
+    def executar(self, key) -> Opcoes | tp.load_gen | None:
         """
         Executa a opção de número key
         :return: Pode ser
@@ -117,7 +117,7 @@ class OpcoesConfigs(Opcoes):
 
 
 class OpcoesPrincipal(Opcoes):
-    def __init__(self, menu: Menu, anterior: Optional[Opcoes] = None):
+    def __init__(self, menu: Menu, anterior: Opcoes | None = None):
         super().__init__(menu, anterior)
         self.opcoes = (
             'Config',
@@ -133,19 +133,20 @@ class OpcoesPrincipal(Opcoes):
     def executar(self, i=None):
         i = self.sel if i is None else i
         opcao = self.nome(i).lower()
-        if opcao == 'config':
-            return OpcoesConfigs(self.menu, self)
-        elif opcao == 'novo jogo':
-            self.menu.xadrez.__init__()
-        elif opcao == 'sair':
-            pg.quit()
-            quit(0)
-        else:
-            print(f'{opcao} não implementado')
+        match opcao:
+            case 'config':
+                return OpcoesConfigs(self.menu, self)
+            case 'novo jogo':
+                self.menu.xadrez.__init__()
+            case 'sair':
+                pg.quit()
+                quit(0)
+            case _ as opcao:
+                print(f'{opcao} não implementado')
 
 
 class Menu(Janela):
-    def __init__(self, xadrez, opcoes: Optional[Opcoes] = None):
+    def __init__(self, xadrez, opcoes: Opcoes | None = None):
         recursos = Recursos()
         self.xadrez = xadrez
 
@@ -161,26 +162,30 @@ class Menu(Janela):
             self.opcoes = opcoes
 
     ##### Interface #####
-    def event(self, event: pg.event.Event) -> None:
+    def event(self, event: pg.event.EventType) -> None:
         if event.type == pg.KEYDOWN:
-            if event.key == pg.K_RETURN:
-                ret = self.opcoes.executar(self.opcoes.sel)
-
-                if isinstance(ret, Opcoes):
-                    self.opcoes = ret
-                elif ret is None:
-                    self._finalizado = True
-                else:  # isinstance(ret, load_gen)
-                    self._loading = ret
-            elif event.key == pg.K_ESCAPE:
-                ret = self.opcoes.voltar()
-                if ret == None:
-                    self._finalizado = True
-                else:
-                    self.opcoes = ret
-            else:
-                self.opcoes.event(event)
             self._atualizacao = True
+            match event.key:
+                case pg.K_RETURN:
+                    ret = self.opcoes.executar(self.opcoes.sel)
+
+                    match ret:
+                        case Opcoes():
+                            self.opcoes = ret
+                        case None:
+                            self._finalizado = True
+                        case tp.load_gen():
+                            self._loading = ret
+
+                case pg.K_ESCAPE:
+                    ret = self.opcoes.voltar()
+
+                    if ret == None:
+                        self._finalizado = True
+                    else:
+                        self.opcoes = ret
+                case _:
+                    self.opcoes.event(event)
 
     def draw(self, canvas: pg.Surface) -> None:
         if not self._atualizacao:

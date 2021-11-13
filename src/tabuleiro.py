@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pygame as pg
-from typing import Optional
 from pecas import Promocao
 
 import tipos as tp
@@ -46,13 +45,14 @@ class Tabuleiro:
         elif isinstance(mov, MovimentoComplexo):
             mov.executar(self.tabuleiro, self.flags)
 
-            if isinstance(mov, Roque):
-                if self._rei.branco == mov.rei:
-                    self._rei.branco = mov.acao_rei.nova_pos
-                elif self._rei.preto == mov.rei:
-                    self._rei.preto = mov.acao_rei.nova_pos
-            elif isinstance(mov, Promocao):
-                self.promocao = mov
+            match mov:
+                case Roque():
+                    if self._rei.branco == mov.rei:
+                        self._rei.branco = mov.acao_rei.nova_pos
+                    elif self._rei.preto == mov.rei:
+                        self._rei.preto = mov.acao_rei.nova_pos
+                case Promocao():
+                    self.promocao = mov
 
             self.flags.clear()
             mov.atualiza_flags(self.flags)
@@ -69,7 +69,7 @@ class Tabuleiro:
 
         return False
 
-    def get_movimentos(self, pos: tp.coord) -> Optional[tp.movements]:
+    def get_movimentos(self, pos: tp.coord) -> tp.movements | None:
         """
         :return: Retorna um matriz movements com os movimentos legais para peça
         em pos
@@ -92,9 +92,9 @@ class Tabuleiro:
     def _tipo_casa(
         self,
         pos: tp.coord,
-        click: Optional[tp.coord],
-        movimento: tp.movements
-    ):
+        click: tp.coord | None,
+        movimento: tp.movements | None
+    ) -> str:
         i, j = pos
 
         if click is not None and pos == click:
@@ -125,8 +125,8 @@ class Tabuleiro:
     def draw(
         self,
         canvas: pg.Surface,
-        click: Optional[tp.coord],
-        movimento: Optional[tp.movements]
+        click: tp.coord | None,
+        movimento: tp.movements | None
     ) -> None:
         recursos = Recursos()
 

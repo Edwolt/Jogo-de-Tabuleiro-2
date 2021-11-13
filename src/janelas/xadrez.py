@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pygame as pg
-from typing import Optional
 
 import tipos as tp
 from recursos import Recursos
@@ -24,41 +23,42 @@ class Xadrez(Janela):
 
         self._click = None
         self._qsize = 0, 0
-        self.movimento: Optional[tp.movements] = None
+        self.movimento: tp.movements | None = None
 
     def atualiza_movimentos(self, pos: tp.coord) -> None:
         self.movimento = self.tabuleiro.get_movimentos(pos)
 
     ##### Interface #####
-    def event(self, event: pg.event.Event) -> None:
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
-            click_antigo = self._click
+    def event(self, event: pg.event.EventType) -> None:
+        match event:
+            case pg.event.EventType(type=pg.MOUSEBUTTONDOWN, button=1):
+                # click esquerdo
+                click_antigo = self._click
 
-            self._click = tp.coord(
-                int(event.pos[1] // self._qsize[1]),
-                int(event.pos[0] // self._qsize[0])
-            )
+                self._click = tp.coord(
+                    int(event.pos[1] // self._qsize[1]),
+                    int(event.pos[0] // self._qsize[0])
+                )
 
-            movimentado = False
-            if self.movimento and click_antigo:
-                movimento_oconteceu = self.tabuleiro.movimenta_peca(tp.action(
-                    click_antigo,
-                    self._click
-                ))
-                if movimento_oconteceu:
-                    self.movimento = None
-                    movimentado = True
+                movimentado = False
+                if self.movimento and click_antigo:
+                    movimento_oconteceu = self.tabuleiro.movimenta_peca(tp.action(
+                        click_antigo,
+                        self._click
+                    ))
+                    if movimento_oconteceu:
+                        self.movimento = None
+                        movimentado = True
 
-            if not movimentado:
-                self.atualiza_movimentos(self._click)
-            else:
-                # TODO isso não deveria ser resposabilidade de xadrez
-                self.tabuleiro.vez = not self.tabuleiro.vez
+                if not movimentado:
+                    self.atualiza_movimentos(self._click)
+                else:
+                    # TODO isso não deveria ser resposabilidade de xadrez
+                    self.tabuleiro.vez = not self.tabuleiro.vez
 
-            self._atualizacao = True
-
-        elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            self._escape = True
+                self._atualizacao = True
+            case pg.event.EventType(type=pg.KEYDOWN, key=pg.K_ESCAPE):
+                self._escape = True
 
     def draw(self, canvas: pg.Surface) -> None:
         if not self._atualizacao:

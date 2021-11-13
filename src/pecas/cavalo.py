@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import tipos as tp
 
 from .abc_movimento import Movimento
@@ -19,7 +17,7 @@ class Cavalo(Peca):
         self,
         tabuleiro: tp.board,
         acao: tp.action
-    ) -> Optional[Movimento]:
+    ) -> Movimento | None:
         """
         Retorna o Movimento usando acao se for valido
         Senão retorna None
@@ -40,6 +38,7 @@ class Cavalo(Peca):
         i, j = pos
 
         # Posições a verificar
+        # TODO usar direction
         VERIFICAR = (
             # Casas acima
             tp.coord(i-2, j-1),

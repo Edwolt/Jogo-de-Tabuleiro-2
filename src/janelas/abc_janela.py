@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 
 class Janela(ABC):
     @abstractmethod
-    def event(self, event: pg.Event) -> None:
+    def event(self, event: pg.event.EventType) -> None:
         """
         Recebe um evento e executa uma operação com ele
         :param event: evento

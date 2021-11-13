@@ -24,26 +24,28 @@ class ConfigBordas(Config):
 
         i, j = pos
 
-        cor = pg.Color(0, 0, 0)
-        if tipo == 'vazio':
-            cor = self.vazio[(i+j) % 2 == 0]
-        elif tipo == 'click':
-            cor = self.click
-        elif tipo == 'movimento':
-            cor = self.movimento
-        elif tipo == 'especial':
-            cor = self.movimento
-        elif tipo == 'captura':
-            cor = self.movimento
-        elif tipo == 'xeque':
-            pg.draw.rect(canvas, self.vazio[(i+j) % 2 == 0], quad)
-            pg.draw.circle(
-                canvas,
-                self.xeque,
-                (canvas.get_size()[0] / 2, canvas.get_size()[0]/2),
-                min(*canvas.get_size())/3
-            )
-            return
+        match tipo:
+            case 'vazio':
+                cor = self.vazio[(i+j) % 2 == 0]
+            case 'click':
+                cor = self.click
+            case 'movimento':
+                cor = self.movimento
+            case 'especial':
+                cor = self.movimento
+            case 'captura':
+                cor = self.movimento
+            case 'xeque':
+                pg.draw.rect(canvas, self.vazio[(i+j) % 2 == 0], quad)
+                pg.draw.circle(
+                    canvas,
+                    self.xeque,
+                    (canvas.get_size()[0] / 2, canvas.get_size()[0]/2),
+                    min(*canvas.get_size())/3
+                )
+                return
+            case _:
+                cor = pg.Color(0, 0, 0)
 
         pg.draw.rect(canvas, cor, quad)
 

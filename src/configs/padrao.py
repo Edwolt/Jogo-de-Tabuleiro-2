@@ -18,19 +18,17 @@ class ConfigPadrao(Config):
     def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
-        cor = pg.Color(0, 0, 0)
-        if tipo == 'vazio':
-            cor = self.vazio[(i+j) % 2 == 0]
-        elif tipo == 'click':
-            cor = self.click
-        elif tipo == 'movimento':
-            cor = self.movimento
-        elif tipo == 'especial':
-            cor = self.movimento
-        elif tipo == 'captura':
-            cor = self.movimento
-        elif tipo == 'xeque':
-            cor = self.xeque
+        match tipo:
+            case 'vazio':
+                cor = self.vazio[(i+j) % 2 == 0]
+            case 'click':
+                cor = self.click
+            case 'movimento' | 'especial' | 'captura':
+                 = self.movimento
+            case 'xeque':
+                cor = self.xeque
+            case _:
+                cor = pg.Color(0, 0, 0)
 
         canvas.fill(cor)
 

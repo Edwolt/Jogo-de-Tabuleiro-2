@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import tipos as tp
 
 from .abc_peca import Peca
@@ -39,7 +37,7 @@ class Rei(Peca):
         self,
         tabuleiro: tp.board,
         acao: tp.action
-    ) -> Optional[Movimento]:
+    ) -> Movimento | None:
         i, j = acao.nova_pos
         capturada = tabuleiro[i][j]
         if capturada is None or capturada.cor == self.cor:

@@ -40,18 +40,19 @@ class Escolha(Janela):
             i.notifica_movimento()
 
     ##### Interface #####
-    def event(self, event: pg.Event) -> None:
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:  # click esquerdo
-            i = int(event.pos[1] // self._qsize[1])
-            j = int(event.pos[0] // self._qsize[0])
-            print(i, j)
+    def event(self, event: pg.event.EventType) -> None:
+        match event:
+            case pg.event.EventType(type=pg.MOUSEBUTTONDOWN, button=1):
+                # click esquerdo
+                i = int(event.pos[1] // self._qsize[1])
+                j = int(event.pos[0] // self._qsize[0])
+                print(i, j)
 
-            if i == 0 and 0 <= j - 2 < 4:
-                self.escolhido = self.pecas[j - 2]
-                print(self.escolhido)
-
-        elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            self.escape = True
+                if i == 0 and 0 <= j - 2 < 4:
+                    self.escolhido = self.pecas[j - 2]
+                    print(self.escolhido)
+            case pg.event.EventType(type=pg.KEYDOWN, key=pg.K_ESCAPE):
+                self.escape = True
 
     def draw(self, canvas: pg.Surface) -> None:
         if not self.atualizacao:
