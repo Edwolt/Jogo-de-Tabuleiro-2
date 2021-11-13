@@ -86,7 +86,7 @@ class grad(NamedTuple):
             res[k] = int(a[k] + (b[k] - a[k]) * (c[k] / 255))
         return res
 
-    def tranparencia_padrao(self):
+    def transparencia_padrao(self):
         """Configura a transparência para variar de 0 a 255"""
         self.start.a = 0
         self.end.a = 255

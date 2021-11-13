@@ -21,8 +21,8 @@ class ConfigUltimateRandom(Config):
     def __init__(self):
         self.nomes = (
             Nome('Xadrez', tp.pb('Preto', 'Branco')),
-            Nome('Jogo de Tabuleiro', tp. pb('Escuro', 'Claro')),
-            Nome('Chess', tp. pb('Black', 'White')),
+            Nome('Jogo de Tabuleiro', tp.pb('Escuro', 'Claro')),
+            Nome('Chess', tp.pb('Black', 'White')),
             Nome('Chess Game', tp.pb('Player 2', 'Player 1')),
         )
 
@@ -37,8 +37,8 @@ class ConfigUltimateRandom(Config):
             tp.grad(randcor(), randcor()),
             tp.grad(randcor(), randcor())
         )
-        res[False].tranparencia_padrao()
-        res[True].tranparencia_padrao()
+        res[False].transparencia_padrao()
+        res[True].transparencia_padrao()
 
         return res
 

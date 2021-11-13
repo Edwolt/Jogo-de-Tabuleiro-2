@@ -56,8 +56,8 @@ class ConfigFullRandom(Config):
             tp.grad(randcor(), randcor()),
             tp.grad(randcor(), randcor())
         )
-        res[False].tranparencia_padrao()
-        res[True].tranparencia_padrao()
+        res[False].transparencia_padrao()
+        res[True].transparencia_padrao()
 
         return res
 

@@ -83,13 +83,13 @@ def mover_peca(tabuleiro: tp.board, movimento: tp.action) -> None:
 
 def calcula_direcao(
         res: tp.movements,
-        tabuleiro: tp. board,
+        tabuleiro: tp.board,
         pos: tp.coord,
         direcoes: tuple[tp.direction, ...],
         cor: bool,
         rei: bool = False
 ) -> None:
-    for (di, dj) in direcoes:
+    for di, dj in direcoes:
         i, j = pos
         i, j = i + di, j + dj
         while tp.coord(i, j).valida():
