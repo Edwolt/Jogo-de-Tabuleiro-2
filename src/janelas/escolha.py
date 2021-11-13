@@ -20,7 +20,6 @@ class Escolha(Janela):
         * Torre
         * Rainha
         """
-
         self.xadrez = xadrez
         self.promocao = promocao
         self.cor = self.promocao.cor

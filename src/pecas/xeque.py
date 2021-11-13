@@ -11,7 +11,6 @@ def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
     Testa se o rei está em xeque
     :param pos_rei: posição do rei
     """
-
     from .rei import Rei
 
     ri, rj = pos_rei

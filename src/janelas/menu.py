@@ -19,7 +19,6 @@ class Op(NamedTuple):
     sel: se é aquela opção que está selecionada
     nome: nome da opção selecionada
     """
-
     sel: bool
     nome: str
 
@@ -28,7 +27,7 @@ Listagem = Generator[Op, None, None]
 
 
 class Opcoes(ABC):
-    def __init__(self, menu: 'Menu', anterior: 'Optional[Opcoes]'):
+    def __init__(self, menu: Menu, anterior: Optional[Opcoes]):
         """
         Classe abstrata para criar menus de opções
         A objeto armazena qual opção está armazenado nela e é capaz de executá-la
@@ -36,11 +35,10 @@ class Opcoes(ABC):
         :param anterior: Objeto Opcoes que estava sendo exibida anteriormente e
         portanto é para onde deve voltar
         """
-
         self.menu = menu
         self.anterior = anterior
         self.sel = 0
-        self.opcoes: tuple[str, ...] = ()
+        self.opcoes: tuple[str, ...] = tuple()
 
     ##### Interface #####
     def event(self, event: pg.event.Event) -> None:
@@ -65,7 +63,7 @@ class Opcoes(ABC):
         return self.opcoes[key]
 
     @abstractmethod
-    def executar(self, key) -> 'Union[None, Opcoes, tp.load_gen]':
+    def executar(self, key) -> Union[None, Opcoes, tp.load_gen]:
         """
         Executa a opção de número key
         :return: Pode ser
@@ -76,7 +74,6 @@ class Opcoes(ABC):
 
     def listar(self) -> Listagem:
         """:yield: Op(selecionado, nome)"""
-
         yield from (
             Op(self.sel == i, self.nome(i))
             for i in range(self.tamanho)
@@ -87,13 +84,12 @@ class Opcoes(ABC):
 
 
 class OpcoesConfigs(Opcoes):
-    def __init__(self, menu: 'Menu', anterior: Opcoes):
+    def __init__(self, menu: Menu, anterior: Opcoes):
         super().__init__(menu, anterior)
         self.configs = self.listar_configs()
 
     def listar_configs(self) -> list[str]:
         """Lista todas as configs na pasta Configs"""
-
         PASTA = 'configs'
         EXT = '.py'
         BUSCA = f'{PASTA}/*{EXT}'  # configs/*.py
@@ -121,7 +117,7 @@ class OpcoesConfigs(Opcoes):
 
 
 class OpcoesPrincipal(Opcoes):
-    def __init__(self, menu: 'Menu', anterior: Optional[Opcoes] = None):
+    def __init__(self, menu: Menu, anterior: Optional[Opcoes] = None):
         super().__init__(menu, anterior)
         self.opcoes = (
             'Config',

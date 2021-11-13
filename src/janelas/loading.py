@@ -20,7 +20,7 @@ class Loading(Janela):
         self.fonte_loading = recursos.config.fonte(50)
 
     ##### Interface #####
-    def event(self, event: pg.Event) -> None:
+    def event(self, event: pg.event.Event) -> None:
         pass
 
     def draw(self, canvas: pg.Surface) -> None:

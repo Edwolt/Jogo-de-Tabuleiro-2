@@ -15,7 +15,6 @@ class Peca(ABC):
 
     def __init__(self, cor: bool):
         """:param cor: False: 'preto'; True: 'branco'"""
-
         self.cor = cor
 
     def draw(self, canvas: pg.Surface) -> None:
@@ -23,7 +22,6 @@ class Peca(ABC):
         Desenha a peça no canvas
         :param canvas: Surface onde o jogo sera desenhado
         """
-
         recursos = rsc.Recursos()
 
         sprite = recursos.get_asset(self.nome, self.cor)
@@ -32,7 +30,6 @@ class Peca(ABC):
 
     def notifica_movimento(self) -> None:
         """Notifica a peça que ela foi movimentada"""
-
         return
 
     @abstractmethod
@@ -60,7 +57,6 @@ class Peca(ABC):
         :param pos: posição da peça, cujos movimentos estão sendo calculados
         :return: matriz movements com todos os movimentos legais
         """
-
         res = movements_vazio()
         movimentos = self.get_movimentos_simples(tabuleiro, flags, pos)
         for i, linha in enumerate(movimentos):

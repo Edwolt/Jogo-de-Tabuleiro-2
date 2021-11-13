@@ -71,12 +71,12 @@ class Tabuleiro:
 
     def get_movimentos(self, pos: tp.coord) -> Optional[tp.movements]:
         """
-
         :param pos: [description]
         :return: Retorna um matriz movements com os movimentos legais para peça
         em pos
         Se pos não for uma peça aliada retorna None
         """
+        # TODO atualizar docstring
 
         i, j = pos
         peca = self.tabuleiro[i][j]
@@ -92,8 +92,12 @@ class Tabuleiro:
         else:
             return None
 
-    def draw(self, canvas: pg.Surface, click: Optional[tp.coord], movimento: Optional[tp.movements]) -> None:
-
+    def draw(
+        self,
+        canvas: pg.Surface,
+        click: Optional[tp.coord],
+        movimento: Optional[tp.movements]
+    ) -> None:
         recursos = Recursos()
 
         size = canvas.get_size()

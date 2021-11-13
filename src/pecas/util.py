@@ -26,6 +26,7 @@ def board_inicial() -> tp.board:
     e os espacos com pecas são objetos
     """
 
+    # TODO melhorar a forma desses imports
     from .rei import Rei
     from .rainha import Rainha
     from .torre import Torre
@@ -81,6 +82,7 @@ def mover_peca(tabuleiro: tp.board, movimento: tp.action) -> None:
     peca is None or peca.notifica_movimento()
 
 
+# TODO usar coord + direction para tornar o código mais legível
 def calcula_direcao(
         res: tp.movements,
         tabuleiro: tp.board,

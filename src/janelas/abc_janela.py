@@ -17,7 +17,7 @@ class Janela(ABC):
         """:param canvas: Surface onde o jogo sera desenhado"""
 
     @abstractmethod
-    def new(self) -> 'Janela':
+    def new(self) -> Janela:
         """
         Diz qual a janela a ser exibida no próximo frame
         Para continuar na mesma janela basta retorna ela mesma

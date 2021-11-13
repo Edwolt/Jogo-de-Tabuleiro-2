@@ -12,7 +12,12 @@ class Rainha(Peca):
     def __init__(self, cor: bool):
         super().__init__(cor)
 
-    def get_movimentos_simples(self, tabuleiro: tp.board, flags: list, pos: tp.coord) -> tp.movements:
+    def get_movimentos_simples(
+        self,
+        tabuleiro: tp.board,
+        flags: list,
+        pos: tp.coord
+    ) -> tp.movements:
         res = movements_vazio()
         direcoes = (
             tp.direction(-1, 0),   # Cima

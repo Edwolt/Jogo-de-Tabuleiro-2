@@ -17,7 +17,6 @@ def get_config(nome: str) -> Config:
 
 def caminho_asset(nome: str, png_min: bool = False) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
-
     return f'assets/{nome}.png' + ('.min' if png_min else '')
 
 
@@ -59,7 +58,6 @@ class Recursos(metaclass=Singleton):
         :param gradientes: gradientes para a peça preta e branca
         :return: sprites coloridos para a peça preta e para branca
         """
-
         sprites = tp.pb(sprite.copy(), sprite.copy())
         w, h = sprite.get_size()
 

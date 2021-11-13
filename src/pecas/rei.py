@@ -17,7 +17,6 @@ class Roque(MovimentoComplexo):
         :param acao_rei: movimento a ser feito pelo rei
         :param acao_torre: movimento a ser feito pela torre
         """
-
         self.acao_rei = acao_rei
         self.acao_torre = acao_torre
 

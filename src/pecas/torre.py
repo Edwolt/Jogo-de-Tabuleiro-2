@@ -16,7 +16,12 @@ class Torre(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_movimentos_simples(self, tabuleiro: tp.board, flags: list, pos: tp.coord) -> tp.movements:
+    def get_movimentos_simples(
+        self,
+        tabuleiro: tp.board,
+        flags: list,
+        pos: tp.coord
+    ) -> tp.movements:
         res = movements_vazio()
         direcoes = (
             tp.direction(-1, 0),  # Cima

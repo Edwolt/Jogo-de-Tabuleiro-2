@@ -34,7 +34,6 @@ class MovimentoComplexo(ABC, Movimento):
     """
     Classe abstrata para os movimentos que não são apenas mover a peça de um lugar para outro
     """
-
     especial: bool = False
     avanco: bool = False
 

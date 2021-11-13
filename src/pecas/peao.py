@@ -17,7 +17,6 @@ class Promocao(MovimentoComplexo):
         :param pos: posição atual do peão
         :param cor: cor da peça (False: 'preto'; True: 'branco')
         """
-
         self.pos = acao.pos
         self.promocao = acao.nova_pos
         self.cor = cor
@@ -58,7 +57,6 @@ class AvancoDuplo(MovimentoComplexo):
         * meio: posição pela qual o peão passará para que seja possível calcular onde ele poderá ser capturado por enpassant
         * nova_pos: posição final do peão
         """
-
         self.cor = cor
         self.caminho_acao = caminho_acao
 
@@ -79,7 +77,6 @@ class EnPassant(MovimentoComplexo):
         * nova_pos: posição para o qual o peão aliado será movido
         :param capturado_pos: posição do peão inimigo a ser capturado
         """
-
         self.acao = acao
         self.capturado_pos = capturado_pos
 
@@ -99,7 +96,12 @@ class Peao(Peca):
     def notifica_movimento(self) -> None:
         self.movimentou = True
 
-    def get_enpassant(self, flags: list, nova_pos):
+    # TODO type notation
+    def get_enpassant(
+        self,
+        flags: list,
+        nova_pos
+    ) -> Optional[tuple[tp.coord, tp.coord]]:
         for flag in flags:
             if flag[0] == 'enpassant':
                 _, cor, (_, meio, final) = flag

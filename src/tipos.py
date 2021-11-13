@@ -32,7 +32,6 @@ class load_bar(NamedTuple):
     tam: O total de tarefas a ser feita, incluindo as que já foram concluídas
     val: O quanto já foi feito
     """
-
     tam: int
     val: int
 
@@ -74,7 +73,6 @@ class pb(Generic[T]):
 
 class grad(NamedTuple):
     """Representa um gradiente de cor com um valor inicial e um final"""
-
     start: pg.Color
     end: pg.Color
 
@@ -99,7 +97,6 @@ class direction(NamedTuple):
 
 class coord(NamedTuple):
     """Um coordenada dentro do tabuleiro"""
-
     i: int
     j: int
 
@@ -112,17 +109,18 @@ class coord(NamedTuple):
         """Verifica se é uma coordenada válida"""
         return 0 <= self.i < 8 and 0 <= self.j < 8
 
+    def __add__(self, other: direction) -> coord:
+        return coord(self.i + other.i, self.j + other.j)
+
 
 class action(NamedTuple):
     """Um movimento a ser feito"""
-
     pos: coord
     nova_pos: coord
 
 
 class pathaction(NamedTuple):
     """Um movimento a ser feito e uma coordenada pelo qual a peça passou"""
-
     pos: coord
     meio: coord
     nova_pos: coord
