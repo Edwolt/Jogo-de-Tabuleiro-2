@@ -175,7 +175,7 @@ class Menu(Janela):
             elif event.key == pg.K_ESCAPE:
                 ret = self.opcoes.voltar()
                 if ret == None:
-                    self._finalizado
+                    self._finalizado = True
                 else:
                     self.opcoes = ret
             else:
