@@ -39,6 +39,7 @@ class Opcoes(ABC):
         self.sel = 0
         self.opcoes: tuple[str, ...] = tuple()
 
+    # Falsy
     ##### Interface #####
     def event(self, event: pg.event.EventType) -> None:
         match event.key:
@@ -199,11 +200,11 @@ class Menu(Janela):
         altura = self.fonte.size('')[1]
         y = 0
         for selecionado, nome in self.opcoes.listar():
-            texto_str = ('> ' if selecionado else '  ') + nome
+            texto_str, cor = recursos.config.menu_opcao(nome, selecionado)
             texto = self.fonte.render(
                 texto_str,
                 False,
-                recursos.config.menu_cor(selecionado)
+                cor
             )
             canvas.blit(texto, (0, y))
             y += altura

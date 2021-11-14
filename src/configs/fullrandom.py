@@ -64,8 +64,13 @@ class ConfigFullRandom(Config):
     def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> pg.Color:
-        return self.foreground
+    def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
+        if selecionado:
+            opcao = '> ' + opcao
+        else:
+            opcao = '  ' + opcao
+
+        return opcao, self.foreground
 
     def titulo(self, vez: bool) -> str:
         if self.vez != vez:

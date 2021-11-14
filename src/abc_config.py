@@ -35,8 +35,9 @@ class Config(ABC):
         """Colore o fundo do menu (canvas)"""
 
     @abstractmethod
-    def menu_cor(self, selecionado: bool) -> pg.Color:
+    def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
         """
+        :param opcao: O texto da opcao
         :param selecionado: Se a opção está selecionada
         :return: Cor que será usada na fonte para desenhar essa opção
         """

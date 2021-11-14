@@ -24,7 +24,7 @@ class ConfigPadrao(Config):
             case 'click':
                 cor = self.click
             case 'movimento' | 'especial' | 'captura':
-                 = self.movimento
+                cor = self.movimento
             case 'xeque':
                 cor = self.xeque
             case _:
@@ -41,8 +41,13 @@ class ConfigPadrao(Config):
     def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> pg.Color:
-        return self.foreground
+    def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
+        if selecionado:
+            opcao = '> ' + opcao
+        else:
+            opcao = '  ' + opcao
+
+        return opcao, self.foreground
 
     def loading_cores(self) -> tuple[pg.Color, pg.Color]:
         return pg.Color(0, 255, 0), pg.Color(255, 0, 0)

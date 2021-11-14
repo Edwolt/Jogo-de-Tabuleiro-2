@@ -15,6 +15,7 @@ class ConfigBordas(Config):
         self.borda = pg.Color(100, 100, 100)
         self.background = pg.Color(0, 0, 0)
         self.foreground = pg.Color(255, 255, 255)
+        self.selecionado = pg.Color(255,0,0)
 
     def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         size = canvas.get_size()
@@ -58,8 +59,11 @@ class ConfigBordas(Config):
     def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(self.background)
 
-    def menu_cor(self, selecionado: bool) -> pg.Color:
-        return self.foreground
+    def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
+        if selecionado:
+            return '> ' + opcao, self.selecionado
+        else:
+            return '  ' + opcao, self.foreground
 
     def loading_cores(self) -> tuple[pg.Color, pg.Color]:
         return pg.Color(0, 255, 0), pg.Color(255, 0, 0)

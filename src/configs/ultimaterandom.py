@@ -44,8 +44,13 @@ class ConfigUltimateRandom(Config):
     def menu_fundo(self, canvas: pg.Surface) -> None:
         canvas.fill(randcor())
 
-    def menu_cor(self, selecionado: bool) -> pg.Color:
-        return randcor()
+    def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
+        if selecionado:
+            opcao = "> " + opcao
+        else:
+            opcao = "  " + opcao
+
+        return opcao, randcor()
 
     def loading_cores(self) -> tuple[pg.Color, pg.Color]:
         return randcor(), randcor()
