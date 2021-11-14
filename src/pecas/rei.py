@@ -50,21 +50,22 @@ class Rei(Peca):
         i, j = pos
 
         # Posições a verificar
-        VERIFICAR = (
+        DIRECOES = (
             # Casas acima do rei
-            tp.coord(i - 1, j - 1),
-            tp.coord(i - 1, j),
-            tp.coord(i - 1, j + 1),
+            tp.direction(-1, -1),
+            tp.direction(-1, 0),
+            tp.direction(-1, 1),
             # Casas do meio
-            tp.coord(i, j - 1),
-            tp.coord(i, j + 1),
+            tp.direction(0, -1),
+            tp.direction(0, 1),
             # Casas abaixo do rei
-            tp.coord(i + 1, j - 1),
-            tp.coord(i + 1, j),
-            tp.coord(i + 1, j + 1),
+            tp.direction(1, -1),
+            tp.direction(1, 0),
+            tp.direction(1, 1),
         )
 
-        for nova_pos in VERIFICAR:
+        for direcao in DIRECOES:
+            nova_pos = pos + direcao
             if nova_pos.valida():
                 m, n = nova_pos
                 res[m][n] = self._criar_movimento(

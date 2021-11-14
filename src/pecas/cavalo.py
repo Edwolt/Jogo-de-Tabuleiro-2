@@ -32,24 +32,24 @@ class Cavalo(Peca):
         res = movements_vazio()
         i, j = pos
 
-        # Posições a verificar
-        # TODO usar direction
-        VERIFICAR = (
+        # Direções a verificar
+        DIRECOES = (
             # Casas acima
-            tp.coord(i - 2, j - 1),
-            tp.coord(i - 2, j + 1),
+            tp.direction(-2, -1),
+            tp.direction(-2, 1),
             # Casas abaixo
-            tp.coord(i + 2, j - 1),
-            tp.coord(i + 2, j + 1),
+            tp.direction(2, -1),
+            tp.direction(2, 1),
             # Casas a esquerda
-            tp.coord(i - 1, j - 2),
-            tp.coord(i + 1, j - 2),
+            tp.direction(-1, -2),
+            tp.direction(1, -2),
             # Casas a direita
-            tp.coord(i - 1, j + 2),
-            tp.coord(i + 1, j + 2),
+            tp.direction(-1, 2),
+            tp.direction(1, 2),
         )
 
-        for nova_pos in VERIFICAR:
+        for direcao in DIRECOES:
+            nova_pos = pos + direcao
             if nova_pos.valida():
                 m, n = nova_pos
                 res[m][n] = self._criar_movimento(

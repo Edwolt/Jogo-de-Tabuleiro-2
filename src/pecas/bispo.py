@@ -16,11 +16,11 @@ class Bispo(Peca):
         self, tabuleiro: tp.board, flags: list, pos: tp.coord
     ) -> tp.movements:
         res = movements_vazio()
-        direcoes = (
+        DIRECOES = (
             tp.direction(-1, 1),  # Cima Direita
             tp.direction(-1, -1),  # Cima Esquerda
             tp.direction(1, 1),  # Baixo Direita
             tp.direction(1, -1),  # Baixo Esquerda
         )
-        calcula_direcao(res, tabuleiro, pos, direcoes, self.cor)
+        calcula_direcao(res, tabuleiro, pos, DIRECOES, self.cor)
         return res

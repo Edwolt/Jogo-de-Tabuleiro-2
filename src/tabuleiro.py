@@ -108,12 +108,10 @@ class Tabuleiro:
                 else:
                     return "movimento"
 
-        em_xeque = (
+        if (
             tp.coord(i, j) == self._rei.branco
             or tp.coord(i, j) == self._rei.preto
-        ) and testar_xeque(self.tabuleiro, self.flags, tp.coord(i, j))
-
-        if em_xeque:
+        ) and testar_xeque(self.tabuleiro, self.flags, tp.coord(i, j)):
             return "xeque"
 
         return "vazio"
