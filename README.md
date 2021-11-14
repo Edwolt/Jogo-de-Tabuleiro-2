@@ -6,3 +6,5 @@ a fim de fazer o jogo ficar completo, e restruturar o código de forma mais leg�
 Esse repositório é um jogo feito em python usando o pygame
 
 ![Imagem](imagens/xadrez.png)
+
+Para rodar o jogo precisa rodar o arquivo jogar.pyw dentro da pasta src
