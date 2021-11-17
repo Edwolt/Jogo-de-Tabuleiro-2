@@ -15,21 +15,25 @@ def get_config(nome: str) -> Config:
     return cls()
 
 
-def caminho_asset(nome: str, png_min: bool = False) -> str:
+def caminho_asset(nome: str, *, min_png: bool = False) -> str:
     """Retorna o caminho para o asset da peca com o identificador passado"""
-    return f"assets/{nome}.png" + (".min" if png_min else "")
+    if min_png:
+        return f"assets/Min/{nome}.min.png"
+    else:
+        return f"assets/{nome}.png"
 
 
 class Recursos(metaclass=Singleton):
     def __init__(
         self,
+        *,
         size: tuple[int, int] = (800, 800),
         framerate: int = 60,
-        png_min: bool = False,
+        min_png: bool = False,
     ):
         self.size = size
         self.framerate = framerate
-        self._png_min = png_min
+        self._min_png = min_png
 
         self._config = None
         self._assets = dict()
@@ -73,7 +77,7 @@ class Recursos(metaclass=Singleton):
         yield [tp.load_bar(len(LISTA_NOME_PECAS), 0)]
         for k, i in enumerate(LISTA_NOME_PECAS):
             try:
-                img = pg.image.load(caminho_asset(i, self._png_min))
+                img = pg.image.load(caminho_asset(i, min_png=self._min_png))
             except:
                 img = pg.image.load(caminho_asset(i))
 

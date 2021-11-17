@@ -6,12 +6,13 @@
 
 size=$1
 
-shift $($1)
+shift
 echo "Aplying resize: $size"
 echo
 
-for i in $*
-do
-	convert $i -resize $size $i.min;
-	echo "convert $i"
+mkdir -p Min
+for i in $*; do
+    i=${i%.png}
+    convert $i.png -resize $size Min/$i.min.png &&
+        echo "convert $i"
 done

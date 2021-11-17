@@ -8,8 +8,8 @@ from janelas import Loading, Xadrez
 
 def main():
     pg.init()
-    recursos = Recursos(size=(800, 800), framerate=60, png_min=True)
-    recursos.set_config('bordas')
+    recursos = Recursos(size=(800, 800), framerate=60, min_png=True)
+    recursos.set_config("bordas")
 
     screen = pg.display.set_mode(recursos.size)
     clock = pg.time.Clock()
@@ -31,5 +31,5 @@ def main():
             clock.tick(recursos.framerate)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
