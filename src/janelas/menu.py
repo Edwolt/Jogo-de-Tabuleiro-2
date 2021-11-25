@@ -39,7 +39,6 @@ class Opcoes(ABC):
         self.sel = 0
         self.opcoes: tuple[str, ...] = tuple()
 
-    # Falsy
     ##### Interface #####
     def event(self, event: pg.event.EventType) -> None:
         match event.key:
