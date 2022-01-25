@@ -3,10 +3,9 @@ from __future__ import annotations
 import pygame as pg
 
 import tipos as tp
-from abc_config import Config
 
 
-class ConfigAzul(Config):
+class ConfigAzul():
     def __init__(self):
         self.vazio = tp.pb(pg.Color(0, 14, 173), pg.Color(94, 255, 91))
         self.click = pg.Color(255, 0, 0)

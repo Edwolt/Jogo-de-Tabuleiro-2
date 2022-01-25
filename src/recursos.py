@@ -65,7 +65,7 @@ class Recursos(metaclass=Singleton):
 
         for i in range(w):
             for j in range(h):
-                cor = sprite.get_at((i, j))
+                cor: pg.Color = sprite.get_at((i, j))
                 sprites.preto.set_at((i, j), gradientes.preto.gerar_cor(cor))
                 sprites.branco.set_at((i, j), gradientes.branco.gerar_cor(cor))
 

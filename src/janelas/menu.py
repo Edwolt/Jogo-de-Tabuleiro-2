@@ -168,7 +168,6 @@ class Menu(Janela):
             match event.key:
                 case pg.K_RETURN:
                     ret = self.opcoes.executar(self.opcoes.sel)
-
                     match ret:
                         case Opcoes():
                             self.opcoes = ret

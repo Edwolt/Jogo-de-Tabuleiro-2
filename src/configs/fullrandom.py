@@ -5,7 +5,6 @@ from typing import NamedTuple
 from random import randint
 
 import tipos as tp
-from abc_config import Config
 
 
 def randcor() -> pg.Color:
@@ -17,7 +16,7 @@ class Nome(NamedTuple):
     jogador: tp.pb[str]
 
 
-class ConfigFullRandom(Config):
+class ConfigFullRandom():
     def __init__(self):
         self.nomes = (
             Nome('Xadrez', tp.pb('Preto', 'Branco')),

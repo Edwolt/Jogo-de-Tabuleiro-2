@@ -3,10 +3,9 @@ from __future__ import annotations
 import pygame as pg
 
 import tipos as tp
-from abc_config import Config
 
 
-class ConfigPadrao(Config):
+class ConfigPadrao():
     def __init__(self):
         self.vazio = tp.pb(pg.Color(0, 0, 0), pg.Color(255, 255, 255))
         self.click = pg.Color(255, 255, 0)

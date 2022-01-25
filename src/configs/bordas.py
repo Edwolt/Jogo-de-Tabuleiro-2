@@ -3,10 +3,9 @@ from __future__ import annotations
 import pygame as pg
 
 import tipos as tp
-from abc_config import Config
 
 
-class ConfigBordas(Config):
+class ConfigBordas():
     def __init__(self):
         self.vazio = tp.pb(pg.Color(124, 49, 0), pg.Color(214, 165, 132))
         self.click = pg.Color(153, 0, 0)
