@@ -6,6 +6,7 @@ from recursos import Recursos
 from janelas import Loading, Xadrez
 
 
+# TODO separar pastas de fonte e imagens em assets
 def main():
     pg.init()
     recursos = Recursos(size=(800, 800), framerate=60, min_png=True)

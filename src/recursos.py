@@ -51,6 +51,7 @@ class Recursos(metaclass=Singleton):
     def set_config(self, config: str) -> None:
         self._config = get_config(config)
 
+    # TODO separa imagem de recursos
     def gerar_imagem(
         self, sprite: pg.Surface, gradientes: tp.pb[tp.grad]
     ) -> tp.pb[pg.Surface]:

@@ -11,7 +11,7 @@ def testar_xeque(tabuleiro: tp.board, flags: list, pos_rei: tp.coord) -> bool:
     Testa se o rei está em xeque
     :param pos_rei: posição do rei
     """
-    from .rei import Rei
+    from .rei import Rei  # TODO resolve the circular import
 
     ri, rj = pos_rei
     rei = tabuleiro[ri][rj]

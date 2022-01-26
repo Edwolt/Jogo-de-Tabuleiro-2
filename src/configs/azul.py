@@ -5,7 +5,7 @@ import pygame as pg
 import tipos as tp
 
 
-class ConfigAzul():
+class ConfigAzul:
     def __init__(self):
         self.vazio = tp.pb(pg.Color(0, 14, 173), pg.Color(94, 255, 91))
         self.click = pg.Color(255, 0, 0)
@@ -17,11 +17,11 @@ class ConfigAzul():
         i, j = pos
 
         match tipo:
-            case 'vazio':
-                cor = self.vazio[(i+j) % 2 == 0]
-            case 'click':
+            case "vazio":
+                cor = self.vazio[(i + j) % 2 == 0]
+            case "click":
                 cor = self.click
-            case 'movimento' | 'captura':
+            case "movimento" | "captura":
                 cor = self.movimento
             case _:
                 cor = pg.Color(0, 0, 0)
@@ -31,7 +31,7 @@ class ConfigAzul():
     def pecas_cor(self) -> tp.pb[tp.grad]:
         return tp.pb(
             tp.grad(pg.Color(0, 0, 0, 0), pg.Color(100, 100, 100, 255)),
-            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255))
+            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255)),
         )
 
     def menu_fundo(self, canvas: pg.Surface) -> None:
@@ -39,9 +39,9 @@ class ConfigAzul():
 
     def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
         if selecionado:
-            opcao = '> ' + opcao
+            opcao = "> " + opcao
         else:
-            opcao = '  ' + opcao
+            opcao = "  " + opcao
 
         return opcao, self.foreground
 
@@ -49,13 +49,12 @@ class ConfigAzul():
         return pg.Color(0, 255, 0), pg.Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
-        texto_cor = tp.pb('Preto', 'Braco')
-        return 'Xadrez : ' + texto_cor[vez]
+        texto_cor = tp.pb("Preto", "Braco")
+        return "Xadrez : " + texto_cor[vez]
 
     def fonte(self, tam) -> pg.font.Font:
         return pg.font.Font(
-            'assets/inconsolata/static/Inconsolata-Medium.ttf',
-            tam
+            "assets/inconsolata/static/Inconsolata-Medium.ttf", tam
         )
 
 

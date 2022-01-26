@@ -5,7 +5,7 @@ import pygame as pg
 import tipos as tp
 
 
-class ConfigPadrao():
+class ConfigPadrao:
     def __init__(self):
         self.vazio = tp.pb(pg.Color(0, 0, 0), pg.Color(255, 255, 255))
         self.click = pg.Color(255, 255, 0)
@@ -18,13 +18,13 @@ class ConfigPadrao():
         i, j = pos
 
         match tipo:
-            case 'vazio':
-                cor = self.vazio[(i+j) % 2 == 0]
-            case 'click':
+            case "vazio":
+                cor = self.vazio[(i + j) % 2 == 0]
+            case "click":
                 cor = self.click
-            case 'movimento' | 'especial' | 'captura':
+            case "movimento" | "especial" | "captura":
                 cor = self.movimento
-            case 'xeque':
+            case "xeque":
                 cor = self.xeque
             case _:
                 cor = pg.Color(0, 0, 0)
@@ -34,7 +34,7 @@ class ConfigPadrao():
     def pecas_cor(self) -> tp.pb[tp.grad]:
         return tp.pb(
             tp.grad(pg.Color(0, 0, 0, 0), pg.Color(100, 100, 100, 255)),
-            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255))
+            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255)),
         )
 
     def menu_fundo(self, canvas: pg.Surface) -> None:
@@ -42,9 +42,9 @@ class ConfigPadrao():
 
     def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
         if selecionado:
-            opcao = '> ' + opcao
+            opcao = "> " + opcao
         else:
-            opcao = '  ' + opcao
+            opcao = "  " + opcao
 
         return opcao, self.foreground
 
@@ -52,13 +52,12 @@ class ConfigPadrao():
         return pg.Color(0, 255, 0), pg.Color(255, 0, 0)
 
     def titulo(self, vez: bool) -> str:
-        texto_cor = tp.pb('Preto', 'Branco')
-        return 'Xadrez : ' + texto_cor[vez]
+        texto_cor = tp.pb("Preto", "Branco")
+        return "Xadrez : " + texto_cor[vez]
 
     def fonte(self, tam) -> pg.font.Font:
         return pg.font.Font(
-            'assets/inconsolata/static/Inconsolata-Medium.ttf',
-            tam
+            "assets/inconsolata/static/Inconsolata-Medium.ttf", tam
         )
 
 

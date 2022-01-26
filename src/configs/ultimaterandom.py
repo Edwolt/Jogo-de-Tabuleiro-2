@@ -16,7 +16,7 @@ class Nome(NamedTuple):
     jogador: tp.pb[str]
 
 
-class ConfigUltimateRandom():
+class ConfigUltimateRandom:
     def __init__(self):
         self.nomes = (
             Nome("Xadrez", tp.pb("Preto", "Branco")),

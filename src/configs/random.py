@@ -16,13 +16,13 @@ class Nome(NamedTuple):
     jogador: tp.pb[str]
 
 
-class ConfigRandom():
+class ConfigRandom:
     def __init__(self):
         self.nomes = (
-            Nome('Xadrez', tp.pb('Preto', 'Branco')),
-            Nome('Jogo de Tabuleiro', tp.pb('Escuro', 'Claro'), ),
-            Nome('Chess', tp.pb('Black', 'White')),
-            Nome('Chess Game', tp.pb('Player 2', 'Player 1')),
+            Nome("Xadrez", tp.pb("Preto", "Branco")),
+            Nome("Jogo de Tabuleiro", tp.pb("Escuro", "Claro")),
+            Nome("Chess", tp.pb("Black", "White")),
+            Nome("Chess Game", tp.pb("Player 2", "Player 1")),
         )
 
         self.vazio = tp.pb(randcor(), randcor())
@@ -32,17 +32,17 @@ class ConfigRandom():
         self.foreground = pg.Color(255, 255, 255)
 
         self.vez = True
-        self.titulo_anterior = '.'
+        self.titulo_anterior = "."
 
     def quadrado(self, canvas: pg.Surface, pos: tp.coord, tipo: str) -> None:
         i, j = pos
 
         match tipo:
-            case 'vazio':
-                cor = self.vazio[(i+j) % 2 == 0]
-            case 'click':
+            case "vazio":
+                cor = self.vazio[(i + j) % 2 == 0]
+            case "click":
                 cor = self.click
-            case 'movimento' | 'captura':
+            case "movimento" | "captura":
                 cor = self.movimento
             case _:
                 cor = pg.Color(0, 0, 0)
@@ -52,7 +52,7 @@ class ConfigRandom():
     def pecas_cor(self) -> tp.pb[tp.grad]:
         return tp.pb(
             tp.grad(pg.Color(0, 0, 0, 0), pg.Color(100, 100, 100, 255)),
-            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255))
+            tp.grad(pg.Color(100, 100, 100, 0), pg.Color(255, 255, 255, 255)),
         )
 
     def menu_fundo(self, canvas: pg.Surface) -> None:
@@ -60,9 +60,9 @@ class ConfigRandom():
 
     def menu_opcao(self, opcao: str, selecionado: bool) -> tuple[str, pg.Color]:
         if selecionado:
-            opcao = '> ' + opcao
+            opcao = "> " + opcao
         else:
-            opcao = '  ' + opcao
+            opcao = "  " + opcao
 
         return opcao, self.foreground
 
@@ -73,15 +73,14 @@ class ConfigRandom():
         if self.vez != vez:
             self.vez = vez
             x, p = self.nomes[randint(0, len(self.nomes) - 1)]
-            self.titulo_anterior = f'{x} : {p[vez]}'
-            return f'{x} : {p[vez]}'
+            self.titulo_anterior = f"{x} : {p[vez]}"
+            return f"{x} : {p[vez]}"
         else:
             return self.titulo_anterior
 
     def fonte(self, tam) -> pg.font.Font:
         return pg.font.Font(
-            'assets/inconsolata/static/Inconsolata-Medium.ttf',
-            tam
+            "assets/inconsolata/static/Inconsolata-Medium.ttf", tam
         )
 
 

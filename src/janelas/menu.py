@@ -18,6 +18,7 @@ class Op(NamedTuple):
     sel: se é aquela opção que está selecionada
     nome: nome da opção selecionada
     """
+
     sel: bool
     nome: str
 
@@ -75,8 +76,7 @@ class Opcoes(ABC):
     def listar(self) -> Listagem:
         """:yield: Op(selecionado, nome)"""
         yield from (
-            Op(self.sel == i, self.nome(i))
-            for i in range(self.tamanho)
+            Op(self.sel == i, self.nome(i)) for i in range(self.tamanho)
         )
 
     def voltar(self):
@@ -90,11 +90,11 @@ class OpcoesConfigs(Opcoes):
 
     def _listar_configs(self) -> list[str]:
         """Lista todas as configs na pasta Configs"""
-        PASTA = 'configs'
-        EXT = '.py'
-        BUSCA = f'{PASTA}/*{EXT}'  # configs/*.py
+        PASTA = "configs"
+        EXT = ".py"
+        BUSCA = f"{PASTA}/*{EXT}"  # configs/*.py
 
-        return [i[len(PASTA+'/'): -len(EXT)] for i in glob(BUSCA)]
+        return [i[len(PASTA + "/") : -len(EXT)] for i in glob(BUSCA)]
 
     ##### Interface #####
     @property
@@ -105,7 +105,7 @@ class OpcoesConfigs(Opcoes):
         if 0 <= i < len(self.configs):
             return self.configs[i]
         else:
-            return 'Voltar'
+            return "Voltar"
 
     def executar(self, i):
         if 0 <= i < len(self.configs):
@@ -120,13 +120,13 @@ class OpcoesPrincipal(Opcoes):
     def __init__(self, menu: Menu, anterior: Opcoes | None = None):
         super().__init__(menu, anterior)
         self.opcoes = (
-            'Config',
-            'Imagens',
-            'Fonte',
-            'Desfazer',
-            'Novo Jogo',
-            'Voltar',
-            'Sair'
+            "Config",
+            "Imagens",
+            "Fonte",
+            "Desfazer",
+            "Novo Jogo",
+            "Voltar",
+            "Sair",
         )
 
     ##### Interface #####
@@ -134,15 +134,15 @@ class OpcoesPrincipal(Opcoes):
         i = self.sel if i is None else i
         opcao = self.nome(i).lower()
         match opcao:
-            case 'config':
+            case "config":
                 return OpcoesConfigs(self.menu, self)
-            case 'novo jogo':
+            case "novo jogo":
                 self.menu.xadrez.__init__()
-            case 'sair':
+            case "sair":
                 pg.quit()
                 quit(0)
             case _ as opcao:
-                print(f'{opcao} não implementado')
+                print(f"{opcao} não implementado")
 
 
 class Menu(Janela):
@@ -195,20 +195,16 @@ class Menu(Janela):
         recursos = Recursos()
         recursos.config.menu_fundo(canvas)
 
-        altura = self.fonte.size('')[1]
+        altura = self.fonte.size("")[1]
         y = 0
         for selecionado, nome in self.opcoes.listar():
             texto_str, cor = recursos.config.menu_opcao(nome, selecionado)
-            texto = self.fonte.render(
-                texto_str,
-                False,
-                cor
-            )
+            texto = self.fonte.render(texto_str, False, cor)
             canvas.blit(texto, (0, y))
             y += altura
 
         self._atualizacao = False
-        pg.display.set_caption('Menu')
+        pg.display.set_caption("Menu")
         pg.display.flip()
 
     def new(self):
