@@ -3,7 +3,7 @@ from __future__ import annotations
 import pygame as pg
 from typing import Generator, NamedTuple
 from abc import ABC, abstractmethod
-from glob import glob
+from pathlib import Path
 
 import tipos as tp
 from recursos import Recursos
@@ -90,11 +90,7 @@ class OpcoesConfigs(Opcoes):
 
     def _listar_configs(self) -> list[str]:
         """Lista todas as configs na pasta Configs"""
-        PASTA = "configs"
-        EXT = ".py"
-        BUSCA = f"{PASTA}/*{EXT}"  # configs/*.py
-
-        return [i[len(PASTA + "/") : -len(EXT)] for i in glob(BUSCA)]
+        return [i.stem for i in Path("./configs").glob("*.py")]
 
     ##### Interface #####
     @property
